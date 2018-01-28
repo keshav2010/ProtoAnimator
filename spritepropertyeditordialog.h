@@ -18,14 +18,16 @@ class SpritePropertyEditorDialog : public QDialog
 public:
     explicit SpritePropertyEditorDialog(QWidget *parent = 0);
     ~SpritePropertyEditorDialog();
-    void editPixmap(QPixmap  &sprite);
+    void editPixmap(QPixmap *&sprite);
     AnimatableSpriteItem *animObject;
-    QPixmap spritePixmap;
+    QPixmap *originalSpritePixmap;
+    QPixmap tempSpritePixmap;
 
 public slots:
     void buildObject();
-    void updateSceneImage();
+    void updateScene();
     void updateScaleUI();
+    void updatePixmap();
 
 private:
     int width, height;

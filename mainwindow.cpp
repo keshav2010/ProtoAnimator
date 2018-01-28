@@ -9,11 +9,14 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     frameEditor(new FramesEditor(parent)),
-    mStatusBar(new QStatusBar(this))
+    mStatusBar(new QStatusBar(this)),
+    mainToolBar(new QToolBar("Tool Bar", this))
 {
-    //manager = Manager::getInstance(this);
+
 
     ui->setupUi(this);
+    Manager::setParent(this);
+
     setStatusBar(mStatusBar);
 
     //initialise all Actions here
@@ -38,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(addSprite(QString)), Manager::getInstance(), SIGNAL(addSpriteToImageBank(QString)));
     connect(actionLoadSprite, SIGNAL(triggered(bool)), this,SLOT(showSpriteSelector()));
     connect(ui->actionExit, SIGNAL(triggered(bool)), this, SLOT(close()));
+
 }
 MainWindow::~MainWindow()
 {
@@ -47,10 +51,9 @@ MainWindow::~MainWindow()
 //helper functions
 void MainWindow::setupToolBar()
 {
-    mainToolBar= new QToolBar("Tool Bar", this);
     mainToolBar->addAction(actionLoadSprite);
     mainToolBar->addAction(ui->actionExit);
-    this->addToolBar(mainToolBar);
+    addToolBar(mainToolBar);
 }
 
 
@@ -65,6 +68,7 @@ void MainWindow::showSpriteSelector()
     spriteSelector.setNameFilter(fileFilter);
 
     if(spriteSelector.exec()){
+        qDebug()<<" Opened Image Browser";
         QString fileName = spriteSelector.selectedFiles().at(0);
         qDebug()<<fileName;
         emit addSprite(fileName); //add selected file in sprite-bank

@@ -19,8 +19,10 @@ class Manager : public QObject
     Q_OBJECT
 public:
     ~Manager();
-    static Manager *getInstance(QObject *parent=0);//explicit Manager(QObject *parent = nullptr);
-    static void setParent();
+    static Manager *getInstance();//explicit Manager(QObject *parent = nullptr);
+    static void setParent(QObject *parent=0);
+    static QObject *objectParent;
+
 signals:
     void addSpriteToImageBank(const QString &spritePath);
     void addFrameToFrameBank();
@@ -32,7 +34,7 @@ private:
     static Manager *manager;
     static bool isAlreadyExist;
 
-    explicit Manager(QObject *parent = nullptr);//singleton
+    explicit Manager(QObject *parent = 0);//singleton
     FrameManager *frameManager;
     SpriteManager *spriteManager;
 };

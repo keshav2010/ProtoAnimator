@@ -8,8 +8,6 @@ Frame::Frame(QObject* parent):
     frameHeight(450)
 {
     setBackgroundBrush(QBrush(QColor(220,50,100)));
-
-    //this->addEllipse(10,10,300,300);
 }
 
 QSize Frame::getFrameSize()

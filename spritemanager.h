@@ -16,6 +16,7 @@ class SpriteManager : public QObject
     Q_OBJECT
 public:
     explicit SpriteManager(QObject *parent = nullptr);
+    ~SpriteManager();
 
 signals:
     void addSprite(const QString &imagePath);
@@ -31,7 +32,7 @@ public slots:
 
 private:
     QMap<QString, Animatable*> objectGraph;
-    QPixmap spritePixmap;
+    QPixmap *spritePixmap;
 
     SpritePropertyEditorDialog spriteEditorDialog;
 

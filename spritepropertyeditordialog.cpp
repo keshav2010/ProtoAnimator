@@ -11,15 +11,15 @@ SpritePropertyEditorDialog::SpritePropertyEditorDialog(QWidget *parent) :
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
 
-    connect(ui->graphicsView->scene(), SIGNAL(changed(QList<QRectF>)), this, SLOT(updateSceneImage()));
+    connect(ui->graphicsView->scene(), SIGNAL(changed(QList<QRectF>)), this, SLOT(updateScene()));
     connect(this,SIGNAL(accepted()), this, SLOT(buildObject()));
 
 
     updateScaleUI();
 
-    connect(ui->spinBox_height, SIGNAL(valueChanged(int)), this, SLOT(updateSceneImage()));
-    connect(ui->spinBox_width, SIGNAL(valueChanged(int)), this, SLOT(updateSceneImage()));
-
+    connect(ui->spinBox_height, SIGNAL(valueChanged(int)), this, SLOT(updateScene()));
+    connect(ui->spinBox_width, SIGNAL(valueChanged(int)), this, SLOT(updateScene()));
+    connect(this, SIGNAL(accepted()), this, SLOT(updatePixmap()));
 }
 
 SpritePropertyEditorDialog::~SpritePropertyEditorDialog()
@@ -28,18 +28,19 @@ SpritePropertyEditorDialog::~SpritePropertyEditorDialog()
     qDebug()<<" cleared SPRITEPROPERTYEDITOR";
 }
 
-void SpritePropertyEditorDialog::editPixmap(QPixmap &sprite)
+void SpritePropertyEditorDialog::editPixmap(QPixmap *&sprite)
 {
-    spritePixmap = sprite;
-    ui->graphicsView->scene()->addPixmap(spritePixmap);
-    show();
+    ui->graphicsView->scene()->clear();
+    originalSpritePixmap = sprite;
+    tempSpritePixmap = *sprite;
+    ui->graphicsView->scene()->addPixmap(tempSpritePixmap);
+
+    emit ui->spinBox_height->valueChanged(tempSpritePixmap.height());
+    emit ui->spinBox_width->valueChanged(tempSpritePixmap.width());
+
 }
 
 
-//returns a pointer to AnimatableSpriteItem object with no-parent set on it, thus parent need to be set
-//explicitly to avoid possible memory leak
-//this problem can be easily avoided by implementing Singleton
-//pattern for management classes like Manager, SpriteManager and FrameManager
 void SpritePropertyEditorDialog::buildObject()
 {
     if(ui->input_objectName->text().size() == 0 ||
@@ -47,26 +48,36 @@ void SpritePropertyEditorDialog::buildObject()
             ui->spinBox_width->value()==0){
         return;
     }
-    animObject = new AnimatableSpriteItem();
-    animObject->setPixmap(spritePixmap);
+    //animObject = new AnimatableSpriteItem();
+    //animObject->setPixmap(*spritePixmap);
 }
 
-void SpritePropertyEditorDialog::updateSceneImage()
+void SpritePropertyEditorDialog::updateScene()
 {
+    if(height == ui->spinBox_height->value() && width == ui->spinBox_width->value()){
+        return;
+    }
     height = ui->spinBox_height->value();
     width = ui->spinBox_width->value();
 
-    spritePixmap = spritePixmap.scaled(width, height);
-    updateScaleUI();
-    ui->graphicsView->repaint();
+    tempSpritePixmap = originalSpritePixmap->scaled(width, height);
+    ui->graphicsView->scene()->clear();
+    ui->graphicsView->scene()->addPixmap(tempSpritePixmap);
+
+    //Scene will be updated by UI, it will never reflect back to UI components
     qDebug()<<" scene updated";
 }
 
 void SpritePropertyEditorDialog::updateScaleUI()
 {
-    height = spritePixmap.height();
-    width = spritePixmap.width();
+    height = tempSpritePixmap.height();
+    width = tempSpritePixmap.width();
 
     ui->spinBox_width->setValue(width);
     ui->spinBox_height->setValue(height);
+}
+
+void SpritePropertyEditorDialog::updatePixmap()
+{
+
 }

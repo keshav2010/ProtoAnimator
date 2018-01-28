@@ -32,4 +32,5 @@ void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->setBrush(QBrush(QColor(240,240,240)));
     painter->drawRect(sceneRect());
+
 }
