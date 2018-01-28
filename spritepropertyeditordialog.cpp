@@ -1,13 +1,19 @@
 #include "spritepropertyeditordialog.h"
 #include "ui_spritepropertyeditordialog.h"
 
-SpritePropertyEditorDialog::SpritePropertyEditorDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::SpritePropertyEditorDialog)
+SpritePropertyEditorDialog::SpritePropertyEditorDialog(QPixmap *&sprite) :
+    ui(new Ui::SpritePropertyEditorDialog),
+    height(0),
+    width(0)
 {
 
     ui->setupUi(this);
+    originalSpritePixmap = sprite;
+    tempSpritePixmap = *sprite;
+
     ui->graphicsView->setScene(new QGraphicsScene(ui->graphicsView));
+    if(!tempSpritePixmap.isNull())
+        ui->graphicsView->scene()->addPixmap(tempSpritePixmap);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
 
@@ -27,7 +33,7 @@ SpritePropertyEditorDialog::~SpritePropertyEditorDialog()
     delete ui;
     qDebug()<<" cleared SPRITEPROPERTYEDITOR";
 }
-
+/*
 void SpritePropertyEditorDialog::editPixmap(QPixmap *&sprite)
 {
     ui->graphicsView->scene()->clear();
@@ -39,7 +45,7 @@ void SpritePropertyEditorDialog::editPixmap(QPixmap *&sprite)
     emit ui->spinBox_width->valueChanged(tempSpritePixmap.width());
 
 }
-
+*/
 
 void SpritePropertyEditorDialog::buildObject()
 {
@@ -70,6 +76,9 @@ void SpritePropertyEditorDialog::updateScene()
 
 void SpritePropertyEditorDialog::updateScaleUI()
 {
+    if(tempSpritePixmap.isNull())
+        return;
+
     height = tempSpritePixmap.height();
     width = tempSpritePixmap.width();
 

@@ -28,14 +28,13 @@ public slots:
      * mark the center point over it, and thus returns it as an Object that can be inserted into
      * the objectGraph under the similar name.
      */
-    Animatable* addSpriteObject(const QString &imagePath);
+    void addSpriteObject(const QString &imagePath);
 
 private:
     QMap<QString, Animatable*> objectGraph;
     QPixmap *spritePixmap;
 
-    SpritePropertyEditorDialog spriteEditorDialog;
-
+    SpritePropertyEditorDialog *spriteEditorDialog;
 };
 
 #endif // SPRITEMANAGER_H

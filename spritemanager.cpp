@@ -1,8 +1,10 @@
 #include "spritemanager.h"
-
+#include "manager.h"
 //parent : manager
 SpriteManager::SpriteManager(QObject *parent) : QObject(parent)
 {
+    spritePixmap = new QPixmap;
+    spriteEditorDialog = new SpritePropertyEditorDialog(spritePixmap);
 
     connect(this, SIGNAL(addSprite(QString)), this, SLOT(addSpriteObject(QString)));
 
@@ -11,15 +13,12 @@ SpriteManager::SpriteManager(QObject *parent) : QObject(parent)
 SpriteManager::~SpriteManager()
 {
     delete spritePixmap;
+    delete spriteEditorDialog;
 }
 
-Animatable* SpriteManager::addSpriteObject(const QString &imagePath)
+void SpriteManager::addSpriteObject(const QString &imagePath)
 {
-    if(spritePixmap!=0)
-        delete spritePixmap;
 
-    spritePixmap = new QPixmap(imagePath);
     spritePixmap->load(imagePath);
-    spriteEditorDialog.editPixmap(spritePixmap);
-    spriteEditorDialog.show();
+    spriteEditorDialog->show();
 }

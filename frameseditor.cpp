@@ -22,8 +22,9 @@ FramesEditor::FramesEditor(QWidget* parent):
     setScene(defaultKeyFrame);
 
 
-    this->scene()->addEllipse(10,10, 500, 200); //adding an ecllipse
-    this->scene()->addRect(10,10,250,100,QPen(QColor(200,0,0)));
+    this->scene()->addEllipse(-150, -100, 500, 200); //adding an ecllipse
+    this->scene()->addRect(-150, -100,250,250,QPen(QColor(200,0,20)));
+
 }
 
 //code to draw frameRect rectangle on screen on lower-most layer, i.e background-layer
