@@ -4,6 +4,7 @@
 #include <QObject>
 #include<QMap>
 #include "frame.h"
+#include "frameseditor.h"
 /*
  *  Contains list of frames that are visible on timeline and thus are responsible
  * for generation of animated sequences, this class is intended to work with
@@ -17,19 +18,37 @@ class FrameManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit FrameManager(QObject *parent = nullptr);
+
+    static QObject *objectParent;
+    //explicit FrameManager(QObject *parent = nullptr);
+    static FrameManager* getInstance();
+
+    static QRectF frameSceneRect;
+
+    ~FrameManager();
+    static void setObjectParent(QObject *parent);
+
+    Frame* getDefaultFrame();
+    Frame* getCurrentActiveFrame();
 
 signals:
 
 public slots:
     bool addFrameObject();
+    bool removeFrameObject();
 
 private:
-    //A Data structure holding frames
-    //A Flag holding current active frame
+    static FrameManager *frameManager;
+    static bool isAlreadyExist;
 
-    QMap<int, Frame*> FrameBank;
+    explicit FrameManager(QObject *parent = 0);
+
+    QMap<int, Frame*> frameBank;
+
+    Frame* keyBeginFrame;
+
     int currentActiveFrame;
+
     const int keyStartFrame;//default keyframe can't be removed or deleted, value is 0
 };
 

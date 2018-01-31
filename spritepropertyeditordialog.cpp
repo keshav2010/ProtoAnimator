@@ -25,7 +25,7 @@ SpritePropertyEditorDialog::SpritePropertyEditorDialog(QPixmap *&sprite) :
 
     connect(ui->spinBox_height, SIGNAL(valueChanged(int)), this, SLOT(updateScene()));
     connect(ui->spinBox_width, SIGNAL(valueChanged(int)), this, SLOT(updateScene()));
-    connect(this, SIGNAL(accepted()), this, SLOT(updatePixmap()));
+    //connect(this, SIGNAL(accepted()), this, SLOT(updatePixmap()));
 }
 
 SpritePropertyEditorDialog::~SpritePropertyEditorDialog()
@@ -61,7 +61,7 @@ void SpritePropertyEditorDialog::buildObject()
 void SpritePropertyEditorDialog::updateScene()
 {
     if(height == ui->spinBox_height->value() && width == ui->spinBox_width->value()){
-        return;
+         return;
     }
     height = ui->spinBox_height->value();
     width = ui->spinBox_width->value();
@@ -69,6 +69,7 @@ void SpritePropertyEditorDialog::updateScene()
     tempSpritePixmap = originalSpritePixmap->scaled(width, height);
     ui->graphicsView->scene()->clear();
     ui->graphicsView->scene()->addPixmap(tempSpritePixmap);
+    ui->graphicsView->setSceneRect(tempSpritePixmap.rect());
 
     //Scene will be updated by UI, it will never reflect back to UI components
     qDebug()<<" scene updated";
@@ -76,8 +77,9 @@ void SpritePropertyEditorDialog::updateScene()
 
 void SpritePropertyEditorDialog::updateScaleUI()
 {
-    if(tempSpritePixmap.isNull())
+    if(tempSpritePixmap.isNull()){
         return;
+    }
 
     height = tempSpritePixmap.height();
     width = tempSpritePixmap.width();
@@ -86,7 +88,12 @@ void SpritePropertyEditorDialog::updateScaleUI()
     ui->spinBox_height->setValue(height);
 }
 
-void SpritePropertyEditorDialog::updatePixmap()
+QString SpritePropertyEditorDialog::updatePixmap()
 {
-
+    if(ui->input_objectName->text().length() == 0){
+        *originalSpritePixmap = QPixmap(); //construct a null pixmap
+        return QString();
+    }
+    originalSpritePixmap->swap(tempSpritePixmap);
+    return QString(ui->input_objectName->text().trimmed());//return name
 }

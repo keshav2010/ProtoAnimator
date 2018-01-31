@@ -11,6 +11,7 @@
 class Frame : public QGraphicsScene
 {
 private:
+    //frameData holds basic properties
     QMap<QString, Animatable*> frameData;
     const int frameWidth, frameHeight;
 public:

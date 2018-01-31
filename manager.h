@@ -30,12 +30,12 @@ signals:
 
 public slots:
 
+
 private:
     static Manager *manager;
     static bool isAlreadyExist;
 
     explicit Manager(QObject *parent = 0);//singleton
-    FrameManager *frameManager;
     SpriteManager *spriteManager;
 };
 

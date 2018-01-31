@@ -8,11 +8,11 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    frameEditor(new FramesEditor(parent)),
     mStatusBar(new QStatusBar(this)),
     mainToolBar(new QToolBar("Tool Bar", this))
 {
 
+    FramesEditor::setParent(parent);
 
     ui->setupUi(this);
     Manager::setParent(this);
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //add components to main-Window in their respective field
     addDockWidget(Qt::LeftDockWidgetArea, serviceWidget);
     addDockWidget(Qt::RightDockWidgetArea, sampleRight);
-    setCentralWidget(frameEditor);
+    setCentralWidget(FramesEditor::getInstance());
 
     //connections for slot-signal
     connect(serviceWidget->getAddFrameButton(), SIGNAL(clicked(bool)), Manager::getInstance(), SIGNAL(addFrameToFrameBank()));

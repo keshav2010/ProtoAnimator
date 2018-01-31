@@ -30,8 +30,11 @@ public slots:
      */
     void addSpriteObject(const QString &imagePath);
 
+    void addToBank();
+    void removeFromBank(const QString &spriteName);
+
 private:
-    QMap<QString, Animatable*> objectGraph;
+    QMap<QString, AnimatableSpriteItem*> objectGraph;
     QPixmap *spritePixmap;
 
     SpritePropertyEditorDialog *spriteEditorDialog;

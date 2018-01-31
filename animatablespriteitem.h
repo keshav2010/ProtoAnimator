@@ -17,6 +17,11 @@ public:
     ~AnimatableSpriteItem();
     QRectF boundingRect() const override; //returns estimate of area painted by this item
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    void setSpritePixmap(const QPixmap &sprite);
+
+protected:
+    void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
 
 public slots:
 

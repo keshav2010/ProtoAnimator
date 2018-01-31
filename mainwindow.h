@@ -39,7 +39,8 @@ private:
 
     //essential Widgets and Objects
     QToolBar *mainToolBar;
-    FramesEditor *frameEditor;
+
+    //FramesEditor *frameEditor;
 
     //Dock Widgets
     ServiceDockWidget *serviceWidget;

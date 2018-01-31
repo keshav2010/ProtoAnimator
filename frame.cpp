@@ -31,5 +31,5 @@ void Frame::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void Frame::drawBackground(QPainter *painter, const QRectF &rect)
 {
-
+    this->addRect(15,15, 100, 100);
 }

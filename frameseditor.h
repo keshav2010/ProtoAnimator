@@ -4,6 +4,7 @@
 #include<QGraphicsView>
 #include<QGraphicsScene>
 #include "frame.h"
+#include "framemanager.h"
 #include <QRectF>
 /*
  * FrameEditor class inherits QGraphicsView, which is used to render QGraphicsScene
@@ -13,16 +14,24 @@
  * It is to be noted that frameEditor when initialized, should provide atleast 1 single frame by default to work upon,
  * further frames can then later be added by user
  */
+//only single instance of frameEditor will be used
 class FramesEditor : public QGraphicsView
 {
 public:
-    FramesEditor(QWidget* parent = Q_NULLPTR);
+
+    ~FramesEditor();
+    static FramesEditor* getInstance();
+    static void setParent(QWidget *parent=0);
+    static QWidget *objectParent;
 
 private:
-    int frameWidth, frameHeight;
+    FramesEditor(QWidget* parent = 0);
+
+    static bool isAlreadyExist;
+    static FramesEditor* frameEditor;
+
     void drawBackground(QPainter *painter, const QRectF &rect);
-    QRectF frameRect;
-    Frame *defaultKeyFrame;//the default non-deletable key-frame
+
 };
 
 #endif // FRAMESEDITOR_H

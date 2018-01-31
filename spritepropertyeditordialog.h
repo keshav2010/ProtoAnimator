@@ -26,7 +26,7 @@ public slots:
     void buildObject();
     void updateScene();
     void updateScaleUI();
-    void updatePixmap();
+    QString updatePixmap(); //updates pointer and returns name associated with the image
 
 private:
     int width, height;

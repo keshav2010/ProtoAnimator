@@ -1,34 +1,47 @@
 #include "frameseditor.h"
 #include "frame.h"
 #include <QScrollBar>
-FramesEditor::FramesEditor(QWidget* parent):
-    QGraphicsView(parent),
-    defaultKeyFrame(new Frame(this))
+
+//static data
+bool FramesEditor::isAlreadyExist=false;
+FramesEditor* FramesEditor::frameEditor = 0;
+QWidget* FramesEditor::objectParent = 0;
+
+
+FramesEditor::~FramesEditor()
 {
-    //setting frame width,height and coordinates on screen
-    frameWidth = 800;
-    frameHeight = 450;
+    isAlreadyExist=false;
+    delete frameEditor;
+}
 
-    frameRect.setX(-frameWidth/2);
-    frameRect.setY(-frameHeight/2);
+FramesEditor *FramesEditor::getInstance()
+{
+    if( !isAlreadyExist){
+        frameEditor = new FramesEditor(objectParent);
+        isAlreadyExist=true;
+    }
+    return frameEditor;
+}
 
-    frameRect.setWidth(frameWidth);
-    frameRect.setHeight(frameHeight);
+void FramesEditor::setParent(QWidget *parent)
+{
+    objectParent = parent;
+}
 
+FramesEditor::FramesEditor(QWidget* parent):
+    QGraphicsView(parent)
+{
     //set frameRect as SCENE-RECTANGLE (this won't draw it on screen)
-    setSceneRect(frameRect); //to keep grey-area focused
+    setSceneRect(FrameManager::frameSceneRect); //to keep grey-area focused
 
     this->setToolTip(QString("Frame Editor Window"));
-    setScene(defaultKeyFrame);
+    setScene(FrameManager::getInstance()->getDefaultFrame());
 
-
-    this->scene()->addEllipse(-150, -100, 500, 200); //adding an ecllipse
-    this->scene()->addRect(-150, -100,250,250,QPen(QColor(200,0,20)));
+    //add graphicsItem to scene
 
 }
 
-//code to draw frameRect rectangle on screen on lower-most layer, i.e background-layer
-//this is done so we can visually see the SCENE-REGION
+//Visualising bounding Rectangle that represents a frame
 void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->setBrush(QBrush(QColor(240,240,240)));
