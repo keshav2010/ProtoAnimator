@@ -2,6 +2,7 @@
 #include<QGraphicsSceneMouseEvent>
 #include<QDebug>
 #include<QPainter>
+#include "spritemanager.h"
 Frame::Frame(QObject* parent):
     QGraphicsScene(parent),
     frameWidth(800),
@@ -26,10 +27,15 @@ int Frame::getFrameHeight()
 }
 void Frame::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+    addRect(mouseEvent->buttonDownScenePos(Qt::MouseButton::LeftButton).x(),
+            mouseEvent->buttonDownScenePos(Qt::MouseButton::LeftButton).y(),
+            50,50);
 
 }
-
-void Frame::drawBackground(QPainter *painter, const QRectF &rect)
-{
-    this->addRect(15,15, 100, 100);
+void Frame::drawForeground(QPainter *painter, const QRectF &rect){
+    const QMap<QString, AnimatableSpriteItem*> *objectGraph_ref = SpriteManager::getInstance()->getObjectGraph();
+    for(int i=0; i<objectGraph_ref->size(); i++){
+        AnimatableSpriteItem* item = *(objectGraph_ref->begin()+i);
+        painter->drawImage(100,100, item->pixmap().toImage());
+    }
 }

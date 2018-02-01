@@ -28,6 +28,11 @@ void FramesEditor::setParent(QWidget *parent)
     objectParent = parent;
 }
 
+void FramesEditor::renderFrame(Frame *activeFrame)
+{
+    this->setScene(activeFrame);
+}
+
 FramesEditor::FramesEditor(QWidget* parent):
     QGraphicsView(parent)
 {
@@ -35,6 +40,8 @@ FramesEditor::FramesEditor(QWidget* parent):
     setSceneRect(FrameManager::frameSceneRect); //to keep grey-area focused
 
     this->setToolTip(QString("Frame Editor Window"));
+
+    //sets a default frame on screen
     setScene(FrameManager::getInstance()->getDefaultFrame());
 
     //add graphicsItem to scene

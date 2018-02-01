@@ -36,7 +36,6 @@ private:
     static bool isAlreadyExist;
 
     explicit Manager(QObject *parent = 0);//singleton
-    SpriteManager *spriteManager;
 };
 
 #endif // MANAGER_H

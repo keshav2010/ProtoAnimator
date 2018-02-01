@@ -8,7 +8,7 @@
 #include<QImage>
 #include "animatable.h"
 
-class AnimatableSpriteItem : public QGraphicsPixmapItem, public Animatable
+class AnimatableSpriteItem : public QGraphicsPixmapItem
 {
 signals:
 
@@ -19,6 +19,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     void setSpritePixmap(const QPixmap &sprite);
 
+    QPixmap *spritePixmap;
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
@@ -26,7 +27,6 @@ protected:
 public slots:
 
 private:
-    QPixmap *spritePixmap;
     bool followMouse;
 };
 

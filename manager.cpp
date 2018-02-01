@@ -28,10 +28,10 @@ void Manager::setParent(QObject *parent)
 {
     objectParent = parent;
 }
-Manager::Manager(QObject *parent) : QObject(parent),
-    spriteManager(new SpriteManager(this))
+Manager::Manager(QObject *parent) : QObject(parent)
 {
+    SpriteManager::setObjectParent(this);
     FrameManager::setObjectParent(this);
-    connect(this, SIGNAL(addSpriteToImageBank(QString)), spriteManager, SLOT(addSpriteObject(QString)) );
+    connect(this, SIGNAL(addSpriteToImageBank(QString)), SpriteManager::getInstance(), SLOT(addSpriteObject(QString)) );
     connect(this, SIGNAL(addFrameToFrameBank()), FrameManager::getInstance(), SLOT(addFrameObject()));
 }

@@ -23,7 +23,7 @@ public:
 
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void drawBackground(QPainter *painter, const QRectF &rect) override;
+    void drawForeground(QPainter *painter, const QRectF &rect) override;
 };
 
 #endif // FRAME_H

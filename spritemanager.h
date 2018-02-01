@@ -15,7 +15,11 @@ class SpriteManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit SpriteManager(QObject *parent = nullptr);
+    const QMap<QString, AnimatableSpriteItem*>* getObjectGraph();
+    static void setObjectParent(QObject *parent=0);
+    static QObject *objectParent;
+    static SpriteManager* getInstance();
+
     ~SpriteManager();
 
 signals:
@@ -34,8 +38,14 @@ public slots:
     void removeFromBank(const QString &spriteName);
 
 private:
-    QMap<QString, AnimatableSpriteItem*> objectGraph;
+
+    static SpriteManager *spriteManager;
+    static bool isAlreadyExist;
+
+    explicit SpriteManager(QObject *parent = 0);
+
     QPixmap *spritePixmap;
+    QMap<QString, AnimatableSpriteItem*> objectGraph;
 
     SpritePropertyEditorDialog *spriteEditorDialog;
 };

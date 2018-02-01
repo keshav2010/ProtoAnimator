@@ -23,7 +23,6 @@ public:
     QPixmap tempSpritePixmap;
 
 public slots:
-    void buildObject();
     void updateScene();
     void updateScaleUI();
     QString updatePixmap(); //updates pointer and returns name associated with the image

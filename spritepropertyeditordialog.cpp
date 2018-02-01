@@ -1,6 +1,6 @@
 #include "spritepropertyeditordialog.h"
 #include "ui_spritepropertyeditordialog.h"
-
+#include "spritemanager.h"
 SpritePropertyEditorDialog::SpritePropertyEditorDialog(QPixmap *&sprite) :
     ui(new Ui::SpritePropertyEditorDialog),
     height(0),
@@ -18,7 +18,7 @@ SpritePropertyEditorDialog::SpritePropertyEditorDialog(QPixmap *&sprite) :
 
 
     connect(ui->graphicsView->scene(), SIGNAL(changed(QList<QRectF>)), this, SLOT(updateScene()));
-    connect(this,SIGNAL(accepted()), this, SLOT(buildObject()));
+    connect(this,SIGNAL(accepted()), SpriteManager::getInstance() , SLOT(addToBank()));
 
 
     updateScaleUI();
@@ -46,17 +46,6 @@ void SpritePropertyEditorDialog::editPixmap(QPixmap *&sprite)
 
 }
 */
-
-void SpritePropertyEditorDialog::buildObject()
-{
-    if(ui->input_objectName->text().size() == 0 ||
-            ui->spinBox_height->value()==0 ||
-            ui->spinBox_width->value()==0){
-        return;
-    }
-    //animObject = new AnimatableSpriteItem();
-    //animObject->setPixmap(*spritePixmap);
-}
 
 void SpritePropertyEditorDialog::updateScene()
 {

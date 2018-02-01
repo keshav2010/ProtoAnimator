@@ -5,6 +5,7 @@
 #include<QGraphicsScene>
 #include "frame.h"
 #include "framemanager.h"
+#include "spritemanager.h"
 #include <QRectF>
 /*
  * FrameEditor class inherits QGraphicsView, which is used to render QGraphicsScene
@@ -23,6 +24,9 @@ public:
     static FramesEditor* getInstance();
     static void setParent(QWidget *parent=0);
     static QWidget *objectParent;
+
+public slots:
+    void renderFrame(Frame* activeFrame);
 
 private:
     FramesEditor(QWidget* parent = 0);

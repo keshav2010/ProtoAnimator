@@ -18,7 +18,8 @@ AnimatableSpriteItem::~AnimatableSpriteItem()
 
 QRectF AnimatableSpriteItem::boundingRect() const
 {
-    return spritePixmap->rect();
+    //return spritePixmap->rect();
+    return pixmap().rect();
 }
 
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -29,6 +30,7 @@ void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
 void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)
 {
     spritePixmap = new QPixmap(sprite);
+    this->setPixmap(*spritePixmap);
 }
 
 void AnimatableSpriteItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -39,9 +41,11 @@ void AnimatableSpriteItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void AnimatableSpriteItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
+    /*
     QRectF imageRect = this->boundingRect();
     const QPointF mouseClickPos = event->buttonDownScenePos(Qt::MouseButton::LeftButton);
     if(imageRect.contains( mouseClickPos )){
         followMouse=true;
     }
+    */
 }
