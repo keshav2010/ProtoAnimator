@@ -35,7 +35,8 @@ SOURCES += \
     animatablespriteitem.cpp \
     manager.cpp \
     spritepropertyeditordialog.cpp \
-    timelinedockwidget.cpp
+    timelinedockwidget.cpp \
+    spritedata.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -48,7 +49,8 @@ HEADERS += \
     animatablespriteitem.h \
     manager.h \
     spritepropertyeditordialog.h \
-    timelinedockwidget.h
+    timelinedockwidget.h \
+    spritedata.h
 
 FORMS += \
         mainwindow.ui \

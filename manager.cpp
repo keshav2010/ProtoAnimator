@@ -6,10 +6,19 @@ bool Manager::isAlreadyExist=false;
 Manager* Manager::manager = 0;
 QObject* Manager::objectParent = 0;
 
-Manager::~Manager()
+
+Manager::Manager(QObject *parent) : QObject(parent)
 {
+    SpriteManager::setObjectParent(this);
+    FrameManager::setObjectParent(this);
+
+    QObject::connect(FrameManager::getInstance(), &FrameManager::setNewActiveFrame, FramesEditor::getInstance(), &FramesEditor::renderFrame);
+    QObject::connect(this, &Manager::addSpriteToImageBank, SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
+    QObject::connect(this, &Manager::addFrameToFrameBank, FrameManager::getInstance(), &FrameManager::addFrameObject);
+}
+
+Manager::~Manager(){
     isAlreadyExist=false;
-    delete manager;
 }
 
 //improvement required, currently manager class is **assummed** to be initialized in
@@ -27,11 +36,4 @@ Manager* Manager::getInstance()
 void Manager::setParent(QObject *parent)
 {
     objectParent = parent;
-}
-Manager::Manager(QObject *parent) : QObject(parent)
-{
-    SpriteManager::setObjectParent(this);
-    FrameManager::setObjectParent(this);
-    connect(this, SIGNAL(addSpriteToImageBank(QString)), SpriteManager::getInstance(), SLOT(addSpriteObject(QString)) );
-    connect(this, SIGNAL(addFrameToFrameBank()), FrameManager::getInstance(), SLOT(addFrameObject()));
 }

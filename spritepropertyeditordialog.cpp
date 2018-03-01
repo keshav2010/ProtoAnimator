@@ -17,21 +17,22 @@ SpritePropertyEditorDialog::SpritePropertyEditorDialog(QPixmap *&sprite) :
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
 
-    connect(ui->graphicsView->scene(), SIGNAL(changed(QList<QRectF>)), this, SLOT(updateScene()));
-    connect(this,SIGNAL(accepted()), SpriteManager::getInstance() , SLOT(addToBank()));
+    QObject::connect(ui->graphicsView->scene(), &QGraphicsScene::changed, this, &SpritePropertyEditorDialog::updateScene);
+    QObject::connect(this, &SpritePropertyEditorDialog::accepted, SpriteManager::getInstance(), &SpriteManager::addToBank);
 
 
     updateScaleUI();
 
-    connect(ui->spinBox_height, SIGNAL(valueChanged(int)), this, SLOT(updateScene()));
-    connect(ui->spinBox_width, SIGNAL(valueChanged(int)), this, SLOT(updateScene()));
+    //connect(ui->spinBox_height, &QSpinBox::valueChanged, this, &SpritePropertyEditorDialog::updateScene);
+    QObject::connect(ui->spinBox_height, SIGNAL(valueChanged(int)), this, SLOT(updateScene()));
+    QObject::connect(ui->spinBox_width, SIGNAL(valueChanged(int)), this, SLOT(updateScene()));
     //connect(this, SIGNAL(accepted()), this, SLOT(updatePixmap()));
 }
 
 SpritePropertyEditorDialog::~SpritePropertyEditorDialog()
 {
     delete ui;
-    qDebug()<<" cleared SPRITEPROPERTYEDITOR";
+    qDebug()<<"spritePropertyEditorDialog.cpp :  cleared SPRITEPROPERTYEDITOR";
 }
 /*
 void SpritePropertyEditorDialog::editPixmap(QPixmap *&sprite)
@@ -61,7 +62,7 @@ void SpritePropertyEditorDialog::updateScene()
     ui->graphicsView->setSceneRect(tempSpritePixmap.rect());
 
     //Scene will be updated by UI, it will never reflect back to UI components
-    qDebug()<<" scene updated";
+    qDebug()<<"spritePropertyEditorDialog.cpp : scene updated";
 }
 
 void SpritePropertyEditorDialog::updateScaleUI()

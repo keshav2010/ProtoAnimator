@@ -6,12 +6,23 @@
 bool FramesEditor::isAlreadyExist=false;
 FramesEditor* FramesEditor::frameEditor = 0;
 QWidget* FramesEditor::objectParent = 0;
+//---------------------------------------------
 
+FramesEditor::FramesEditor(QWidget* parent):
+    QGraphicsView(parent)
+{
+    qDebug()<<"frameEditor.cpp : initialized FrameEditor (sort of canvas) (QGraphicsView) ...";
 
+    //set frameRect as SCENE-RECTANGLE (this won't draw it on screen)
+    setSceneRect(FrameManager::frameSceneRect); //to keep grey-area focused
+
+    this->setToolTip(QString("Frame Editor Window"));
+}
 FramesEditor::~FramesEditor()
 {
+    qDebug()<<"frameEditor.cpp : deleting frameEditor/QGraphicsView/Canvas (analogy) from mem";
     isAlreadyExist=false;
-    delete frameEditor;
+    //delete frameEditor; //causing infinite destructor calls
 }
 
 FramesEditor *FramesEditor::getInstance()
@@ -28,30 +39,29 @@ void FramesEditor::setParent(QWidget *parent)
     objectParent = parent;
 }
 
+//SLOT FXN
 void FramesEditor::renderFrame(Frame *activeFrame)
 {
-    this->setScene(activeFrame);
+    qDebug()<<" >>>> framesEditor.cpp (renderFrame SLOT) setting updated scene to framesEditor view";
+    setScene(activeFrame);
+    this->show();
 }
 
-FramesEditor::FramesEditor(QWidget* parent):
-    QGraphicsView(parent)
-{
-    //set frameRect as SCENE-RECTANGLE (this won't draw it on screen)
-    setSceneRect(FrameManager::frameSceneRect); //to keep grey-area focused
 
-    this->setToolTip(QString("Frame Editor Window"));
-
-    //sets a default frame on screen
-    setScene(FrameManager::getInstance()->getDefaultFrame());
-
-    //add graphicsItem to scene
-
-}
 
 //Visualising bounding Rectangle that represents a frame
 void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    painter->setBrush(QBrush(QColor(240,240,240)));
+    qDebug()<<"frameEditor.cpp : drawing background for scene( current active frames)..";
+
+    painter->setBrush(QBrush(QColor(100,240,240)));
     painter->drawRect(sceneRect());
 
+}
+
+void FramesEditor::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    qDebug()<<"frameEditor.cpp : drawing Foreground (current active Frame) : ";
+    painter->setBrush(QBrush(QColor(50,50,200)));
+    painter->drawRect(50,50,100,100);
 }

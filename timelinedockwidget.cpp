@@ -6,3 +6,20 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
 {
 
 }
+
+
+//SLOTS FXN
+void TimelineDockWidget::runAnim(int startFromFrame)
+{
+
+}
+
+void TimelineDockWidget::pauseAnim()
+{
+
+}
+
+void TimelineDockWidget::restartAnim()
+{
+
+}

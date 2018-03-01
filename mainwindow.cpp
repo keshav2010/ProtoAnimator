@@ -12,10 +12,16 @@ MainWindow::MainWindow(QWidget *parent) :
     mainToolBar(new QToolBar("Tool Bar", this))
 {
 
-    FramesEditor::setParent(parent);
 
     ui->setupUi(this);
+    FramesEditor::setParent(this);
+
     Manager::setParent(this);
+
+    SpriteManager::setObjectParent(Manager::getInstance());
+
+    FrameManager::setObjectParent(Manager::getInstance());
+
 
     setStatusBar(mStatusBar);
 
@@ -37,10 +43,11 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(FramesEditor::getInstance());
 
     //connections for slot-signal
-    connect(serviceWidget->getAddFrameButton(), SIGNAL(clicked(bool)), Manager::getInstance(), SIGNAL(addFrameToFrameBank()));
-    connect(this, SIGNAL(addSprite(QString)), Manager::getInstance(), SIGNAL(addSpriteToImageBank(QString)));
-    connect(actionLoadSprite, SIGNAL(triggered(bool)), this,SLOT(showSpriteSelector()));
-    connect(ui->actionExit, SIGNAL(triggered(bool)), this, SLOT(close()));
+
+    QObject::connect(serviceWidget->getAddFrameButton(), &QPushButton::clicked, Manager::getInstance(), &Manager::addFrameToFrameBank);
+    QObject::connect(this, &MainWindow::addSprite, Manager::getInstance(), &Manager::addSpriteToImageBank);
+    QObject::connect(actionLoadSprite, &QAction::triggered, this, &MainWindow::showSpriteSelector);
+    QObject::connect(ui->actionExit, &QAction::triggered, this, &MainWindow::close);
 
 }
 MainWindow::~MainWindow()

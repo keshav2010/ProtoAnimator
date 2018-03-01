@@ -3,12 +3,14 @@
 #include<QDebug>
 #include<QPainter>
 #include "spritemanager.h"
+#include "framemanager.h"
 Frame::Frame(QObject* parent):
     QGraphicsScene(parent),
     frameWidth(800),
     frameHeight(450)
 {
-    setBackgroundBrush(QBrush(QColor(220,50,100)));
+    qDebug()<<"frame.cpp : initialized frame ";
+    setBackgroundBrush(QBrush(QColor(120,50,100)));
 }
 
 QSize Frame::getFrameSize()
@@ -25,17 +27,53 @@ int Frame::getFrameHeight()
 {
     return frameHeight;
 }
+
+
+//SLOTS FXN:
+void Frame::addFrameItem(AnimatableSpriteItem *item, QString itemName)
+{
+    qDebug()<<"frame.cpp > addFrameItem : adding item "<<itemName<<" to frameData";
+
+    itemName = itemName.trimmed();
+    if(itemName.size()==0)
+        return;
+    frameData[itemName]=item->getSpriteData();
+}
+
+void Frame::setupFrameItems()
+{
+
+    QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
+    for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++){
+        AnimatableSpriteItem *tempItem = SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key());
+        addItem(tempItem);
+    }
+}
+
+
 void Frame::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    addRect(mouseEvent->buttonDownScenePos(Qt::MouseButton::LeftButton).x(),
-            mouseEvent->buttonDownScenePos(Qt::MouseButton::LeftButton).y(),
-            50,50);
 
 }
 void Frame::drawForeground(QPainter *painter, const QRectF &rect){
-    const QMap<QString, AnimatableSpriteItem*> *objectGraph_ref = SpriteManager::getInstance()->getObjectGraph();
-    for(int i=0; i<objectGraph_ref->size(); i++){
-        AnimatableSpriteItem* item = *(objectGraph_ref->begin()+i);
-        painter->drawImage(100,100, item->pixmap().toImage());
+
+    qDebug()<<"frame.cpp : drawing ForeGround";
+    /*
+    QMap<QString, QTransform>::iterator frameDataIterator = frameData.begin();
+    for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++){
+        painter->drawImage(100,100, (*frameDataIterator)->pixmap().toImage());
     }
+    */
+    painter->setBrush(QBrush(QColor(5,255,255,1)));
+    painter->drawRect(FrameManager::frameSceneRect);
+    painter->drawRect(QRect(100,100,200,200));
+
+    QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
+    for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++)
+    {
+        painter->drawPixmap((*frameDataIterator).getSpritePosition(),
+                            SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key())->pixmap());
+    }
+
+
 }

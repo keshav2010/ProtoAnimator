@@ -19,16 +19,17 @@ SpriteManager* SpriteManager::getInstance(){
 void SpriteManager::setObjectParent(QObject *parent){
     objectParent=parent;
 }
+//----------------------------------------------------
 
 
-//parent : manager
+//parent = manager
 SpriteManager::SpriteManager(QObject *parent)
     : QObject(parent)
 {
     spritePixmap=0;//    spritePixmap = new QPixmap;
     spriteEditorDialog=0; //    spriteEditorDialog = new SpritePropertyEditorDialog(spritePixmap);
 
-    connect(this, SIGNAL(addSprite(QString)), this, SLOT(addSpriteObject(QString)));
+    QObject::connect(this, &SpriteManager::addSprite, this, &SpriteManager::addSpriteObject);
 }
 
 const QMap<QString, AnimatableSpriteItem*>* SpriteManager::getObjectGraph()
@@ -44,7 +45,7 @@ SpriteManager::~SpriteManager()
         delete spritePixmap;
     if(spriteEditorDialog)
         delete spriteEditorDialog;
-    delete spriteManager;
+    //delete spriteManager;
 }
 
 void SpriteManager::addSpriteObject(const QString &imagePath)
@@ -55,6 +56,7 @@ void SpriteManager::addSpriteObject(const QString &imagePath)
     spriteEditorDialog->updateScaleUI();
 }
 
+//adds final sprite object to spriteBank
 void SpriteManager::addToBank()
 {
     QString spriteName = spriteEditorDialog->updatePixmap();
@@ -70,8 +72,8 @@ void SpriteManager::addToBank()
     }
     objectGraph.insert(QString(spriteName), new AnimatableSpriteItem(0));
     objectGraph[QString(spriteName)]->setSpritePixmap(*spritePixmap);
-    qDebug()<<"added image to bank";
-    qDebug()<<" >> Total Elements : "<<objectGraph.size();
+    qDebug()<<"spritemanager.cpp : added image to bank";
+    qDebug()<<"spritemanager.cpp >> Total Elements : "<<objectGraph.size();
     delete spriteEditorDialog;
     delete spritePixmap;
 }

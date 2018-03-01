@@ -35,7 +35,7 @@ private:
     static FramesEditor* frameEditor;
 
     void drawBackground(QPainter *painter, const QRectF &rect);
-
+    void drawForeground(QPainter *painter, const QRectF &rect);
 };
 
 #endif // FRAMESEDITOR_H
