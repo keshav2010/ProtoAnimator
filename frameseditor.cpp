@@ -44,7 +44,7 @@ void FramesEditor::renderFrame(Frame *activeFrame)
 {
     qDebug()<<" >>>> framesEditor.cpp (renderFrame SLOT) setting updated scene to framesEditor view";
     setScene(activeFrame);
-    this->show();
+    setSceneRect(FrameManager::frameSceneRect); //to keep grey-area focused
 }
 
 

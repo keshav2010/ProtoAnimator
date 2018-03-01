@@ -17,6 +17,7 @@ private:
     const int frameWidth, frameHeight;
 public:
     Frame(QObject *parent=0);
+    ~Frame();
 
     QSize getFrameSize();
     int getFrameWidth();

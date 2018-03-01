@@ -64,12 +64,15 @@ int FrameManager::getCurrentActiveFrameByID(){
 void FrameManager::setCurrentActiveFrame(int frameID)
 {
     qDebug()<<">>> frameManager.cpp : currentActiveFrame ID : "<<currentActiveFrame;
-    Frame *activeFrame = frameBank[keyStartFrame];
+    Frame *activeFrame = frameBank[currentActiveFrame];
 
     if(frameBank.contains(frameID)){
         qDebug()<<">>> frameManager.cpp : frame Found in frameBank, setting up for view";
+
         currentActiveFrame = frameID;
         activeFrame = frameBank[currentActiveFrame];
+
+        activeFrame->setParent(this);
     }
     qDebug()<<">>> frameManager.cpp : currentActiveFrame ID updated: "<<currentActiveFrame;
 
@@ -79,9 +82,15 @@ void FrameManager::setCurrentActiveFrame(int frameID)
 bool FrameManager::addFrameObject()
 {
     qDebug()<<"frameManager.cpp : adding new Frame ";
-    int lastKey = frameBank.lastKey();
-    frameBank.insert(lastKey+1, new Frame(this));
 
+    int newFrameKey = frameBank.lastKey()+1;
+    frameBank.insert(newFrameKey, new Frame(this));
+
+    Frame *activeFrame = frameBank[newFrameKey];
+    qDebug()<<"frameManager.cpp : added new frame with key : "<<newFrameKey;
+    qDebug()<<"frameManager.cpp : switching to new frame";
+
+    setCurrentActiveFrame(newFrameKey);
     //emit signal to update timeline Dock
 
 

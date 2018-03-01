@@ -15,6 +15,7 @@ Manager::Manager(QObject *parent) : QObject(parent)
     QObject::connect(FrameManager::getInstance(), &FrameManager::setNewActiveFrame, FramesEditor::getInstance(), &FramesEditor::renderFrame);
     QObject::connect(this, &Manager::addSpriteToImageBank, SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
     QObject::connect(this, &Manager::addFrameToFrameBank, FrameManager::getInstance(), &FrameManager::addFrameObject);
+
 }
 
 Manager::~Manager(){

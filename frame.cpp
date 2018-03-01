@@ -13,6 +13,11 @@ Frame::Frame(QObject* parent):
     setBackgroundBrush(QBrush(QColor(120,50,100)));
 }
 
+Frame::~Frame()
+{
+    qDebug()<<"***Frame.cpp : deleting frame";
+}
+
 QSize Frame::getFrameSize()
 {
     return QSize(frameWidth, frameHeight);
