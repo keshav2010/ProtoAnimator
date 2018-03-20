@@ -14,8 +14,10 @@ class ServiceDockWidget : public QDockWidget
 protected:
     QPushButton *btn_addFrame;
     QPushButton *btn_applyLerp;
-    QVBoxLayout *buttonsLayout;
+    QVBoxLayout *buttonsLayout;//to store buttons in vertically stacked fashion
 
+
+    QHBoxLayout *framesHLayout;//layout to store sub-frames
     QFrame *frameWidget;
 
 public:
