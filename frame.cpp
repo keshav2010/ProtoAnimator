@@ -92,7 +92,7 @@ void Frame::drawForeground(QPainter *painter, const QRectF &rect){
     QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
     for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++)
     {
-        painter->drawImage((*frameDataIterator).getSpritePosition(),
+        painter->drawImage(100, 100,
                            SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key())->pixmap().toImage());
     }
 }
