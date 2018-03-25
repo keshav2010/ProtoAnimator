@@ -27,6 +27,7 @@ FrameManager::FrameManager(QObject *parent) : QObject(parent),
 
     qDebug()<<"frameManager.cpp : setting up current Frame "<<keyStartFrame;
     setCurrentActiveFrame(keyStartFrame);
+    keyBeginFrame->setupFrameItems();
 }
 FrameManager::~FrameManager()
 {
@@ -86,10 +87,18 @@ bool FrameManager::addFrameObject()
     int newFrameKey = frameBank.lastKey()+1;
     frameBank.insert(newFrameKey, new Frame(this));
 
-    Frame *activeFrame = frameBank[newFrameKey];
+    Frame *newFrame = frameBank[newFrameKey];
     qDebug()<<"frameManager.cpp : added new frame with key : "<<newFrameKey;
     qDebug()<<"frameManager.cpp : switching to new frame";
 
+    //load content from content bank into this frame
+    const QMap<QString, AnimatableSpriteItem*> *ptrObjectGraph = SpriteManager::getInstance()->getObjectGraph();
+    QMap<QString, AnimatableSpriteItem*>::const_iterator graphItr = (*ptrObjectGraph).begin();
+    qDebug()<<"frameManager.cpp : adding content of object graph into newly added frame";
+    for(graphItr; graphItr != (*ptrObjectGraph).end(); graphItr++)
+    {
+        newFrame->addFrameItem(graphItr.value(), graphItr.value()->getName());
+    }
     setCurrentActiveFrame(newFrameKey);
     //emit signal to update timeline Dock
 

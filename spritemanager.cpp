@@ -71,9 +71,21 @@ void SpriteManager::addToBank()
         objectGraph.remove(spriteName);
     }
     objectGraph.insert(QString(spriteName), new AnimatableSpriteItem(0));
+    objectGraph[QString(spriteName)]->setName(spriteName);
     objectGraph[QString(spriteName)]->setSpritePixmap(*spritePixmap);
     qDebug()<<"spritemanager.cpp : added image to bank";
     qDebug()<<"spritemanager.cpp >> Total Elements : "<<objectGraph.size();
+
+    qDebug()<<">>>>>>>>(spriteManager.cpp) Now updating the current frame again (need attention)";
+
+    qDebug()<<" *****  removing items first \n";
+    FrameManager::getInstance()->getCurrentActiveFrame()->clearFrameItems();
+    FrameManager::getInstance()->getCurrentActiveFrame()->setupFrameItems();
+
+    //emit signal to update the frame so it can scan entire object graph again
+    //FrameManager::getInstance()->getCurrentActiveFrame()->addFrameItem(objectGraph[spriteName], spriteName);
+    //commented out above line since now all frame get data from spriteBank instead of saving local data
+
     delete spriteEditorDialog;
     delete spritePixmap;
 }

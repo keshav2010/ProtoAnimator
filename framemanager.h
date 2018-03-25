@@ -34,6 +34,7 @@ public:
     void setCurrentActiveFrame(int);
 
 signals:
+    //signal
     void setNewActiveFrame(Frame *activeFrame);
 
 public slots:
@@ -47,6 +48,7 @@ private:
     explicit FrameManager(QObject *parent = 0);
 
     /*
+     *
      * frameBank maps key to each frame object, where key is
      * currently set to frame number
      */

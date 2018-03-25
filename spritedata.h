@@ -2,7 +2,7 @@
 #define SPRITEDATA_H
 #include<QTransform>
 #include<QPointF>
-class SpriteData : public QTransform
+class SpriteData
 {
 public:
     SpriteData();

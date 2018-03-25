@@ -1,5 +1,5 @@
 #include "spritedata.h"
-SpriteData::SpriteData():QTransform()
+SpriteData::SpriteData()
 {
     spriteX=spriteY=0;
     spriteW=spriteH=0;

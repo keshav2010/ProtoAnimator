@@ -57,6 +57,16 @@ void AnimatableSpriteItem::setSpriteData(SpriteData &data)
     spriteData = data;
 }
 
+QString AnimatableSpriteItem::getName()
+{
+    return mName;
+}
+
+void AnimatableSpriteItem::setName(const QString &name)
+{
+    mName = name;
+}
+
 void AnimatableSpriteItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if(this->followMouse)

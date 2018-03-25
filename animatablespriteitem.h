@@ -21,7 +21,8 @@ public:
 
     SpriteData getSpriteData();
     void setSpriteData(SpriteData &data);
-
+    QString getName();
+    void setName(const QString &name);
     QPixmap *spritePixmap;
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
@@ -31,6 +32,7 @@ private:
     QPainter *spritePainter;
     bool followMouse;
     SpriteData spriteData;
+    QString mName;
 };
 
 #endif // ANIMATABLEIMAGEITEM_H
