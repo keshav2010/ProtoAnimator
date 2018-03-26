@@ -36,10 +36,12 @@ public:
 signals:
     //signal
     void setNewActiveFrame(Frame *activeFrame);
+    void frameReadyForDisplay(Frame *activeFrame);
 
 public slots:
     bool addFrameObject();
     bool removeFrameObject();
+    void loadFrameDataInFrame();
 
 private:
     static FrameManager *frameManager;

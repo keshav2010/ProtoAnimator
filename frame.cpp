@@ -64,8 +64,7 @@ void Frame::setupFrameItems()
     }
 
 }
-
-void Frame::clearFrameItems()
+void Frame::clearFrameItems()//slot fxn
 {
     QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
     for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++){
@@ -74,16 +73,30 @@ void Frame::clearFrameItems()
         removeItem(tempItem);
     }
 }
+void Frame::reloadFrameData()//slot fxn
+{
+    qDebug()<<"**(frame.cpp) ::: reloading frame bank with items";
+    const QMap<QString, AnimatableSpriteItem*> &tempObjectGraph = *(SpriteManager::getInstance()->getObjectGraph());
+    QMap<QString, AnimatableSpriteItem*>::const_iterator objectGraphItr = tempObjectGraph.begin();
+    for(objectGraphItr; objectGraphItr != tempObjectGraph.end(); objectGraphItr++)
+    {
+        AnimatableSpriteItem *tempItemPtr = objectGraphItr.value();
+        if(frameData.contains(tempItemPtr->getName()))
+            continue;
+        frameData[tempItemPtr->getName()] = tempItemPtr->getSpriteData();
+    }
+    emit FrameManager::getInstance()->frameReadyForDisplay(this);
+}
 
 
 void Frame::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    qDebug()<<"lol moing mouse";
+    //qDebug()<<"lol moing mouse";
 
 }
 void Frame::drawForeground(QPainter *painter, const QRectF &rect){
 
-    qDebug()<<"frame.cpp : drawing ForeGround";
+    qDebug()<<"**************************************************************frame.cpp : drawing ForeGround";
 
     painter->setBrush(QBrush(QColor(5,5,5,1)));
     painter->drawRect(FrameManager::frameSceneRect);
@@ -92,6 +105,7 @@ void Frame::drawForeground(QPainter *painter, const QRectF &rect){
     QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
     for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++)
     {
+
         painter->drawImage(100, 100,
                            SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key())->pixmap().toImage());
     }

@@ -79,8 +79,6 @@ void SpriteManager::addToBank()
     qDebug()<<">>>>>>>>(spriteManager.cpp) Now updating the current frame again (need attention)";
 
     qDebug()<<" *****  removing items first \n";
-    FrameManager::getInstance()->getCurrentActiveFrame()->clearFrameItems();
-    FrameManager::getInstance()->getCurrentActiveFrame()->setupFrameItems();
 
     //emit signal to update the frame so it can scan entire object graph again
     //FrameManager::getInstance()->getCurrentActiveFrame()->addFrameItem(objectGraph[spriteName], spriteName);
@@ -88,6 +86,9 @@ void SpriteManager::addToBank()
 
     delete spriteEditorDialog;
     delete spritePixmap;
+
+    qDebug()<<" (spriteManager.cpp) setting frame to : "<<FrameManager::getInstance()->getCurrentActiveFrameByID();
+    emit FrameManager::getInstance()->setNewActiveFrame(FrameManager::getInstance()->getCurrentActiveFrame());
 }
 
 void SpriteManager::removeFromBank(const QString &spriteName)

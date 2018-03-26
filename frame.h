@@ -23,7 +23,7 @@ public slots:
     void addFrameItem(AnimatableSpriteItem *item=0, QString itemName="");
     void setupFrameItems();//take up ownership of items
     void clearFrameItems();//give up owner ship of items
-
+    void reloadFrameData();//rescan entire object graph to include changes
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     void drawForeground(QPainter *painter, const QRectF &rect) override;

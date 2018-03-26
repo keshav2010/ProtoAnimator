@@ -12,9 +12,17 @@ Manager::Manager(QObject *parent) : QObject(parent)
     SpriteManager::setObjectParent(this);
     FrameManager::setObjectParent(this);
 
-    QObject::connect(FrameManager::getInstance(), &FrameManager::setNewActiveFrame, FramesEditor::getInstance(), &FramesEditor::renderFrame);
-    QObject::connect(this, &Manager::addSpriteToImageBank, SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
-    QObject::connect(this, &Manager::addFrameToFrameBank, FrameManager::getInstance(), &FrameManager::addFrameObject);
+    //switched frame
+    QObject::connect(FrameManager::getInstance(), &FrameManager::setNewActiveFrame,
+                        FrameManager::getInstance(), &FrameManager::loadFrameDataInFrame);
+
+    //added sprite object
+    QObject::connect(this, &Manager::addSpriteToImageBank,
+                     SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
+
+    //added new frame
+    QObject::connect(this, &Manager::addFrameToFrameBank,
+                     FrameManager::getInstance(), &FrameManager::addFrameObject);
 
 }
 

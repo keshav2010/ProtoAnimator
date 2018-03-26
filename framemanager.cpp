@@ -112,3 +112,10 @@ bool FrameManager::removeFrameObject()
      *    return false
      */
 }
+
+void FrameManager::loadFrameDataInFrame()
+{
+    qDebug()<<" ****** frameManager.cpp >>>>> loading frameData in frame";
+    getCurrentActiveFrame()->reloadFrameData();
+    FramesEditor::getInstance()->renderFrame(getCurrentActiveFrame());
+}
