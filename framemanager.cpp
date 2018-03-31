@@ -100,9 +100,14 @@ bool FrameManager::addFrameObject()
         newFrame->addFrameItem(graphItr.value(), graphItr.value()->getName());
     }
     setCurrentActiveFrame(newFrameKey);
+
+    static int x=0, y=0;
+    getCurrentActiveFrame()->addRect(x, y, 50, 50, QPen(QColor(20,10,10)), QBrush(QColor(20,10,10)));
+
+    x += 10;
+    y += 5;
     //emit signal to update timeline Dock
-
-
+    emit signalTimelineWidget(frameBank.size());
 }
 bool FrameManager::removeFrameObject()
 {
@@ -118,4 +123,15 @@ void FrameManager::loadFrameDataInFrame()
     qDebug()<<" ****** frameManager.cpp >>>>> loading frameData in frame";
     getCurrentActiveFrame()->reloadFrameData();
     FramesEditor::getInstance()->renderFrame(getCurrentActiveFrame());
+}
+
+void FrameManager::switchToFrame(int framePos)
+{
+    QMap<int, Frame*>::iterator frameBankItr = frameBank.begin();
+    int totalFrames = frameBank.size();
+    if(framePos > totalFrames-1 || framePos < 0)
+        return;
+    frameBankItr = frameBankItr + framePos;
+    int selectedFrameID = frameBankItr.key();
+    setCurrentActiveFrame(selectedFrameID);
 }

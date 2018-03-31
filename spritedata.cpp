@@ -1,7 +1,7 @@
 #include "spritedata.h"
 SpriteData::SpriteData()
 {
-    spriteX=spriteY=0;
+    spriteX=spriteY=100;
     spriteW=spriteH=0;
 }
 

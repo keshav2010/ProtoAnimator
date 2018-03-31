@@ -37,11 +37,13 @@ signals:
     //signal
     void setNewActiveFrame(Frame *activeFrame);
     void frameReadyForDisplay(Frame *activeFrame);
+    void signalTimelineWidget(int numberOfFrames);
 
 public slots:
     bool addFrameObject();
     bool removeFrameObject();
     void loadFrameDataInFrame();
+    void switchToFrame(int framePos);
 
 private:
     static FrameManager *frameManager;

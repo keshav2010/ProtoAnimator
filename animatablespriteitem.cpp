@@ -10,6 +10,7 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
     this->setX(0);
     this->setY(0);
     this->spriteData.setSpritePosition(QPointF(0,0));
+    setFlag(ItemIsMovable);
 }
 
 AnimatableSpriteItem::~AnimatableSpriteItem()
@@ -20,15 +21,14 @@ AnimatableSpriteItem::~AnimatableSpriteItem()
 //override method
 QRectF AnimatableSpriteItem::boundingRect() const
 {
-
-
-    //return spritePixmap->rect();
-    return pixmap().rect();
+    qDebug()<<spritePixmap->rect().width()<<" ** and ** "<<spritePixmap->rect().height();
+    return this->spritePixmap->rect();
 }
 
 //override
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    qDebug()<<"hey world";
     painter->drawImage(spriteData.getSpritePosition(), spritePixmap->toImage());
 }
 
@@ -86,3 +86,4 @@ void AnimatableSpriteItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * even
     }
     */
 }
+

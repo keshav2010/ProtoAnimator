@@ -1,5 +1,6 @@
 #include "frameseditor.h"
 #include "frame.h"
+#include<QMouseEvent>
 #include <QScrollBar>
 
 //static data
@@ -53,7 +54,7 @@ void FramesEditor::renderFrame(Frame *activeFrame)
 void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 {
     //qDebug()<<"frameEditor.cpp : drawing background for scene( current active frames)..";
-    painter->setBrush(QBrush(QColor(200,200,200)));
+    //painter->setBrush(QBrush(QColor(50, 50, 50)));
     painter->drawRect(sceneRect());
 
 }
@@ -61,7 +62,20 @@ void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 void FramesEditor::drawForeground(QPainter *painter, const QRectF &rect)
 {
     //qDebug()<<"frameEditor.cpp : drawing Foreground (current active Frame) : ";
-    painter->setBrush(QBrush(QColor(50,50,200)));
-    painter->drawRect(50,50,100,100);
+    //painter->setBrush(QBrush(QColor(250,250,200)));
+    //painter->drawRect(50,50,100,100);
     scene()->render(painter, sceneRect(), sceneRect());
+}
+
+void FramesEditor::mousePressEvent(QMouseEvent *event)
+{
+    const QPoint clickPosition = event->pos();
+    QGraphicsItem *selectedItem = (itemAt(clickPosition));
+    if(selectedItem)
+    {
+        qDebug()<<" item selected : "<<selectedItem;
+    }
+    else qDebug()<<clickPosition.x()<<", "<<clickPosition.y()<<"";
+
+    qDebug()<<selectedItem;
 }

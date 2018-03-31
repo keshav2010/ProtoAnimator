@@ -13,6 +13,7 @@
 #include<QPushButton>
 #include<QHBoxLayout>
 #include<QVBoxLayout>
+#include<QSpinBox>
 class TimelineDockWidget :  public QDockWidget
 {
 protected:
@@ -29,10 +30,18 @@ protected:
     QPushButton *btn_restartAnimation;
     QVBoxLayout *buttonsVLayout;
 
+    QSpinBox *spinbox_frameSelector;
+    QHBoxLayout *spinboxHLayout;
+
 public slots:
     void runAnim(int startFromFrame = 0);
     void pauseAnim();
     void restartAnim();
+    void updateFrameSelectorRange(int upperBoundOfRange);
+signals:
+    void pressedRunAnimation();
+    void pressedPauseAnimation();
+    void pressedRestartAnimation();
 
 public:
     TimelineDockWidget(QWidget *parent);

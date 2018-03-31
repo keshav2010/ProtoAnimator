@@ -27,6 +27,7 @@ public slots:
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     void drawForeground(QPainter *painter, const QRectF &rect) override;
+    void drawBackground(QPainter *painter, const QRectF &rect) override;
 private:
     //frameData contains list of all sprite names and stores their respective position and scale
     QMap<QString, SpriteData> frameData;

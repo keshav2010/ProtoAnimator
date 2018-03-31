@@ -13,26 +13,19 @@ Frame::Frame(QObject* parent):
     setBackgroundBrush(QBrush(QColor(120,50,100)));
 }
 
-Frame::~Frame()
-{
+Frame::~Frame(){
     qDebug()<<"***Frame.cpp : deleting frame";
 }
 
-QSize Frame::getFrameSize()
-{
+QSize Frame::getFrameSize(){
     return QSize(frameWidth, frameHeight);
 }
-
-int Frame::getFrameWidth()
-{
+int Frame::getFrameWidth(){
     return frameWidth;
 }
-
-int Frame::getFrameHeight()
-{
+int Frame::getFrameHeight(){
     return frameHeight;
 }
-
 
 //SLOTS FXN:
 /*
@@ -46,8 +39,10 @@ void Frame::addFrameItem(AnimatableSpriteItem *item, QString itemName)
     qDebug()<<"frame.cpp > addFrameItem : adding item "<<itemName<<" to frameData";
 
     itemName = itemName.trimmed();
+
     if(itemName.size()==0)
         return;
+    item->setName(itemName);
     frameData[itemName]=item->getSpriteData();
 }
 
@@ -60,7 +55,7 @@ void Frame::setupFrameItems()
         //obtain each value/object and add it to this scene/frame
         AnimatableSpriteItem *tempItem = SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key());
         //tempItem->setTransform(frameDataIterator.value());
-        addItem(tempItem);
+           addItem(tempItem);
     }
 
 }
@@ -94,19 +89,19 @@ void Frame::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     //qDebug()<<"lol moing mouse";
 
 }
+void Frame::drawBackground(QPainter *painter, const QRectF &rect){
+    painter->setBrush(QBrush(QColor(50, 250, 50)));
+    painter->drawRect(FrameManager::frameSceneRect);
+    qDebug()<<"@@@@@@@@@(frame.cpp)::::drawing background";
+
+}
 void Frame::drawForeground(QPainter *painter, const QRectF &rect){
 
     qDebug()<<"**************************************************************frame.cpp : drawing ForeGround";
-
-    painter->setBrush(QBrush(QColor(5,5,5,1)));
-    painter->drawRect(FrameManager::frameSceneRect);
-    painter->drawRect(QRect(100,100,200,200));
-
     QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
     for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++)
     {
-
-        painter->drawImage(100, 100,
-                           SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key())->pixmap().toImage());
+        QPointF tempSpritePos = frameDataIterator.value().getSpritePosition();
+        //painter->drawImage(tempSpritePos.x(), tempSpritePos.y(),SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key())->pixmap().toImage());
     }
 }
