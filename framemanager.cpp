@@ -100,7 +100,7 @@ bool FrameManager::addFrameObject()
         newFrame->addFrameItem(graphItr.value(), graphItr.value()->getName());
     }
     setCurrentActiveFrame(newFrameKey);
-
+    //x and y are for testing only
     static int x=0, y=0;
     getCurrentActiveFrame()->addRect(x, y, 50, 50, QPen(QColor(20,10,10)), QBrush(QColor(20,10,10)));
 
