@@ -28,7 +28,7 @@ QRectF AnimatableSpriteItem::boundingRect() const
 //override
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    qDebug()<<"hey world";
+    qDebug()<<"AnimatableSpriteItem > paint :: drawing picture ";
     painter->drawImage(spriteData.getSpritePosition(), spritePixmap->toImage());
 }
 

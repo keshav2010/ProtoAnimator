@@ -102,6 +102,6 @@ void Frame::drawForeground(QPainter *painter, const QRectF &rect){
     for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++)
     {
         QPointF tempSpritePos = frameDataIterator.value().getSpritePosition();
-        //painter->drawImage(tempSpritePos.x(), tempSpritePos.y(),SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key())->pixmap().toImage());
+        painter->drawImage(tempSpritePos.x(), tempSpritePos.y(),SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key())->pixmap().toImage());
     }
 }

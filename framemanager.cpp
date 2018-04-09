@@ -100,12 +100,15 @@ bool FrameManager::addFrameObject()
         newFrame->addFrameItem(graphItr.value(), graphItr.value()->getName());
     }
     setCurrentActiveFrame(newFrameKey);
+
     //x and y are for testing only
     static int x=0, y=0;
-    getCurrentActiveFrame()->addRect(x, y, 50, 50, QPen(QColor(20,10,10)), QBrush(QColor(20,10,10)));
-
+    getCurrentActiveFrame()->addRect(x*2, y*3, 50, 50, QPen(QColor(20,10,10*x)), QBrush(QColor(20,10,10)));
+    getCurrentActiveFrame()->addRect(x+10, 2*y+100, 50, 50, QPen(QColor(20+y,10,10)), QBrush(QColor(20,10,10)));
+    getCurrentActiveFrame()->addRect(x, y+20, 50, 50, QPen(QColor(20,10*x,10)), QBrush(QColor(20,10,10)));
     x += 10;
     y += 5;
+
     //emit signal to update timeline Dock
     emit signalTimelineWidget(frameBank.size());
 }
