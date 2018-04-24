@@ -23,7 +23,6 @@ FramesEditor::~FramesEditor()
 {
     qDebug()<<"frameEditor.cpp : deleting frameEditor/QGraphicsView/Canvas (analogy) from mem";
     isAlreadyExist=false;
-    //delete frameEditor; //causing infinite destructor calls
 }
 
 FramesEditor *FramesEditor::getInstance()
@@ -53,17 +52,11 @@ void FramesEditor::renderFrame(Frame *activeFrame)
 //Visualising bounding Rectangle that represents a frame
 void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    //qDebug()<<"frameEditor.cpp : drawing background for scene( current active frames)..";
-    //painter->setBrush(QBrush(QColor(50, 50, 50)));
     painter->drawRect(sceneRect());
-
 }
 
 void FramesEditor::drawForeground(QPainter *painter, const QRectF &rect)
 {
-    //qDebug()<<"frameEditor.cpp : drawing Foreground (current active Frame) : ";
-    //painter->setBrush(QBrush(QColor(250,250,200)));
-    //painter->drawRect(50,50,100,100);
     scene()->render(painter, sceneRect(), sceneRect());
 }
 

@@ -34,20 +34,6 @@ SpritePropertyEditorDialog::~SpritePropertyEditorDialog()
     delete ui;
     qDebug()<<"spritePropertyEditorDialog.cpp :  cleared SPRITEPROPERTYEDITOR";
 }
-/*
-void SpritePropertyEditorDialog::editPixmap(QPixmap *&sprite)
-{
-    ui->graphicsView->scene()->clear();
-    originalSpritePixmap = sprite;
-    tempSpritePixmap = *sprite;
-    ui->graphicsView->scene()->addPixmap(tempSpritePixmap);
-
-    emit ui->spinBox_height->valueChanged(tempSpritePixmap.height());
-    emit ui->spinBox_width->valueChanged(tempSpritePixmap.width());
-
-}
-*/
-
 void SpritePropertyEditorDialog::updateScene()
 {
     if(height == ui->spinBox_height->value() && width == ui->spinBox_width->value()){

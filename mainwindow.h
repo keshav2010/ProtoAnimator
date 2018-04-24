@@ -24,6 +24,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
 signals:
     void addSprite(const QString &spritePath);
 public slots:
@@ -32,24 +33,22 @@ public slots:
 private:
     Ui::MainWindow *ui;
 
-    //The Manager : instance not required anymore, singleton pattern applied to Manager class
-    //Manager *manager;
-
     //Actions
     QAction *actionLoadSprite;
 
     //essential Widgets and Objects
     QToolBar *mainToolBar;
 
-    //FramesEditor *frameEditor;
+    //Contains tool to alter content of Scene
+    ServiceDockWidget *serviceWidget;
+    //Contains tools for handling animation and multiple frames
+    TimelineDockWidget *timelineWidget;
+    // testing only
+    QDockWidget *sampleRight;
 
-    //Dock Widgets
-    ServiceDockWidget *serviceWidget; //Contains tool to alter content of Scene
-    TimelineDockWidget *timelineWidget; //Contains tools for handling animation and multiple frames
-    QDockWidget *sampleRight;// testing only
     QStatusBar *mStatusBar;
-    //helper functions
-    void setupToolBar();
+
+    void setupToolBar();//helper
 };
 
 #endif // MAINWINDOW_H

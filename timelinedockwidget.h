@@ -33,6 +33,8 @@ protected:
     QSpinBox *spinbox_frameSelector;
     QHBoxLayout *spinboxHLayout;
 
+    QSpinBox *spinbox_frameRateSelector;
+
 public slots:
     void runAnim(int startFromFrame = 0);
     void pauseAnim();

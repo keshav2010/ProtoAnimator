@@ -24,7 +24,6 @@ public:
     static QObject *objectParent;
 
 signals:
-    void addSpriteToImageBank(const QString &spritePath);
     void addFrameToFrameBank();
     void addSpriteToImageBankAsObject(const AnimatableSpriteItem *objectData);
 
