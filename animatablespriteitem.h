@@ -24,6 +24,7 @@ public:
     QString getName();
     void setName(const QString &name);
     QPixmap *spritePixmap;
+
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;

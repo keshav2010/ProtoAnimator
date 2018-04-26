@@ -54,7 +54,6 @@ void Frame::setupFrameItems()
     for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++){
         //obtain each value/object and add it to this scene/frame
         AnimatableSpriteItem *tempItem = SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key());
-        //tempItem->setTransform(frameDataIterator.value());
            addItem(tempItem);
     }
 
@@ -63,8 +62,10 @@ void Frame::clearFrameItems()//slot fxn
 {
     QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
     for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++){
-        //obtain each value/object and add it to this scene/frame
-        AnimatableSpriteItem *tempItem = SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key());
+
+        AnimatableSpriteItem *tempItem =
+                SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key());
+
         removeItem(tempItem);
     }
 }

@@ -6,15 +6,8 @@ QObject* FrameManager::objectParent=0;
 QRectF FrameManager::frameSceneRect = QRectF(0, 0, 800, 450);
 //-------------------------------------------------------------
 
-
-
-/*
- * FrameManager is only responsible for handling
- * frame Banks and acting as an efficient frame-storage manager.
- *
- *  it should not directly interact with rendering but rather use
- * frameEditor to render data.
- */
+/* responsible for handling frames
+ * uses frameEditor to render data. */
 FrameManager::FrameManager(QObject *parent) : QObject(parent),
     keyStartFrame(0)
 {
@@ -33,7 +26,6 @@ FrameManager::~FrameManager()
 {
     qDebug()<<"frameManager.cpp : clearing frameManager object...!!!";
     isAlreadyExist=false;
-    //delete frameManager;
 }
 FrameManager* FrameManager::getInstance(){
 

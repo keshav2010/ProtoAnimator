@@ -15,6 +15,7 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
 
 AnimatableSpriteItem::~AnimatableSpriteItem()
 {
+    qDebug()<<"spriteItem : removed "+this->getName()<<" from memory";
     delete spritePixmap;
 }
 
@@ -28,6 +29,7 @@ QRectF AnimatableSpriteItem::boundingRect() const
 //override
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    this->spritePainter = painter;
     qDebug()<<"AnimatableSpriteItem > paint :: drawing picture ";
     painter->drawImage(spriteData.getSpritePosition(), spritePixmap->toImage());
 }

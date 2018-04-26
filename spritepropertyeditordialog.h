@@ -16,7 +16,7 @@ class SpritePropertyEditorDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SpritePropertyEditorDialog(QPixmap *&sprite);
+    explicit SpritePropertyEditorDialog(const QString &imagePath);
     ~SpritePropertyEditorDialog();
     AnimatableSpriteItem *animObject;
     QPixmap *originalSpritePixmap;
@@ -25,11 +25,12 @@ public:
 public slots:
     void updateScene();
     void updateScaleUI();
-    QString updatePixmap(); //updates pointer and returns name associated with the image
+    void saveSpriteToBank();//QString updatePixmap(); //updates pointer and returns name associated with the image
 
 private:
-    int width, height;
     Ui::SpritePropertyEditorDialog *ui;
+    int width, height;
+
 };
 
 #endif // SPRITEPROPERTYEDITORDIALOG_H

@@ -34,7 +34,7 @@ public slots:
      */
     void addSpriteObject(const QString &imagePath);
 
-    void addToBank();
+    void addToBank(QPixmap*, QString);
     void removeFromBank(const QString &spriteName);
 
 private:

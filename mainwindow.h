@@ -32,6 +32,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    QStatusBar *mStatusBar;
 
     //Actions
     QAction *actionLoadSprite;
@@ -45,8 +46,6 @@ private:
     TimelineDockWidget *timelineWidget;
     // testing only
     QDockWidget *sampleRight;
-
-    QStatusBar *mStatusBar;
 
     void setupToolBar();//helper
 };
