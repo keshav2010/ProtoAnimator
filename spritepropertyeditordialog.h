@@ -25,7 +25,7 @@ public:
 public slots:
     void updateScene();
     void updateScaleUI();
-    void saveSpriteToBank();//QString updatePixmap(); //updates pointer and returns name associated with the image
+    void saveSpriteToBank();
 
 private:
     Ui::SpritePropertyEditorDialog *ui;

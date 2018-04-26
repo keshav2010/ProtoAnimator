@@ -14,6 +14,7 @@
 #include<QHBoxLayout>
 #include<QVBoxLayout>
 #include<QSpinBox>
+#include<QAbstractListModel>
 class TimelineDockWidget :  public QDockWidget
 {
 protected:
@@ -50,4 +51,21 @@ public:
 
 };
 
+//might move this to another seperate file along with the delegate
+class TimelineModel : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    TimelineModel(QObject *parent = Q_NULLPTR);
+
+    int rowCount(const QModelIndex &parent=QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    bool insertRows(int row, int count, const QModelIndex &parent);
+    bool removeRows(int row, int count, const QModelIndex &parent);
+    //source of data : frameManager's frameBank
+};
 #endif // TIMELINEDOCKWIDGET_H

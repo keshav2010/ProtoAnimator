@@ -42,6 +42,7 @@ private:
 
     //Contains tool to alter content of Scene
     ServiceDockWidget *serviceWidget;
+
     //Contains tools for handling animation and multiple frames
     TimelineDockWidget *timelineWidget;
     // testing only
