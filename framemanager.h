@@ -32,6 +32,7 @@ public:
     Frame* getCurrentActiveFrame();
     int getCurrentActiveFrameByID();
     void setCurrentActiveFrame(int);
+    QMap<int, Frame*> *getPointerToFrameBank();
 
 signals:
     //signal

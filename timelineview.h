@@ -3,11 +3,17 @@
 
 #include <QObject>
 #include<QAbstractItemView>
-class TimelineView : public QAbstractItemView
+#include "timelinedelegate.h"
+#include "timelinemodel.h"
+#include<QListView>
+class TimelineView : public QListView
 {
     Q_OBJECT
 public:
-    TimelineView();
+    TimelineView( QWidget * parent = 0);
+private:
+    TimelineDelegate *delegate;
+    TimelineModel *model;
 };
 
 #endif // TIMELINEVIEW_H

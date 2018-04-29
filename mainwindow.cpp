@@ -5,6 +5,8 @@
 #include<QDebug>
 #include<QToolBar>
 #include <QFileDialog>
+
+#include "timelineview.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -14,6 +16,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     ui->setupUi(this);
+
+    //delete me
+    TimelineView *view = new TimelineView(this);
+    view->show();
+
     FramesEditor::setParent(this);
 
     Manager::setParent(this);

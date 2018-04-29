@@ -71,6 +71,11 @@ void FrameManager::setCurrentActiveFrame(int frameID)
 
     emit setNewActiveFrame(activeFrame);
 }
+
+QMap<int, Frame *> *FrameManager::getPointerToFrameBank()
+{
+    return &frameBank;
+}
 //SLOTS FXN
 bool FrameManager::addFrameObject()
 {
