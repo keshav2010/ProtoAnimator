@@ -5,8 +5,8 @@
 #include<QAbstractItemView>
 #include "timelinedelegate.h"
 #include "timelinemodel.h"
-#include<QListView>
-class TimelineView : public QListView
+#include<QTableView>
+class TimelineView : public QTableView
 {
     Q_OBJECT
 public:

@@ -1,9 +1,13 @@
 #include "timelinemodel.h"
 #include"framemanager.h"
 TimelineModel::TimelineModel(QObject *parent) :
-    QAbstractListModel(parent)
+    QAbstractTableModel(parent)
 {
     setupDataSource(FrameManager::getInstance()->getPointerToFrameBank());
+    //for testing only
+    this->dataSource->insert(2, new Frame(0));
+    this->dataSource->insert(3, new Frame(0));
+    this->dataSource->insert(4, new Frame(0));
 }
 
 void TimelineModel::setupDataSource(QMap<int, Frame *> *source)
@@ -14,6 +18,11 @@ void TimelineModel::setupDataSource(QMap<int, Frame *> *source)
 }
 
 int TimelineModel::rowCount(const QModelIndex &parent) const
+{
+    return 1;
+}
+
+int TimelineModel::columnCount(const QModelIndex &parent) const
 {
     return dataSource->size();
 }

@@ -15,16 +15,15 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     {
         painter->fillRect(option.rect, option.palette.highlight());
     }
-    int rectPosition = 10*(index.row()-1);
+    int rectPosition = 10*index.row();
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(Qt::NoPen);
 
-    if(option.state & QStyle::State_Selected)
-        painter->setBrush(option.palette.highlightedText());
+    if(option.state & QStyle::State_Selected) painter->setBrush(option.palette.highlightedText());
     else painter->setBrush(option.palette.text());
 
-    painter->drawRect(option.rect.x(), option.rect.y(), 10, 20);
+    painter->drawRect(option.rect.x() + rectPosition, option.rect.y(), 10, 20);
 
     painter->restore();
 }

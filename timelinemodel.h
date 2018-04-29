@@ -2,15 +2,17 @@
 #define TIMELINEMODEL_H
 
 #include <QObject>
-#include<QAbstractListModel>
+#include<QAbstractTableModel>
 #include "frame.h"
 
-class TimelineModel : public QAbstractListModel
+class TimelineModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
     TimelineModel(QObject *parent = Q_NULLPTR);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 private:
     void setupDataSource(QMap<int, Frame*> *source);
