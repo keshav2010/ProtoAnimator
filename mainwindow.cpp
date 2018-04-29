@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //additional DockWidgets init.
     serviceWidget = new ServiceDockWidget(this);
     sampleRight = new QDockWidget(this);
-    timelineWidget = new TimelineDockWidget(this);
 
     //main toolBar setup
     setupToolBar();
@@ -41,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //add components to main-Window in their respective field
     addDockWidget(Qt::LeftDockWidgetArea, serviceWidget);
     addDockWidget(Qt::RightDockWidgetArea, sampleRight);
-    addDockWidget(Qt::BottomDockWidgetArea, timelineWidget);
+
     setCentralWidget(FramesEditor::getInstance());
 
     //connections for slot-signal
