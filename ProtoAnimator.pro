@@ -39,7 +39,8 @@ SOURCES += \
     animationdriver.cpp \
     timelineview.cpp \
     timelinemodel.cpp \
-    timelinedelegate.cpp
+    timelinedelegate.cpp \
+    timelinedockwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -56,7 +57,8 @@ HEADERS += \
     animationdriver.h \
     timelineview.h \
     timelinemodel.h \
-    timelinedelegate.h
+    timelinedelegate.h \
+    timelinedockwidget.h
 
 FORMS += \
         mainwindow.ui \

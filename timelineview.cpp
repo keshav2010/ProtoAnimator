@@ -7,4 +7,8 @@ TimelineView::TimelineView(QWidget *parent)
     model = new TimelineModel();
     this->setItemDelegate(delegate);
     this->setModel(model);
+    this->setPalette(QPalette(QColor(220,0,90)));
+    this->horizontalHeader()->hide();
+    this->verticalHeader()->hide();
+
 }
