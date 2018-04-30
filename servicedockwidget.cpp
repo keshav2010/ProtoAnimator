@@ -2,14 +2,13 @@
 
 
 ServiceDockWidget::ServiceDockWidget(QWidget *parent):
-    QDockWidget(parent),
-    buttonsLayout(new QVBoxLayout(this))
+    QDockWidget(parent)
 {
     frameWidget = new QFrame(this);
-
+    buttonsLayout = new QVBoxLayout(frameWidget);
     setWindowTitle("Animator Tools");
-    btn_addFrame = new QPushButton("Add Frame", this);
-    btn_applyLerp = new QPushButton("Autofill Frames", this);
+    btn_addFrame = new QPushButton("Add Frame");
+    btn_applyLerp = new QPushButton("Autofill Frames");
 
 
     setFeatures(DockWidgetMovable);

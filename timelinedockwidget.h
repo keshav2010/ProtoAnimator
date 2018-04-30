@@ -7,20 +7,23 @@
 #include<QVBoxLayout>
 #include<QPushButton>
 #include<QFrame>
+#include<QGroupBox>
+#include<QWidget>
 class TimelineDockWidget : public QDockWidget
 {
 public:
     TimelineDockWidget(QWidget *parent = 0);
 private:
-    TimelineView timelineView;
+    QWidget *mainWidget;
 
-    QPushButton btn_play;
-    QPushButton btn_pause;
+    TimelineView *timelineView;
 
-    QVBoxLayout buttonsLayout;
-    QVBoxLayout timelineLayout;
+    QPushButton *btn_play;
+    QPushButton *btn_pause;
 
-    QHBoxLayout widgetLayout;
+    QGroupBox *buttonGroup;
+    QVBoxLayout *buttonsLayout;
+    QHBoxLayout *mainLayout;
 
 };
 
