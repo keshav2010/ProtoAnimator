@@ -14,16 +14,12 @@ MainWindow::MainWindow(QWidget *parent) :
     mainToolBar(new QToolBar("Tool Bar", this))
 {
 
-
+    qDebug()<<"(MainWindow.cpp) constructor";
     ui->setupUi(this);
 
     FramesEditor::setParent(this);
-
-    Manager::setParent(this);
-
-    SpriteManager::setObjectParent(Manager::getInstance());
-
-    FrameManager::setObjectParent(Manager::getInstance());
+    SpriteManager::setObjectParent(this);
+    FrameManager::setObjectParent(this);
 
 
     setStatusBar(mStatusBar);
@@ -48,12 +44,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setCentralWidget(FramesEditor::getInstance());
 
+    serviceWidget->setTimelineModel( timelineWidget->getTimelineView()->getModel());
+
     //connections for slot-signal
 
-    QObject::connect(serviceWidget->getAddFrameButton(), &QPushButton::clicked, Manager::getInstance(), &Manager::addFrameToFrameBank);
-
+    QObject::connect(serviceWidget->getAddFrameButton(), &QPushButton::clicked,  FrameManager::getInstance(), &FrameManager::addFrameObject);
     QObject::connect(this, &MainWindow::addSprite, SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
-
     QObject::connect(actionLoadSprite, &QAction::triggered, this, &MainWindow::showSpriteSelector);
     QObject::connect(ui->actionExit, &QAction::triggered, this, &MainWindow::close);
 

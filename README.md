@@ -23,5 +23,11 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Who do I talk to? ###
 
+### notes ###
+1. FrameBank is essential in order to copy content of whole scene
+2. When adding new sprites item in frames, initialization of "AnimatableSpriteItem" type objects should only occur dynamically within the 
+function that is responsible for adding item to frameBank as well as Scene. 
+
+
 * Keshav Sharma
 * Other community or team contact

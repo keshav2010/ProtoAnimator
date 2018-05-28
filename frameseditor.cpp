@@ -12,7 +12,7 @@ QWidget* FramesEditor::objectParent = 0;
 FramesEditor::FramesEditor(QWidget* parent):
     QGraphicsView(parent)
 {
-    qDebug()<<"frameEditor.cpp : initialized FrameEditor (sort of canvas) (QGraphicsView) ...";
+    qDebug()<<"(FrameEditor.cpp) constructor";
 
     //set frameRect as SCENE-RECTANGLE (this won't draw it on screen)
     setSceneRect(FrameManager::frameSceneRect); //to keep grey-area focused

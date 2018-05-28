@@ -12,7 +12,6 @@
 #include<QVBoxLayout>
 #include "timelinedockwidget.h"
 #include "servicedockwidget.h"
-#include "manager.h"
 namespace Ui {
 class MainWindow;
 }

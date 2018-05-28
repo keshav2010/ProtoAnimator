@@ -14,24 +14,27 @@ class Frame : public QGraphicsScene
 public:
     Frame(QObject *parent=0);
     ~Frame();
-
     QSize getFrameSize();
     int getFrameWidth();
     int getFrameHeight();
+
+    //method to create deep copy
+    void copyData(Frame* other=0);
+
 public slots:
+    QMap<QString, AnimatableSpriteItem *> *getFrameData();
     //Adds raw properties of an sprite object to frameData
-    void addFrameItem(AnimatableSpriteItem *item=0, QString itemName="");
+    void addFrameItem(QString itemName="", QPixmap *spritePixmap=0);
     void setupFrameItems();//take up ownership of items
     void clearFrameItems();//give up owner ship of items
-    void reloadFrameData();//rescan entire object graph to include changes
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     void drawForeground(QPainter *painter, const QRectF &rect) override;
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 private:
-    //frameData contains list of all sprite names and stores their respective position and scale
-    QMap<QString, SpriteData> frameData;
 
+    //required to create clones
+    QMap<QString, AnimatableSpriteItem*> *frameData;//should be a pointer
     const int frameWidth, frameHeight;
 };
 

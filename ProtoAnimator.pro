@@ -33,7 +33,6 @@ SOURCES += \
     spritemanager.cpp \
     framemanager.cpp \
     animatablespriteitem.cpp \
-    manager.cpp \
     spritepropertyeditordialog.cpp \
     spritedata.cpp \
     animationdriver.cpp \
@@ -51,7 +50,6 @@ HEADERS += \
     spritemanager.h \
     framemanager.h \
     animatablespriteitem.h \
-    manager.h \
     spritepropertyeditordialog.h \
     spritedata.h \
     animationdriver.h \

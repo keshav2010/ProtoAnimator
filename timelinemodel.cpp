@@ -3,15 +3,22 @@
 TimelineModel::TimelineModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
-    setupDataSource(FrameManager::getInstance()->getPointerToFrameBank());
-    //for testing only
-    this->dataSource->insert(2, new Frame(0));
-    this->dataSource->insert(3, new Frame(0));
-    this->dataSource->insert(4, new Frame(0));
+    qDebug()<<"(TimelineModel.cpp) constructor";
+
+    //this line is causing issue (infinite loop)
+    FrameManager *ins = FrameManager::getInstance();
+
+    QMap<int, Frame*> *dataSource = ins->getPointerToFrameBank();
+
+    setupDataSource(dataSource);
+    qDebug()<<"(TimelineModel.cpp) constructor call complete";
 }
 
+
+//helper method
 void TimelineModel::setupDataSource(QMap<int, Frame *> *source)
 {
+    qDebug()<<"(TimelineModel.cpp) > (setupDataSource() fxn) begins";
     beginResetModel();
     this->dataSource = source;
     endResetModel();

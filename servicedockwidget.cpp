@@ -4,6 +4,7 @@
 ServiceDockWidget::ServiceDockWidget(QWidget *parent):
     QDockWidget(parent)
 {
+    timelineModel=0;
     frameWidget = new QFrame(this);
     buttonsLayout = new QVBoxLayout(frameWidget);
     setWindowTitle("Animator Tools");
@@ -24,6 +25,11 @@ ServiceDockWidget::ServiceDockWidget(QWidget *parent):
 
     frameWidget->setLayout(buttonsLayout);
     this->setWidget(frameWidget);
+}
+
+void ServiceDockWidget::setTimelineModel(TimelineModel *model)
+{
+    timelineModel = model;
 }
 
 QPushButton* ServiceDockWidget::getAddFrameButton()

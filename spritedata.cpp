@@ -1,6 +1,8 @@
 #include "spritedata.h"
+#include<QDebug>
 SpriteData::SpriteData()
 {
+    qDebug()<<"(SpriteData.cpp) constructor";
     spriteX=spriteY=100;
     spriteW=spriteH=0;
 }

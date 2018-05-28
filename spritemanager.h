@@ -15,7 +15,7 @@ class SpriteManager : public QObject
 {
     Q_OBJECT
 public:
-    const QMap<QString, AnimatableSpriteItem*>* getObjectGraph();
+    //const QMap<QString, AnimatableSpriteItem*>* getObjectGraph();
     static void setObjectParent(QObject *parent=0);
     static QObject *objectParent;
     static SpriteManager* getInstance();
@@ -34,8 +34,8 @@ public slots:
      */
     void addSpriteObject(const QString &imagePath);
 
-    void addToBank(QPixmap*, QString);
-    void removeFromBank(const QString &spriteName);
+    void addToBank(QPixmap *spritePixmap=0, QString spriteName = "");
+    //void removeFromBank(const QString &spriteName);
 
 private:
 
@@ -45,7 +45,12 @@ private:
     explicit SpriteManager(QObject *parent = 0);
 
     QPixmap *spritePixmap;
-    QMap<QString, AnimatableSpriteItem*> objectGraph;
+    /*
+     No need for centralized sprite bank
+     QGraphicsView's scene container will hold each item
+     items carried forward from one scene to next forward scene
+    */
+    //QMap<QString, AnimatableSpriteItem*> objectGraph;
 
     SpritePropertyEditorDialog *spriteEditorDialog;
 };

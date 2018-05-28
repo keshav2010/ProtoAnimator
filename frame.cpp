@@ -9,7 +9,8 @@ Frame::Frame(QObject* parent):
     frameWidth(800),
     frameHeight(450)
 {
-    qDebug()<<"frame.cpp : initialized frame ";
+    this->frameData = new QMap<QString, AnimatableSpriteItem*>();
+    qDebug()<<"(Frame.cpp) constructor";
     setBackgroundBrush(QBrush(QColor(120,50,100)));
 }
 
@@ -27,82 +28,78 @@ int Frame::getFrameHeight(){
     return frameHeight;
 }
 
-//SLOTS FXN:
-/*
- * This function loads up an Item in frame Bank
- * Note that frame will never directly communicate with objectGraph/SpriteBank
- * but rather always tries to indirectly copies its content in its internal
- * bank and later use the internal bank for any modification on it.
- */
-void Frame::addFrameItem(AnimatableSpriteItem *item, QString itemName)
+void Frame::copyData(Frame *other)
 {
-    qDebug()<<"frame.cpp > addFrameItem : adding item "<<itemName<<" to frameData";
+    if(other == 0)
+        return;
+    QMap<QString, AnimatableSpriteItem*>::iterator sourceITR = other->getFrameData()->begin();
+    QMap<QString, AnimatableSpriteItem*>::Iterator endITR = other->getFrameData()->end();
+    for(sourceITR; sourceITR != endITR; sourceITR++)
+    {
+        AnimatableSpriteItem *sourceItem = sourceITR.value();
+        QString sourceItemName = sourceITR.key();
 
+    }
+}
+
+QMap<QString, AnimatableSpriteItem *> *Frame::getFrameData()
+{
+    return this->frameData;
+}
+
+/*
+ * This function loads up an Item in frame
+ */
+void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
+{
+
+    AnimatableSpriteItem *item = new AnimatableSpriteItem(0);
+    qDebug()<<"(Frame.cpp)> (addFrameItem()) : adding item "<<itemName<<" to frame";
     itemName = itemName.trimmed();
-
     if(itemName.size()==0)
         return;
+    if(frameData->contains(itemName))
+        return; //same name not allowed
     item->setName(itemName);
-    frameData[itemName]=item->getSpriteData();
+
+    //frameData required to create clones
+    (*frameData)[itemName]=item;
+    addItem(item);
 }
 
 //Function to load scene with the items
 void Frame::setupFrameItems()
 {
-
-    QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
-    for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++){
-        //obtain each value/object and add it to this scene/frame
-        AnimatableSpriteItem *tempItem = SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key());
-           addItem(tempItem);
-    }
-
 }
+
+
+/*
+ * clears frameData QMap container, as well also remove items from Scene itself.
+ *
+ * note that when an item is removed from scene, its children will also be removed
+ * however they will still exist in the QMap
+*/
 void Frame::clearFrameItems()//slot fxn
 {
-    QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
-    for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++){
-
-        AnimatableSpriteItem *tempItem =
-                SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key());
-
-        removeItem(tempItem);
-    }
-}
-void Frame::reloadFrameData()//slot fxn
-{
-    qDebug()<<"**(frame.cpp) ::: reloading frame bank with items";
-    const QMap<QString, AnimatableSpriteItem*> &tempObjectGraph = *(SpriteManager::getInstance()->getObjectGraph());
-    QMap<QString, AnimatableSpriteItem*>::const_iterator objectGraphItr = tempObjectGraph.begin();
-    for(objectGraphItr; objectGraphItr != tempObjectGraph.end(); objectGraphItr++)
+    QMap<QString, AnimatableSpriteItem*>::iterator itemsITR =frameData->begin();
+    QMap<QString, AnimatableSpriteItem*>::iterator endITR = frameData->end();
+    for(itemsITR; itemsITR != endITR; itemsITR++)
     {
-        AnimatableSpriteItem *tempItemPtr = objectGraphItr.value();
-        if(frameData.contains(tempItemPtr->getName()))
-            continue;
-        frameData[tempItemPtr->getName()] = tempItemPtr->getSpriteData();
+        AnimatableSpriteItem *item = itemsITR.value();
+        if(this->items().contains(item))
+            this->removeItem(item);
+        delete item;
     }
-    emit FrameManager::getInstance()->frameReadyForDisplay(this);
 }
-
 
 void Frame::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    //qDebug()<<"lol moing mouse";
 
 }
 void Frame::drawBackground(QPainter *painter, const QRectF &rect){
     painter->setBrush(QBrush(QColor(50, 250, 50)));
     painter->drawRect(FrameManager::frameSceneRect);
-    qDebug()<<"@@@@@@@@@(frame.cpp)::::drawing background";
-
 }
-void Frame::drawForeground(QPainter *painter, const QRectF &rect){
-
-    qDebug()<<"**************************************************************frame.cpp : drawing ForeGround";
-    QMap<QString, SpriteData>::iterator frameDataIterator = frameData.begin();
-    for(frameDataIterator; frameDataIterator!=frameData.end(); frameDataIterator++)
-    {
-        QPointF tempSpritePos = frameDataIterator.value().getSpritePosition();
-        painter->drawImage(tempSpritePos.x(), tempSpritePos.y(),SpriteManager::getInstance()->getObjectGraph()->value(frameDataIterator.key())->pixmap().toImage());
-    }
+void Frame::drawForeground(QPainter *painter, const QRectF &rect)
+{
 }

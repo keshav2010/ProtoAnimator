@@ -3,12 +3,15 @@
 TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     :QDockWidget(parent)
 {
+    qDebug()<<"(TimelineDockWidget.cpp) constructor";
+    buttonGroup = new QGroupBox(tr("Animation Control"), this);
     mainWidget = new QWidget(this);
     buttonsLayout = new QVBoxLayout(buttonGroup);//implicit call to buttonGroup->setLayout(buttonsLayout);
-    mainLayout = new QHBoxLayout(this);//implicit call to setLayout(timelineLayout);
+    mainLayout = new QHBoxLayout();
 
+    qDebug()<<"(TimelineDockWidget.cpp) calling TimelineView constructor";
     timelineView = new TimelineView();
-    buttonGroup = new QGroupBox(tr("Animation Control"), this);
+    //DEBUG LOG : this is never reached
 
     btn_pause = new QPushButton(tr("pause"));
     btn_play = new QPushButton(tr("Play"));
@@ -16,7 +19,7 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     //add buttons to layout, further add layout to buttonGroup
     buttonsLayout->addWidget(btn_play);
     buttonsLayout->addWidget(btn_pause);
-    buttonGroup->setLayout(buttonsLayout);
+   //buttonGroup->setLayout(buttonsLayout);
 
     //add buttonGroup and timelineView to mainLayout
     mainLayout->addWidget(buttonGroup);
@@ -30,4 +33,9 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     //set dockwidget as parent
     setWidget(mainWidget);
 
+}
+
+TimelineView *TimelineDockWidget::getTimelineView() const
+{
+    return timelineView;
 }

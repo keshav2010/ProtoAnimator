@@ -43,7 +43,6 @@ signals:
 public slots:
     bool addFrameObject();
     bool removeFrameObject();
-    void loadFrameDataInFrame();
     void switchToFrame(int framePos);
 
 private:
@@ -57,15 +56,11 @@ private:
      * frameBank maps key to each frame object, where key is
      * currently set to frame number
      */
-    QMap<int, Frame*> frameBank;
-
+    const int keyStartFrame;//default keyframe can't be removed or deleted, value is 0
+    QMap<int, Frame*> *frameBank;
     Frame* keyBeginFrame;
-
     int currentActiveFrame;
 
-    //FramesEditor *frameViewer;
-
-    const int keyStartFrame;//default keyframe can't be removed or deleted, value is 0
 };
 
 #endif // FRAMEMANAGER_H
