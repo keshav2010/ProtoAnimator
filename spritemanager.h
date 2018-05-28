@@ -34,6 +34,10 @@ public slots:
      */
     void addSpriteObject(const QString &imagePath);
 
+    /*
+     * takes information such as pixmap & sprite Name as paremeter
+     * and use it to create an object in current active frame.
+    */
     void addToBank(QPixmap *spritePixmap=0, QString spriteName = "");
     //void removeFromBank(const QString &spriteName);
 

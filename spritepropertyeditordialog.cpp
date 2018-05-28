@@ -6,11 +6,15 @@ SpritePropertyEditorDialog::SpritePropertyEditorDialog(const QString &imagePath)
     height(0),
     width(0)
 {
-    qDebug()<<"********* SPRITEPROPERTYEDITOR Initialized";
+    qDebug()<<"(SpritePropertyEditorDialog.cpp) constructor ";
     this->setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(this);
-    originalSpritePixmap = new QPixmap(imagePath);//the actual source
-    tempSpritePixmap = *originalSpritePixmap;//the one which is altered
+
+    //the actual source
+    originalSpritePixmap = new QPixmap(imagePath);
+
+    //the one which is altered
+    tempSpritePixmap = *originalSpritePixmap;
 
     ui->graphicsView->setScene(new QGraphicsScene(this));
 
@@ -28,9 +32,15 @@ SpritePropertyEditorDialog::SpritePropertyEditorDialog(const QString &imagePath)
 
 SpritePropertyEditorDialog::~SpritePropertyEditorDialog()
 {
+    qDebug()<<"(~SpritePropertyEditor.cpp) : destructor call enter.";
+
+    //NOTE : deleting this value, thus when the reference is passed on to each instance of
+    //AnimatableSpriteItem, it should be initialized dynamically. (see saveSpriteToBank() fxn)
     delete originalSpritePixmap;
+
+    qDebug()<<"(~SpritePropertyEditor.cpp) : deleted original pixmap.";
     delete ui;
-    qDebug()<<"spritePropertyEditorDialog.cpp :  cleared SPRITEPROPERTYEDITOR";
+    qDebug()<<"(~SpritePropertyEditor.cpp) : deleted ui, Exiting Destructor.";
 }
 void SpritePropertyEditorDialog::updateScene()
 {

@@ -51,15 +51,12 @@ SpriteManager::~SpriteManager()
 
 void SpriteManager::addSpriteObject(const QString &imagePath)
 {
-    //spritePixmap = new QPixmap(imagePath);
+    qDebug()<<"(SpriteManager.cpp > addSpriteObject(imagePath) : function call enter";
+
     spriteEditorDialog = new SpritePropertyEditorDialog(imagePath);
     spriteEditorDialog->show();
     spriteEditorDialog->updateScaleUI();
 }
-
-//adds final sprite object to spriteBank
-//parameters supplied by spritePropertyEditorDialog
-
 
 void SpriteManager::addToBank(QPixmap *spritePixmap, QString spriteName)
 {
@@ -67,6 +64,8 @@ void SpriteManager::addToBank(QPixmap *spritePixmap, QString spriteName)
         delete spriteEditorDialog;
         return;
     }
+    qDebug()<<"(SpriteManager.cpp) : supplying data to frame ";
+    //get current active frame and pass on the information
     FrameManager::getInstance()->getCurrentActiveFrame()->addFrameItem(spriteName, spritePixmap);
     delete spriteEditorDialog;
 }

@@ -54,17 +54,23 @@ void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
 {
 
     AnimatableSpriteItem *item = new AnimatableSpriteItem(0);
-    qDebug()<<"(Frame.cpp)> (addFrameItem()) : adding item "<<itemName<<" to frame";
+    qDebug()<<"(Frame.cpp > addFrameItem()) : adding item "<<itemName<<" to frame";
     itemName = itemName.trimmed();
-    if(itemName.size()==0)
+    if(itemName.size()==0){
         return;
-    if(frameData->contains(itemName))
+    }
+    if(frameData->contains(itemName)){
         return; //same name not allowed
+    }
+
     item->setName(itemName);
+    item->setSpritePixmap(*spritePixmap);
 
     //frameData required to create clones
     (*frameData)[itemName]=item;
+
     addItem(item);
+    qDebug()<<"(Frame.cpp > addFrameItem()) : item added !!! ";
 }
 
 //Function to load scene with the items

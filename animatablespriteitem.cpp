@@ -22,7 +22,7 @@ AnimatableSpriteItem::~AnimatableSpriteItem()
 //override method
 QRectF AnimatableSpriteItem::boundingRect() const
 {
-    qDebug()<<"(AnimatableSpriteItem.cpp) : "<<spritePixmap->rect().width()<<" ** and ** "<<spritePixmap->rect().height();
+    //qDebug()<<"(AnimatableSpriteItem.cpp) : "<<spritePixmap->rect().width()<<" ** and ** "<<spritePixmap->rect().height();
     return this->spritePixmap->rect();
 }
 
