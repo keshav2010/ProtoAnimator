@@ -8,8 +8,8 @@ bool SpriteManager::isAlreadyExist=false;
 
 SpriteManager* SpriteManager::getInstance(){
     if(!isAlreadyExist){
-        spriteManager = new SpriteManager(objectParent);
         isAlreadyExist=true;
+        spriteManager = new SpriteManager(objectParent);
     }
     return spriteManager;
 

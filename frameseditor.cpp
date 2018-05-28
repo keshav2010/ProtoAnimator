@@ -13,23 +13,19 @@ FramesEditor::FramesEditor(QWidget* parent):
     QGraphicsView(parent)
 {
     qDebug()<<"(FrameEditor.cpp) constructor";
-
-    //set frameRect as SCENE-RECTANGLE (this won't draw it on screen)
-    setSceneRect(FrameManager::frameSceneRect); //to keep grey-area focused
-
-    this->setToolTip(QString("Frame Editor Window"));
+    setSceneRect(FrameManager::frameSceneRect);
 }
 FramesEditor::~FramesEditor()
 {
-    qDebug()<<"frameEditor.cpp : deleting frameEditor/QGraphicsView/Canvas (analogy) from mem";
+    qDebug()<<"(~FrameEditor.cpp) : deleting frameEditor";
     isAlreadyExist=false;
 }
 
 FramesEditor *FramesEditor::getInstance()
 {
     if( !isAlreadyExist){
-        frameEditor = new FramesEditor(objectParent);
         isAlreadyExist=true;
+        frameEditor = new FramesEditor(objectParent);
     }
     return frameEditor;
 }
