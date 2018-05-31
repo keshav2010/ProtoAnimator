@@ -27,12 +27,12 @@ MainWindow::MainWindow(QWidget *parent) :
     //initialise all Actions here
     actionLoadSprite = new QAction(QIcon(":/icons/icon_loadSprite"),"Load Sprite",this);
 
-    //additional DockWidgets init.
+    // DockWidgets init.
     serviceWidget = new ServiceDockWidget(this);
     sampleRight = new QDockWidget(this);
     timelineWidget = new TimelineDockWidget(this);
 
-    //main toolBar setup
+    //main toolBar
     setupToolBar();
 
     sampleRight->setFeatures(QDockWidget::DockWidgetMovable);

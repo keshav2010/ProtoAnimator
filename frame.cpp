@@ -73,12 +73,6 @@ void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
     qDebug()<<"(Frame.cpp > addFrameItem()) : item added !!! ";
 }
 
-//Function to load scene with the items
-void Frame::setupFrameItems()
-{
-}
-
-
 /*
  * clears frameData QMap container, as well also remove items from Scene itself.
  *
@@ -97,15 +91,12 @@ void Frame::clearFrameItems()//slot fxn
         delete item;
     }
 }
-
-void Frame::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-
-}
 void Frame::drawBackground(QPainter *painter, const QRectF &rect){
+    qDebug()<<"(Frames.cpp) > drawing background";
     painter->setBrush(QBrush(QColor(50, 250, 50)));
     painter->drawRect(FrameManager::frameSceneRect);
 }
 void Frame::drawForeground(QPainter *painter, const QRectF &rect)
 {
 }
+

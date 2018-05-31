@@ -31,19 +31,10 @@ public:
     Frame* getDefaultFrame();
     Frame* getCurrentActiveFrame();
     int getCurrentActiveFrameByID();
-    void setCurrentActiveFrame(int);
     QMap<int, Frame*> *getPointerToFrameBank();
-
-signals:
-    //signal
-    void setNewActiveFrame(Frame *activeFrame);
-    void frameReadyForDisplay(Frame *activeFrame);
-    void signalTimelineWidget(int numberOfFrames);
 
 public slots:
     bool addFrameObject();
-    bool removeFrameObject();
-    void switchToFrame(int framePos);
 
 private:
     static FrameManager *frameManager;
@@ -56,11 +47,10 @@ private:
      * frameBank maps key to each frame object, where key is
      * currently set to frame number
      */
-    const int keyStartFrame;//default keyframe can't be removed or deleted, value is 0
+    const int startFrameIndex;//default keyframe can't be removed or deleted, value is 0
     QMap<int, Frame*> *frameBank;
-    Frame* keyBeginFrame;
+    Frame* startFrame;
     int currentActiveFrame;
-
 };
 
 #endif // FRAMEMANAGER_H

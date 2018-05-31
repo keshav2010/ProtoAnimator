@@ -23,12 +23,9 @@ public:
 
 public slots:
     QMap<QString, AnimatableSpriteItem *> *getFrameData();
-    //Adds raw properties of an sprite object to frameData
     void addFrameItem(QString itemName="", QPixmap *spritePixmap=0);
-    void setupFrameItems();//take up ownership of items
-    void clearFrameItems();//give up owner ship of items
+    void clearFrameItems();
 protected:
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
     void drawForeground(QPainter *painter, const QRectF &rect) override;
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 private:

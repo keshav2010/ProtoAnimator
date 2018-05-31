@@ -71,8 +71,9 @@ void AnimatableSpriteItem::setName(const QString &name)
 
 void AnimatableSpriteItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(this->followMouse)
-        setPos(event->buttonDownScenePos(Qt::MouseButton::LeftButton));
+    qDebug()<<"(AnimatableSpriteItem.cpp) Mouse Moving";
+    //if(this->followMouse)
+        //setPos(event->buttonDownScenePos(Qt::MouseButton::LeftButton));
 }
 
 void AnimatableSpriteItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)

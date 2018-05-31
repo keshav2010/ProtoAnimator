@@ -13,7 +13,6 @@ FramesEditor::FramesEditor(QWidget* parent):
     QGraphicsView(parent)
 {
     qDebug()<<"(FrameEditor.cpp) constructor";
-    setSceneRect(FrameManager::frameSceneRect);
 }
 FramesEditor::~FramesEditor()
 {
@@ -43,16 +42,17 @@ void FramesEditor::renderFrame(Frame *activeFrame)
     setSceneRect(FrameManager::frameSceneRect); //to keep grey-area focused
 }
 
-
-
 //Visualising bounding Rectangle that represents a frame
 void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 {
+    qDebug()<<"(FramesEditor.cpp) : Drawing background";
+    painter->setBrush(QBrush(QColor(100,100,100)));
     painter->drawRect(sceneRect());
 }
 
 void FramesEditor::drawForeground(QPainter *painter, const QRectF &rect)
 {
+    qDebug()<<"(FramesEditor.cpp) : Drawing foreground";
     scene()->render(painter, sceneRect(), sceneRect());
 }
 
@@ -64,7 +64,5 @@ void FramesEditor::mousePressEvent(QMouseEvent *event)
     {
         qDebug()<<" item selected : "<<selectedItem;
     }
-    else qDebug()<<clickPosition.x()<<", "<<clickPosition.y()<<"";
-
-    qDebug()<<selectedItem;
+    else qDebug()<<"(FramesEditor.cpp) :"<<clickPosition.x()<<", "<<clickPosition.y();
 }
