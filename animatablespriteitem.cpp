@@ -7,22 +7,44 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
     QGraphicsPixmapItem(parent),
     followMouse(false)
 {
+    qDebug()<<"(AnimatableSpriteItem.cpp) : constructor called";
     this->setX(0);
     this->setY(0);
     this->spriteData.setSpritePosition(QPointF(0,0));
-    setFlag(ItemIsMovable);
+    setFlag(GraphicsItemFlag::ItemIsMovable);
+}
+
+AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsItem *parent):
+    QGraphicsPixmapItem(parent)
+{
+    qDebug()<<"(AnimatableSpriteItem.cpp) : copy constructor called";
+
+    //user defined properties (in order as they appear in declaration)
+    this->spritePixmap = new QPixmap(*(src->spritePixmap));
+    this->followMouse = src->followMouse;
+    this->spriteData = src->spriteData;
+    this->mName = QString(src->mName);
+    this->setX(src->x());
+    this->setY(src->y());
+    this->spriteData.setSpritePosition(QPointF(this->x(), this->y()));
+    setFlag(GraphicsItemFlag::ItemIsMovable);
+
+    //pre-defined properties
+    this->setName(src->getName());
+    this->setSpritePixmap(*spritePixmap);
+
 }
 
 AnimatableSpriteItem::~AnimatableSpriteItem()
 {
-    qDebug()<<"spriteItem : removed "+this->getName()<<" from memory";
+    qDebug()<<"(~AnimatableSpiteItem.cpp) > removed "+this->getName()<<" from memory";
     delete spritePixmap;
 }
 
 //override method
 QRectF AnimatableSpriteItem::boundingRect() const
 {
-    qDebug()<<"(AnimatableSpriteItem.cpp) : "<<spritePixmap->rect().width()<<" ** and ** "<<spritePixmap->rect().height();
+    //qDebug()<<"(AnimatableSpriteItem.cpp) : "<<spritePixmap->rect().width()<<" ** and ** "<<spritePixmap->rect().height();
     return this->spritePixmap->rect();
 }
 
@@ -79,14 +101,5 @@ void AnimatableSpriteItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void AnimatableSpriteItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
     qDebug()<<"animatableSpriteItem.cpp : Double Clicked on Sprite Item";
-    /*
-    qDebug()<<"Double Clicked";
-    QRectF imageRect = boundingRect();
-    const QPointF mouseClickPos = event->buttonDownScenePos(Qt::MouseButton::LeftButton);
-    if(imageRect.contains( mouseClickPos )){
-        qDebug()<<"Mouse inside image ";
-        followMouse=true;
-    }
-    */
 }
 

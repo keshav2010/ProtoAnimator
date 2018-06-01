@@ -13,6 +13,7 @@ class AnimatableSpriteItem : public QGraphicsPixmapItem
 
 public:
     AnimatableSpriteItem(QGraphicsItem *parent = 0);
+    AnimatableSpriteItem(AnimatableSpriteItem* src, QGraphicsItem *parent=0);
     ~AnimatableSpriteItem();
     QRectF boundingRect() const; //returns estimate of area painted by this item
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

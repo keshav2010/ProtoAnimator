@@ -45,14 +45,14 @@ void FramesEditor::renderFrame(Frame *activeFrame)
 //Visualising bounding Rectangle that represents a frame
 void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    qDebug()<<"(FramesEditor.cpp) : Drawing background";
+    //qDebug()<<"(FramesEditor.cpp) : Drawing background";
     painter->setBrush(QBrush(QColor(100,100,100)));
     painter->drawRect(sceneRect());
 }
 
 void FramesEditor::drawForeground(QPainter *painter, const QRectF &rect)
 {
-    qDebug()<<"(FramesEditor.cpp) : Drawing foreground";
+    //qDebug()<<"(FramesEditor.cpp) : Drawing foreground";
     scene()->render(painter, sceneRect(), sceneRect());
 }
 

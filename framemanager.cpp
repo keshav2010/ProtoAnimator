@@ -88,9 +88,12 @@ bool FrameManager::addFrameObject() //slot function
         FramesEditor::getInstance()->renderFrame(newFrame);
         return true;
     }
-
-    //create deep copy of previous frame , frameData
     Frame *prevFrame = frameBank->value(oldFrameKey);
+
+    //copy content of previous frame (deep copy)
     newFrame->copyData(prevFrame);
+
+    FramesEditor::getInstance()->renderFrame(newFrame);
+    return true;
 
 }

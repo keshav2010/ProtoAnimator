@@ -30,16 +30,22 @@ int Frame::getFrameHeight(){
 
 void Frame::copyData(Frame *other)
 {
-    if(other == 0)
+    qDebug()<<"(Frame.cpp) > copyData() : Copying data of prev. frame";
+    if(other == 0){
+        qDebug()<<"(Frame.cpp) > copyData() : end";
         return;
+    }
+    AnimatableSpriteItem *newItem;
     QMap<QString, AnimatableSpriteItem*>::iterator sourceITR = other->getFrameData()->begin();
     QMap<QString, AnimatableSpriteItem*>::Iterator endITR = other->getFrameData()->end();
     for(sourceITR; sourceITR != endITR; sourceITR++)
     {
-        AnimatableSpriteItem *sourceItem = sourceITR.value();
-        QString sourceItemName = sourceITR.key();
+        newItem = new AnimatableSpriteItem(sourceITR.value());
+        frameData->insert(sourceITR.key(), newItem);
+        addItem(newItem);
 
     }
+    qDebug()<<" (Frame.cpp) : Cloning complete, items moved : "<<this->items().size()<<", items in previous frame : "<<other->items().size();
 }
 
 QMap<QString, AnimatableSpriteItem *> *Frame::getFrameData()
@@ -53,14 +59,15 @@ QMap<QString, AnimatableSpriteItem *> *Frame::getFrameData()
 void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
 {
 
-    AnimatableSpriteItem *item = new AnimatableSpriteItem(0);
+    AnimatableSpriteItem *item = new AnimatableSpriteItem();
     qDebug()<<"(Frame.cpp > addFrameItem()) : adding item "<<itemName<<" to frame";
     itemName = itemName.trimmed();
     if(itemName.size()==0){
         return;
     }
     if(frameData->contains(itemName)){
-        return; //same name not allowed
+        qDebug()<<"(Frame.cpp > addFrameItem()) > same name exists. failed to add item";
+        return;
     }
 
     item->setName(itemName);
@@ -68,8 +75,8 @@ void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
 
     //frameData required to create clones
     (*frameData)[itemName]=item;
-
     addItem(item);
+
     qDebug()<<"(Frame.cpp > addFrameItem()) : item added !!! ";
 }
 
@@ -92,11 +99,13 @@ void Frame::clearFrameItems()//slot fxn
     }
 }
 void Frame::drawBackground(QPainter *painter, const QRectF &rect){
-    qDebug()<<"(Frames.cpp) > drawing background";
+    //qDebug()<<"(Frames.cpp) > drawing background";
     painter->setBrush(QBrush(QColor(50, 250, 50)));
     painter->drawRect(FrameManager::frameSceneRect);
+
 }
 void Frame::drawForeground(QPainter *painter, const QRectF &rect)
 {
+
 }
 
