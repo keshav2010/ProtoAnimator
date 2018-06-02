@@ -10,7 +10,8 @@ class TimelineView : public QTableView
 {
     Q_OBJECT
 public:
-    TimelineView( QWidget * parent = 0);
+    TimelineView( QWidget * parent = nullptr);
+    ~TimelineView();
     TimelineModel* getModel() const;
 
 protected:

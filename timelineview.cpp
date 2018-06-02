@@ -17,7 +17,11 @@ TimelineView::TimelineView(QWidget *parent)
 
     this->horizontalHeader()->hide();
     this->verticalHeader()->hide();
+}
 
+TimelineView::~TimelineView()
+{
+    qDebug()<<"(~TimelineView.cpp) : destructor";
 }
 
 TimelineModel *TimelineView::getModel() const

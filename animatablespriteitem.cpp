@@ -39,6 +39,7 @@ AnimatableSpriteItem::~AnimatableSpriteItem()
 {
     qDebug()<<"(~AnimatableSpiteItem.cpp) > removed "+this->getName()<<" from memory";
     delete spritePixmap;
+    spritePixmap = nullptr;
 }
 
 //override method

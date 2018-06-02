@@ -14,6 +14,11 @@ TimelineModel::TimelineModel(QObject *parent) :
     qDebug()<<"(TimelineModel.cpp) constructor call complete";
 }
 
+TimelineModel::~TimelineModel()
+{
+    qDebug()<<"(~TimelineModel.cpp) : destructor";
+}
+
 
 //helper method
 void TimelineModel::setupDataSource(QMap<int, Frame *> *source)

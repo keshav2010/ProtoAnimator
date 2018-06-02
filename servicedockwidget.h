@@ -19,11 +19,12 @@ protected:
 
     TimelineModel *timelineModel;
 
-    QHBoxLayout *framesHLayout;//layout to store sub-frames
     QFrame *frameWidget;
 
 public:
     ServiceDockWidget(QWidget *parent);
+    ~ServiceDockWidget();
+
     void setTimelineModel(TimelineModel *model);
     //helper fxns
     QPushButton* getAddFrameButton();

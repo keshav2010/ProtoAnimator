@@ -29,6 +29,7 @@ FrameManager::FrameManager(QObject *parent):
 FrameManager::~FrameManager()
 {
     delete frameBank;
+    frameBank = nullptr;
     qDebug()<<"frameManager.cpp : clearing frameManager object...!!!";
     isAlreadyExist=false;
 }

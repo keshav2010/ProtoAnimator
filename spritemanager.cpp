@@ -41,12 +41,19 @@ const QMap<QString, AnimatableSpriteItem*>* SpriteManager::getObjectGraph()
 
 SpriteManager::~SpriteManager()
 {
-
+    qDebug()<<"(~SpriteManager.cpp) destructor called";
     isAlreadyExist=false;
-    if(spritePixmap)
+    qDebug()<<"(~SpriteManager.cpp) attempting to delete spritePixmap "<<(spritePixmap!=nullptr);
+    if(spritePixmap!=nullptr){
         delete spritePixmap;
-    if(spriteEditorDialog)
+        qDebug()<<"(~SpriteManager.cpp) >> deleted pixmap";
+    }
+    qDebug()<<"(~SpriteManager.cpp) attempting to delete spriteEditorDialog "<<(spriteEditorDialog!=nullptr);
+    if(spriteEditorDialog!=nullptr){
         delete spriteEditorDialog;
+        spriteEditorDialog = nullptr;
+        qDebug()<<"(~SpriteManager.cpp) > deleting spriteEditorDialog ";
+    }
 }
 
 void SpriteManager::addSpriteObject(const QString &imagePath)
@@ -62,12 +69,14 @@ void SpriteManager::addToBank(QPixmap *spritePixmap, QString spriteName)
 {
     if(spriteName.isEmpty() || spritePixmap == 0){
         delete spriteEditorDialog;
+        spriteEditorDialog=nullptr;
         return;
     }
     qDebug()<<"(SpriteManager.cpp) : supplying data to frame ";
     //get current active frame and pass on the information
     FrameManager::getInstance()->getCurrentActiveFrame()->addFrameItem(spriteName, spritePixmap);
     delete spriteEditorDialog;
+    spriteEditorDialog = nullptr;
 }
 /*
 void SpriteManager::removeFromBank(const QString &spriteName)

@@ -122,8 +122,9 @@ void Animatable::removeChild(const QString& _childName, bool removeFromMemory)
     }
     //reset flags and parent-reference in child
     children[_childName]->unsetParent();
-    if(removeFromMemory)
+    if(removeFromMemory){
         delete children[_childName]; //free up memory by deleting the object
+    }
     children.remove(_childName);
 }
 

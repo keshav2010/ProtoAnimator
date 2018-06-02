@@ -9,7 +9,8 @@ class TimelineModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    TimelineModel(QObject *parent = Q_NULLPTR);
+    TimelineModel(QObject *parent = nullptr);
+    ~TimelineModel();
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 

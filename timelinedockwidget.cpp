@@ -35,6 +35,11 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
 
 }
 
+TimelineDockWidget::~TimelineDockWidget()
+{
+    qDebug()<<"(~TimelineDockWidget.cpp) destructor";
+}
+
 TimelineView *TimelineDockWidget::getTimelineView() const
 {
     return timelineView;

@@ -12,7 +12,8 @@
 class TimelineDockWidget : public QDockWidget
 {
 public:
-    TimelineDockWidget(QWidget *parent = 0);
+    TimelineDockWidget(QWidget *parent = nullptr);
+    ~TimelineDockWidget();
     TimelineView *getTimelineView() const;
 private:
     QWidget *mainWidget;

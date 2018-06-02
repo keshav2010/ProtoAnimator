@@ -36,10 +36,14 @@ SpritePropertyEditorDialog::~SpritePropertyEditorDialog()
 
     //NOTE : deleting this value, thus when the reference is passed on to each instance of
     //AnimatableSpriteItem, it should be initialized dynamically. (see saveSpriteToBank() fxn)
-    delete originalSpritePixmap;
-
-    qDebug()<<"(~SpritePropertyEditor.cpp) : deleted original pixmap.";
-    delete ui;
+    if(originalSpritePixmap != nullptr){
+        delete originalSpritePixmap;
+        originalSpritePixmap= nullptr;
+    }
+    if(ui != nullptr){
+        delete ui;
+        ui=nullptr;
+    }
     qDebug()<<"(~SpritePropertyEditor.cpp) : deleted ui, Exiting Destructor.";
 }
 void SpritePropertyEditorDialog::updateScene()

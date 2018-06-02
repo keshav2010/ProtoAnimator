@@ -52,11 +52,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(this, &MainWindow::addSprite, SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
     QObject::connect(actionLoadSprite, &QAction::triggered, this, &MainWindow::showSpriteSelector);
     QObject::connect(ui->actionExit, &QAction::triggered, this, &MainWindow::close);
-
 }
 MainWindow::~MainWindow()
 {
+    qDebug()<<"(~MainWindow.cpp) : Destructor called";
     delete ui;
+    ui=nullptr;
+    qDebug()<<"  (~MainWindow.cpp) : ui deleted !";
 }
 
 //helper functions

@@ -1,5 +1,5 @@
 #include "servicedockwidget.h"
-
+#include<QDebug>
 
 ServiceDockWidget::ServiceDockWidget(QWidget *parent):
     QDockWidget(parent)
@@ -25,6 +25,35 @@ ServiceDockWidget::ServiceDockWidget(QWidget *parent):
 
     frameWidget->setLayout(buttonsLayout);
     this->setWidget(frameWidget);
+}
+
+ServiceDockWidget::~ServiceDockWidget()
+{
+    qDebug()<<"(~ServiceDockWidget.cpp) : destructor";
+    qDebug()<<"(~ServiceDockWidget.cpp) : btn_addFrame "<<(btn_addFrame!=nullptr);
+    if(btn_addFrame != nullptr){
+        delete btn_addFrame;
+        btn_addFrame=nullptr;
+    }
+    qDebug()<<"(~ServiceDockWidget.cpp) : btn_applyLerp "<<(btn_applyLerp!=nullptr);
+    if(btn_applyLerp != nullptr){
+        delete btn_applyLerp;
+        btn_applyLerp=nullptr;
+    }
+    qDebug()<<"(~ServiceDockWidget.cpp) : buttonsLayout "<<(buttonsLayout!=nullptr);
+    if(buttonsLayout != nullptr)
+        delete buttonsLayout;
+    qDebug()<<"(~ServiceDockWidget.cpp) : timelineModel "<<(timelineModel!=nullptr);
+    if(timelineModel != nullptr){
+        delete timelineModel;
+        timelineModel = nullptr;
+    }
+    qDebug()<<"(~ServiceDockWidget.cpp) : frameWidget "<<(frameWidget!=nullptr);
+    if(frameWidget != nullptr){
+        delete frameWidget;
+        frameWidget = nullptr;
+    }
+    qDebug()<<"(~ServiceDockWidget.cpp) destructor call complete !";
 }
 
 void ServiceDockWidget::setTimelineModel(TimelineModel *model)
