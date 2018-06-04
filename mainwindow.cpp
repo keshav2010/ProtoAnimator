@@ -56,8 +56,10 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     qDebug()<<"(~MainWindow.cpp) : Destructor called";
-    delete ui;
-    ui=nullptr;
+    if(ui != nullptr){
+        delete ui;
+        ui=nullptr;
+    }
     qDebug()<<"  (~MainWindow.cpp) : ui deleted !";
 }
 

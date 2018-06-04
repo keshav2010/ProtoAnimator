@@ -13,7 +13,7 @@ class Frame : public QGraphicsScene
 
 public:
     Frame(QObject *parent=0);
-    ~Frame();
+    virtual ~Frame();
     QSize getFrameSize();
     int getFrameWidth();
     int getFrameHeight();
@@ -31,7 +31,7 @@ protected:
 private:
 
     //required to create clones
-    QMap<QString, AnimatableSpriteItem*> *frameData;//should be a pointer
+    QMap<QString, AnimatableSpriteItem*> frameData;
     const int frameWidth, frameHeight;
 };
 

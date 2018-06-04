@@ -46,6 +46,7 @@ SpriteManager::~SpriteManager()
     qDebug()<<"(~SpriteManager.cpp) attempting to delete spritePixmap "<<(spritePixmap!=nullptr);
     if(spritePixmap!=nullptr){
         delete spritePixmap;
+        spritePixmap = nullptr;
         qDebug()<<"(~SpriteManager.cpp) >> deleted pixmap";
     }
     qDebug()<<"(~SpriteManager.cpp) attempting to delete spriteEditorDialog "<<(spriteEditorDialog!=nullptr);

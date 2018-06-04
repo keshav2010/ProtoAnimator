@@ -23,7 +23,7 @@ protected:
 
 public:
     ServiceDockWidget(QWidget *parent);
-    ~ServiceDockWidget();
+    virtual ~ServiceDockWidget();
 
     void setTimelineModel(TimelineModel *model);
     //helper fxns

@@ -15,9 +15,8 @@ FrameManager::FrameManager(QObject *parent):
 {
     qDebug()<<"(frameManager.cpp) constructor";
 
-    frameBank = new QMap<int, Frame*>();
-    frameBank->insert(0, new Frame(this));
-    startFrame = (*frameBank)[0];
+    frameBank.insert(0, new Frame(this));
+    startFrame = frameBank.value(0);
     currentActiveFrame=0;
 
 
@@ -28,8 +27,8 @@ FrameManager::FrameManager(QObject *parent):
 
 FrameManager::~FrameManager()
 {
-    delete frameBank;
-    frameBank = nullptr;
+    qDeleteAll(frameBank);
+    frameBank.clear();
     qDebug()<<"frameManager.cpp : clearing frameManager object...!!!";
     isAlreadyExist=false;
 }
@@ -55,7 +54,7 @@ Frame *FrameManager::getDefaultFrame()
 }
 Frame *FrameManager::getCurrentActiveFrame()
 {
-    return (*frameBank)[currentActiveFrame];
+    return frameBank.value(currentActiveFrame);
 }
 int FrameManager::getCurrentActiveFrameByID(){
     return currentActiveFrame;
@@ -66,7 +65,7 @@ int FrameManager::getCurrentActiveFrameByID(){
 //where frameBank exists on stack
 QMap<int, Frame *>* FrameManager::getPointerToFrameBank()
 {
-    return frameBank;
+    return (&frameBank);
 }
 
 /*
@@ -77,19 +76,19 @@ bool FrameManager::addFrameObject() //slot function
 {
     qDebug()<<"(FrameManager.cpp) > addFrameObject() : adding new Frame ";
 
-    int oldFrameKey = frameBank->lastKey();
+    int oldFrameKey = frameBank.lastKey();
     int newFrameKey = oldFrameKey+1;
     Frame *newFrame = new Frame(this);
-    frameBank->insert(newFrameKey, newFrame);
+    frameBank.insert(newFrameKey, newFrame);
     currentActiveFrame = newFrameKey;
 
-    if(frameBank->value(oldFrameKey)->items().size() == 0)
+    if(frameBank.value(oldFrameKey)->items().size() == 0)
     {
         qDebug()<<"(FrameManager.cpp) > addFrameObject() : setting newFrame in FrameEditor view with no data to carry forward";
         FramesEditor::getInstance()->renderFrame(newFrame);
         return true;
     }
-    Frame *prevFrame = frameBank->value(oldFrameKey);
+    Frame *prevFrame = frameBank.value(oldFrameKey);
 
     //copy content of previous frame (deep copy)
     newFrame->copyData(prevFrame);

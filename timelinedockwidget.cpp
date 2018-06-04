@@ -37,9 +37,47 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
 
 TimelineDockWidget::~TimelineDockWidget()
 {
-    qDebug()<<"(~TimelineDockWidget.cpp) destructor";
-}
+    //order of deletion matters (parent-child relationship)
 
+    qDebug()<<"(~TimelineDockWidget.cpp) Destructor";
+    qDebug()<<"(~TimelineDockWidget.cpp) btn_play"<<(btn_play!=nullptr);
+    if(btn_play!=nullptr){
+        delete btn_play;
+        btn_play=nullptr;
+    }
+    qDebug()<<"(~TimelineDockWidget.cpp) btn_pause"<<(btn_pause!=nullptr);
+    if(btn_pause != nullptr){
+        delete btn_pause;
+        btn_pause=nullptr;
+    }
+    qDebug()<<"(~TimelineDockWidget.cpp) : buttonsLayout"<<(buttonsLayout!=nullptr);
+    if(buttonsLayout != nullptr)
+    {
+        delete buttonsLayout;
+        buttonsLayout = nullptr;
+    }
+    qDebug()<<"(~TimelineDockWidget.cpp) : buttonGroup"<<(buttonGroup != nullptr);
+    if(buttonGroup != nullptr){
+        delete buttonGroup;
+        buttonGroup = nullptr;
+    }
+    qDebug()<<"(~TimelineDockWidget.cpp) timelineView "<<(timelineView != nullptr);
+    if(timelineView != nullptr){
+        delete timelineView;
+        timelineView = nullptr;
+    }
+    qDebug()<<"(~TimelineDockWidget.cpp) : mainLayout "<<(mainLayout!=nullptr);
+    if(mainLayout != nullptr)
+    {
+        delete mainLayout;
+        mainLayout = nullptr;
+    }
+    qDebug()<<"(~TimelineDockWidget.cpp) mainWidget "<<(mainWidget != nullptr);
+    if(mainWidget != nullptr){
+        delete mainWidget;
+        mainWidget = nullptr;
+    }
+}
 TimelineView *TimelineDockWidget::getTimelineView() const
 {
     return timelineView;

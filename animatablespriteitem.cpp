@@ -38,8 +38,10 @@ AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsI
 AnimatableSpriteItem::~AnimatableSpriteItem()
 {
     qDebug()<<"(~AnimatableSpiteItem.cpp) > removed "+this->getName()<<" from memory";
-    delete spritePixmap;
-    spritePixmap = nullptr;
+    if(spritePixmap != nullptr){
+        delete spritePixmap;
+        spritePixmap = nullptr;
+    }
 }
 
 //override method
@@ -53,8 +55,9 @@ QRectF AnimatableSpriteItem::boundingRect() const
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     this->spritePainter = painter;
-    qDebug()<<"AnimatableSpriteItem > paint :: drawing picture ";
-    painter->drawImage(spriteData.getSpritePosition(), spritePixmap->toImage());
+    qDebug()<<"(AnimatableSpriteItem.cpp) > paint() :: drawing picture ";
+    //painter->drawImage(spriteData.getSpritePosition(), spritePixmap->toImage());
+    painter->drawImage(this->x(), this->y(), this->pixmap().toImage());
 }
 
 void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)

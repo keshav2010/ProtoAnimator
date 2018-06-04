@@ -52,7 +52,6 @@ void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
 
 void FramesEditor::drawForeground(QPainter *painter, const QRectF &rect)
 {
-    //qDebug()<<"(FramesEditor.cpp) : Drawing foreground";
     scene()->render(painter, sceneRect(), sceneRect());
 }
 

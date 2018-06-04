@@ -43,11 +43,13 @@ ServiceDockWidget::~ServiceDockWidget()
     qDebug()<<"(~ServiceDockWidget.cpp) : buttonsLayout "<<(buttonsLayout!=nullptr);
     if(buttonsLayout != nullptr)
         delete buttonsLayout;
-    qDebug()<<"(~ServiceDockWidget.cpp) : timelineModel "<<(timelineModel!=nullptr);
+    //qDebug()<<"(~ServiceDockWidget.cpp) : timelineModel "<<(timelineModel!=nullptr);
+    /*
     if(timelineModel != nullptr){
         delete timelineModel;
         timelineModel = nullptr;
     }
+    */
     qDebug()<<"(~ServiceDockWidget.cpp) : frameWidget "<<(frameWidget!=nullptr);
     if(frameWidget != nullptr){
         delete frameWidget;

@@ -10,7 +10,7 @@ class TimelineDelegate : public QAbstractItemDelegate
 
 public:
     TimelineDelegate(QObject *parent = nullptr);
-    ~TimelineDelegate();
+    virtual ~TimelineDelegate();
     void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };

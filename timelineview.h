@@ -11,14 +11,14 @@ class TimelineView : public QTableView
     Q_OBJECT
 public:
     TimelineView( QWidget * parent = nullptr);
-    ~TimelineView();
+    virtual ~TimelineView();
     TimelineModel* getModel() const;
 
 protected:
     int sizeHintForColumn(int column) const;
 private:
-    TimelineDelegate *delegate;
-    TimelineModel *model;
+    TimelineDelegate *timelineDelegate;
+    TimelineModel *timelineModel;
 };
 
 #endif // TIMELINEVIEW_H

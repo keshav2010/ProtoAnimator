@@ -9,13 +9,15 @@ Frame::Frame(QObject* parent):
     frameWidth(800),
     frameHeight(450)
 {
-    this->frameData = new QMap<QString, AnimatableSpriteItem*>();
     qDebug()<<"(Frame.cpp) constructor";
     setBackgroundBrush(QBrush(QColor(120,50,100)));
 }
 
 Frame::~Frame(){
-    qDebug()<<"***Frame.cpp : deleting frame";
+    qDebug()<<"(~Frame.cpp ): deleting frame";
+    qDeleteAll(frameData.begin(), frameData.end());
+    frameData.clear();
+    qDebug()<<"(~Frame.cpp) : completed";
 }
 
 QSize Frame::getFrameSize(){
@@ -41,7 +43,7 @@ void Frame::copyData(Frame *other)
     for(sourceITR; sourceITR != endITR; sourceITR++)
     {
         newItem = new AnimatableSpriteItem(sourceITR.value());
-        frameData->insert(sourceITR.key(), newItem);
+        frameData.insert(sourceITR.key(), newItem);
         addItem(newItem);
 
     }
@@ -50,7 +52,7 @@ void Frame::copyData(Frame *other)
 
 QMap<QString, AnimatableSpriteItem *> *Frame::getFrameData()
 {
-    return this->frameData;
+    return (&frameData);
 }
 
 /*
@@ -65,7 +67,7 @@ void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
     if(itemName.size()==0){
         return;
     }
-    if(frameData->contains(itemName)){
+    if(frameData.contains(itemName)){
         qDebug()<<"(Frame.cpp > addFrameItem()) > same name exists. failed to add item";
         return;
     }
@@ -74,7 +76,7 @@ void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
     item->setSpritePixmap(*spritePixmap);
 
     //frameData required to create clones
-    (*frameData)[itemName]=item;
+    frameData.insert(itemName, item);
     addItem(item);
 
     qDebug()<<"(Frame.cpp > addFrameItem()) : item added !!! ";
@@ -88,15 +90,8 @@ void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
 */
 void Frame::clearFrameItems()//slot fxn
 {
-    QMap<QString, AnimatableSpriteItem*>::iterator itemsITR =frameData->begin();
-    QMap<QString, AnimatableSpriteItem*>::iterator endITR = frameData->end();
-    for(itemsITR; itemsITR != endITR; itemsITR++)
-    {
-        AnimatableSpriteItem *item = itemsITR.value();
-        if(this->items().contains(item))
-            this->removeItem(item);
-        delete item;
-    }
+    qDeleteAll(frameData.begin(), frameData.end());
+    frameData.clear();
 }
 void Frame::drawBackground(QPainter *painter, const QRectF &rect){
     //qDebug()<<"(Frames.cpp) > drawing background";

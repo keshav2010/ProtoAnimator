@@ -25,7 +25,7 @@ public:
 
     static QRectF frameSceneRect;
 
-    ~FrameManager();
+    virtual ~FrameManager();
     static void setObjectParent(QObject *parent);
 
     Frame* getDefaultFrame();
@@ -48,7 +48,7 @@ private:
      * currently set to frame number
      */
     const int startFrameIndex;//default keyframe can't be removed or deleted, value is 0
-    QMap<int, Frame*> *frameBank;
+    QMap<int, Frame*> frameBank;
     Frame* startFrame;
     int currentActiveFrame;
 };
