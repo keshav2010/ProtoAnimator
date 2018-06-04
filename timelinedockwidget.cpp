@@ -66,7 +66,7 @@ TimelineDockWidget::~TimelineDockWidget()
         delete timelineView;
         timelineView = nullptr;
     }
-    qDebug()<<"(~TimelineDockWidget.cpp) : mainLayout "<<(mainLayout!=nullptr);
+    qDebug()<<"(~TimelineDockWidget.cpp) : mainLayout "<<(mainLayout != nullptr);
     if(mainLayout != nullptr)
     {
         delete mainLayout;
