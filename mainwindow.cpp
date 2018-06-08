@@ -47,9 +47,14 @@ MainWindow::MainWindow(QWidget *parent) :
     serviceWidget->setTimelineModel( timelineWidget->getTimelineView()->getModel());
 
     //connections for slot-signal
-    QObject::connect(this, &MainWindow::addSprite, SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
-    QObject::connect(actionLoadSprite, &QAction::triggered, this, &MainWindow::showSpriteSelector);
-    QObject::connect(ui->actionExit, &QAction::triggered, this, &MainWindow::close);
+    QObject::connect(this, &MainWindow::addSprite,
+                     SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
+
+    QObject::connect(actionLoadSprite, &QAction::triggered,
+                     this, &MainWindow::showSpriteSelector);
+
+    QObject::connect(ui->actionExit, &QAction::triggered,
+                     this, &MainWindow::close);
 }
 MainWindow::~MainWindow()
 {

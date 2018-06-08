@@ -34,6 +34,9 @@ public:
     int getCurrentActiveFrameByID();
     QMap<int, Frame*> *getPointerToFrameBank();
 
+signals:
+    void frameBankChanged(QMap<int, Frame*> *ref=nullptr);
+
 public slots:
     bool addFrameObject();
 

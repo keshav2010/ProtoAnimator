@@ -1,4 +1,5 @@
 #include "timelinedockwidget.h"
+#include "framemanager.h"
 #include<QDebug>
 TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     :QDockWidget(parent)
@@ -32,6 +33,9 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
 
     //set dockwidget as parent
     setWidget(mainWidget);
+
+    QObject::connect(FrameManager::getInstance(), &FrameManager::frameBankChanged,
+                     timelineView->getModel(), &TimelineModel::updateDataSource);
 
 }
 

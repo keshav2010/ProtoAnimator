@@ -85,6 +85,7 @@ bool FrameManager::addFrameObject() //slot function
     {
         qDebug()<<"(FrameManager.cpp) > addFrameObject() : setting newFrame in FrameEditor view with no data to carry forward";
         FramesEditor::getInstance()->renderFrame(newFrame);
+        emit frameBankChanged(&frameBank);
         return true;
     }
     Frame *prevFrame = frameBank.value(oldFrameKey);
@@ -93,5 +94,7 @@ bool FrameManager::addFrameObject() //slot function
     newFrame->copyData(prevFrame);
 
     FramesEditor::getInstance()->renderFrame(newFrame);
+
+    emit frameBankChanged(&frameBank);
     return true;
 }
