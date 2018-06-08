@@ -32,7 +32,6 @@ TimelineView::~TimelineView()
         delete timelineModel;
         timelineModel = nullptr;
     }
-
     qDebug()<<"(~TimelineView.cpp): destructor call end";
 }
 

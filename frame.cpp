@@ -17,7 +17,6 @@ Frame::~Frame(){
     qDebug()<<"(~Frame.cpp ): deleting frame";
     qDeleteAll(frameData.begin(), frameData.end());
     frameData.clear();
-    qDebug()<<"(~Frame.cpp) : completed";
 }
 
 QSize Frame::getFrameSize(){

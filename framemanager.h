@@ -5,6 +5,7 @@
 #include<QMap>
 #include "frame.h"
 #include "frameseditor.h"
+#include "timelinemodel.h"
 /*
  *  Contains list of frames that are visible on timeline and thus are responsible
  * for generation of animated sequences, this class is intended to work with

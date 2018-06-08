@@ -17,7 +17,7 @@ protected:
     QPushButton *btn_applyLerp;
     QVBoxLayout *buttonsLayout;//to store buttons in vertically stacked fashion
 
-    TimelineModel *timelineModel;
+    TimelineModel *ref_timelineModel;
 
     QFrame *frameWidget;
 

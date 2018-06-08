@@ -16,6 +16,7 @@ public:
 
 protected:
     int sizeHintForColumn(int column) const;
+
 private:
     TimelineDelegate *timelineDelegate;
     TimelineModel *timelineModel;

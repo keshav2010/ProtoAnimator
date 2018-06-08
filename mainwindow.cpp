@@ -48,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //connections for slot-signal
 
-    QObject::connect(serviceWidget->getAddFrameButton(), &QPushButton::clicked,  FrameManager::getInstance(), &FrameManager::addFrameObject);
     QObject::connect(this, &MainWindow::addSprite, SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
     QObject::connect(actionLoadSprite, &QAction::triggered, this, &MainWindow::showSpriteSelector);
     QObject::connect(ui->actionExit, &QAction::triggered, this, &MainWindow::close);

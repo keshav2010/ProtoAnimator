@@ -75,7 +75,6 @@ QMap<int, Frame *>* FrameManager::getPointerToFrameBank()
 bool FrameManager::addFrameObject() //slot function
 {
     qDebug()<<"(FrameManager.cpp) > addFrameObject() : adding new Frame ";
-
     int oldFrameKey = frameBank.lastKey();
     int newFrameKey = oldFrameKey+1;
     Frame *newFrame = new Frame(this);
@@ -95,5 +94,4 @@ bool FrameManager::addFrameObject() //slot function
 
     FramesEditor::getInstance()->renderFrame(newFrame);
     return true;
-
 }

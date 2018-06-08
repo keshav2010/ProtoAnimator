@@ -4,22 +4,30 @@ TimelineModel::TimelineModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     qDebug()<<"(TimelineModel.cpp) constructor";
+    ref_dataSource = nullptr;
 }
 
 TimelineModel::~TimelineModel()
 {
     qDebug()<<"(~TimelineModel.cpp) : destructor";
-    qDeleteAll(dataSource.begin(), dataSource.end());
-    dataSource.clear();
+    if(ref_dataSource == nullptr)
+        return;
+    qDeleteAll(ref_dataSource->begin(), ref_dataSource->end());
+    ref_dataSource->clear();
+    ref_dataSource = nullptr;
 }
 int TimelineModel::rowCount(const QModelIndex &parent) const
 {
+    if(ref_dataSource == nullptr)
+        return 0;
     return 1;
 }
 
 int TimelineModel::columnCount(const QModelIndex &parent) const
 {
-    return 1;
+    if(ref_dataSource == nullptr)
+     return 0;
+    return ref_dataSource->size();
 }
 
 QVariant TimelineModel::data(const QModelIndex &index, int role) const
@@ -27,4 +35,12 @@ QVariant TimelineModel::data(const QModelIndex &index, int role) const
     if(!index.isValid() || role != Qt::DisplayRole)
         return QVariant();
     return index.row();
+}
+
+void TimelineModel::updateDataSource(QMap<int, Frame *> *src)
+{
+    beginResetModel();
+    if(src != nullptr)
+        ref_dataSource = src;
+    endResetModel();
 }

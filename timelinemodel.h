@@ -13,11 +13,11 @@ public:
     virtual ~TimelineModel();
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
-
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-private:
-    QMap<int, Frame*> dataSource;
 
+    void updateDataSource(QMap<int, Frame*> *src = nullptr);
+private:
+    QMap<int, Frame*> *ref_dataSource;
 };
 
 #endif // TIMELINEMODEL_H

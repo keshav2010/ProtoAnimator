@@ -1,10 +1,11 @@
 #include "servicedockwidget.h"
+#include "framemanager.h"
 #include<QDebug>
 
 ServiceDockWidget::ServiceDockWidget(QWidget *parent):
     QDockWidget(parent)
 {
-    timelineModel=0;
+    ref_timelineModel=nullptr;
     frameWidget = new QFrame(this);
     buttonsLayout = new QVBoxLayout(frameWidget);
     setWindowTitle("Animator Tools");
@@ -25,6 +26,8 @@ ServiceDockWidget::ServiceDockWidget(QWidget *parent):
 
     frameWidget->setLayout(buttonsLayout);
     this->setWidget(frameWidget);
+
+    QObject::connect(this->btn_addFrame, &QPushButton::clicked,  FrameManager::getInstance(), &FrameManager::addFrameObject);
 }
 
 ServiceDockWidget::~ServiceDockWidget()
@@ -60,7 +63,7 @@ ServiceDockWidget::~ServiceDockWidget()
 
 void ServiceDockWidget::setTimelineModel(TimelineModel *model)
 {
-    timelineModel = model;
+    ref_timelineModel = model;
 }
 
 QPushButton* ServiceDockWidget::getAddFrameButton()
