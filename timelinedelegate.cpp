@@ -1,6 +1,9 @@
 #include "timelinedelegate.h"
 #include "QDebug"
 
+#define REDCOLOR QColor(200, 0, 0)
+#define GREENCOLOR QColor(0, 200, 0)
+
 //definations for class TimelineDelegate goes here
 TimelineDelegate::TimelineDelegate(QObject *parent)
     :QAbstractItemDelegate(parent)
@@ -28,7 +31,11 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     if(option.state & QStyle::State_Selected)
         painter->setBrush(option.palette.highlightedText());
     else
-        painter->setBrush(QBrush(QColor(10,200,20)));
+        painter->setBrush(QBrush(GREENCOLOR));
+
+    //color immutable frame with red
+    if(index.column() == 0)
+        painter->setBrush(QBrush(REDCOLOR));
 
     painter->drawRect(option.rect.x() + rectPosition, option.rect.y(), 10, 20);
 
@@ -37,6 +44,6 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
 QSize TimelineDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(10, 10);
+    return QSize(10, 20);
 }
 
