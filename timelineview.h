@@ -16,7 +16,7 @@ public:
 
 protected:
     int sizeHintForColumn(int column) const;
-
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 private:
     TimelineDelegate *timelineDelegate;
     TimelineModel *timelineModel;

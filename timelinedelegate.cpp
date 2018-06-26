@@ -15,6 +15,7 @@ TimelineDelegate::~TimelineDelegate()
 {
     qDebug()<<"(~TimelineDelegate.cpp) destructor";
 }
+
 void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     //if item selected, fill the background of entire bounding rect
@@ -38,7 +39,6 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         painter->setBrush(QBrush(REDCOLOR));
 
     painter->drawRect(option.rect.x() + rectPosition, option.rect.y(), 10, 20);
-
     painter->restore();
 }
 

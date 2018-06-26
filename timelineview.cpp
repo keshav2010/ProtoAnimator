@@ -1,6 +1,7 @@
 #include "timelineview.h"
 #include<QHeaderView>
 #include<QDebug>
+#include "frameseditor.h"
 TimelineView::TimelineView(QWidget *parent)
     :QTableView(parent)
 {
@@ -43,4 +44,14 @@ TimelineModel *TimelineView::getModel() const
 int TimelineView::sizeHintForColumn(int column) const
 {
     return 10;
+}
+
+void TimelineView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    if(selected.empty())
+        return;
+    QModelIndex ind = selected.indexes().at(0);
+    qDebug()<<" selected frame : "<<ind.column();
+
+    //switch to selected frame
 }
