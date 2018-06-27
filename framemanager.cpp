@@ -54,6 +54,13 @@ Frame *FrameManager::getCurrentActiveFrame()
 {
     return frameBank.value(currentActiveFrame);
 }
+
+void FrameManager::setCurrentActiveFrame(int frameKey)
+{
+    if(this->frameBank.contains(frameKey))
+        currentActiveFrame = frameKey;
+    FramesEditor::getInstance()->renderFrame(frameBank.value(currentActiveFrame));
+}
 int FrameManager::getCurrentActiveFrameByID(){
     return currentActiveFrame;
 }

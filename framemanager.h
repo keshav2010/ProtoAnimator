@@ -31,6 +31,7 @@ public:
 
     Frame* getDefaultFrame();
     Frame* getCurrentActiveFrame();
+    void setCurrentActiveFrame(int frameKey);
     int getCurrentActiveFrameByID();
     QMap<int, Frame*> *getPointerToFrameBank();
 

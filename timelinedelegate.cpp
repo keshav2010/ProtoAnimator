@@ -3,6 +3,7 @@
 
 #define REDCOLOR QColor(200, 0, 0)
 #define GREENCOLOR QColor(0, 200, 0)
+#define BLACKCOLOR QColor(0, 0, 0)
 
 //definations for class TimelineDelegate goes here
 TimelineDelegate::TimelineDelegate(QObject *parent)
@@ -23,7 +24,7 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     {
         painter->fillRect(option.rect, option.palette.highlight());
     }
-    int rectPosition = 10*index.row();
+    //int rectPosition = 10*index.row();
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -37,13 +38,14 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     //color immutable frame with red
     if(index.column() == 0)
         painter->setBrush(QBrush(REDCOLOR));
-
-    painter->drawRect(option.rect.x() + rectPosition, option.rect.y(), 10, 20);
+    painter->drawRect(option.rect.x() + 10, option.rect.y(), 18, 20);
+    painter->setBrush(QBrush(BLACKCOLOR));
+    painter->drawEllipse(option.rect.x()+16, option.rect.y()+4, 6, 6);
     painter->restore();
 }
 
 QSize TimelineDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    return QSize(10, 20);
+    return QSize(18, 20);
 }
 

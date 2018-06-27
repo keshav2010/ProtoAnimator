@@ -12,11 +12,9 @@ TimelineView::TimelineView(QWidget *parent)
 
     this->setItemDelegate(timelineDelegate);
     this->setModel(timelineModel);
-
-    this->horizontalHeader()->setMinimumSectionSize(1);
-    this->verticalHeader()->setMinimumSectionSize(1);
-
-    this->horizontalHeader()->hide();
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    this->horizontalHeader()->show();
+    this->horizontalHeader()->setEnabled(false);
     this->verticalHeader()->hide();
 }
 
@@ -53,6 +51,7 @@ void TimelineView::selectionChanged(const QItemSelection &selected, const QItemS
 
     QModelIndex ind = selected.indexes().at(0);
     int selectedFrameKey = timelineModel->modelIndexToFrameID(ind);
-    FramesEditor::getInstance()->setScene(timelineModel->getDataSource()->value(selectedFrameKey));
-    //this only changes the display, displayed frame is not the active frame
+    //updates the currentactiveframe as well as renders it on display
+    FrameManager::getInstance()->setCurrentActiveFrame(selectedFrameKey);
+
 }

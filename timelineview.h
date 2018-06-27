@@ -14,6 +14,8 @@ public:
     virtual ~TimelineView();
     TimelineModel* getModel() const;
 
+public slots:
+
 protected:
     int sizeHintForColumn(int column) const;
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
