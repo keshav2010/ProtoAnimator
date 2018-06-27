@@ -37,10 +37,22 @@ QVariant TimelineModel::data(const QModelIndex &index, int role) const
     return index.row();
 }
 
+int TimelineModel::modelIndexToFrameID(QModelIndex ind)
+{
+    int col = ind.column();
+    int frameKey = (ref_dataSource->begin()+col).key();
+    return frameKey;
+}
+
 void TimelineModel::updateDataSource(QMap<int, Frame *> *src)
 {
     beginResetModel();
     if(src != nullptr)
         ref_dataSource = src;
     endResetModel();
+}
+
+QMap<int, Frame *> *TimelineModel::getDataSource()
+{
+    return this->ref_dataSource;
 }

@@ -50,8 +50,9 @@ void TimelineView::selectionChanged(const QItemSelection &selected, const QItemS
 {
     if(selected.empty())
         return;
-    QModelIndex ind = selected.indexes().at(0);
-    qDebug()<<" selected frame : "<<ind.column();
 
-    //switch to selected frame
+    QModelIndex ind = selected.indexes().at(0);
+    int selectedFrameKey = timelineModel->modelIndexToFrameID(ind);
+    FramesEditor::getInstance()->setScene(timelineModel->getDataSource()->value(selectedFrameKey));
+    //this only changes the display, displayed frame is not the active frame
 }

@@ -15,14 +15,12 @@ FrameManager::FrameManager(QObject *parent):
 {
     qDebug()<<"(frameManager.cpp) constructor";
 
-    frameBank.insert(0, new Frame(this));
+    addFrameObject();//frameBank.insert(0, new Frame(this));
     startFrame = frameBank.value(0);
-    currentActiveFrame=0;
-
+    //currentActiveFrame=0;
 
     FramesEditor::getInstance()->renderFrame(startFrame);
     qDebug()<<"frameManager.cpp : setting up current Frame "<<startFrameIndex;
-
 }
 
 FrameManager::~FrameManager()
@@ -68,26 +66,35 @@ QMap<int, Frame *>* FrameManager::getPointerToFrameBank()
     return (&frameBank);
 }
 
-/*
+/**
  * Adds new frame object,
  * also copies data from previous frame and creates a deep copy of that frame.
+ *
+ * emits : frameBankChanged, slot triggered : TimelineModel::updateDataSource
+ * see timelinedockwiget.cpp for QObject::connect(..)
  */
 bool FrameManager::addFrameObject() //slot function
 {
     qDebug()<<"(FrameManager.cpp) > addFrameObject() : adding new Frame ";
-    int oldFrameKey = frameBank.lastKey();
+    int oldFrameKey=-1;
+
+    if(!frameBank.empty())
+        oldFrameKey = frameBank.lastKey();
+
     int newFrameKey = oldFrameKey+1;
     Frame *newFrame = new Frame(this);
     frameBank.insert(newFrameKey, newFrame);
     currentActiveFrame = newFrameKey;
 
-    if(frameBank.value(oldFrameKey)->items().size() == 0)
+
+    if(oldFrameKey >=0 && frameBank.value(oldFrameKey)->items().size() == 0)
     {
         qDebug()<<"(FrameManager.cpp) > addFrameObject() : setting newFrame in FrameEditor view with no data to carry forward";
         FramesEditor::getInstance()->renderFrame(newFrame);
         emit frameBankChanged(&frameBank);
         return true;
     }
+
     Frame *prevFrame = frameBank.value(oldFrameKey);
 
     //copy content of previous frame (deep copy)
@@ -95,6 +102,10 @@ bool FrameManager::addFrameObject() //slot function
 
     FramesEditor::getInstance()->renderFrame(newFrame);
 
+    /*
+     * triggers slot TimelineModel::updateDataSource()
+     * that re-assigns reference
+    */
     emit frameBankChanged(&frameBank);
     return true;
 }
