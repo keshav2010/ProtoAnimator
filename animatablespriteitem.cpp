@@ -24,8 +24,10 @@ AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsI
     this->followMouse = src->followMouse;
     this->spriteData = src->spriteData;
     this->mName = QString(src->mName);
-    this->setX(src->x());
-    this->setY(src->y());
+    this->setTransform(src->transform());
+    this->setPos(src->pos());
+    this->setScale(src->scale());
+    this->setRotation(src->rotation());
     this->spriteData.setSpritePosition(QPointF(this->x(), this->y()));
     setFlag(GraphicsItemFlag::ItemIsMovable);
 

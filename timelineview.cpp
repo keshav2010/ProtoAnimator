@@ -53,5 +53,4 @@ void TimelineView::selectionChanged(const QItemSelection &selected, const QItemS
     int selectedFrameKey = timelineModel->modelIndexToFrameID(ind);
     //updates the currentactiveframe as well as renders it on display
     FrameManager::getInstance()->setCurrentActiveFrame(selectedFrameKey);
-
 }

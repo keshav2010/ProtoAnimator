@@ -20,10 +20,9 @@ private:
 
     TimelineView *timelineView;
 
-    QPushButton *btn_play;
-    QPushButton *btn_pause;
-
-    QGroupBox *buttonGroup;
+    QPushButton *btn_play, *btn_pause;
+    QGroupBox *animButtonGroup;
+    QPushButton *btn_deleteFrame;
     QVBoxLayout *buttonsLayout;
     QHBoxLayout *mainLayout;
 

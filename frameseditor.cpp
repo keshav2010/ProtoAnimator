@@ -13,6 +13,7 @@ FramesEditor::FramesEditor(QWidget* parent):
     QGraphicsView(parent)
 {
     qDebug()<<"(FrameEditor.cpp) constructor";
+    setMouseTracking(true);
 }
 FramesEditor::~FramesEditor()
 {
@@ -62,6 +63,7 @@ void FramesEditor::mousePressEvent(QMouseEvent *event)
     if(selectedItem)
     {
         qDebug()<<" item selected : "<<selectedItem;
+        selectedItem->setRotation(100);
     }
     else qDebug()<<"(FramesEditor.cpp) :"<<clickPosition.x()<<", "<<clickPosition.y();
 }

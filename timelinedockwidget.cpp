@@ -5,25 +5,27 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     :QDockWidget(parent)
 {
     qDebug()<<"(TimelineDockWidget.cpp) constructor";
-    buttonGroup = new QGroupBox(tr("Animation Control"), this);
+    animButtonGroup = new QGroupBox(tr("Animation Control"), this);
     mainWidget = new QWidget(this);
-    buttonsLayout = new QVBoxLayout(buttonGroup);//implicit call to buttonGroup->setLayout(buttonsLayout);
+    buttonsLayout = new QVBoxLayout(animButtonGroup);//implicit call to animButtonGroup->setLayout(buttonsLayout);
     mainLayout = new QHBoxLayout();
 
     qDebug()<<"(TimelineDockWidget.cpp) calling TimelineView constructor";
     timelineView = new TimelineView();
     //DEBUG LOG : this is never reached
 
+    btn_deleteFrame = new QPushButton(tr("delete Frame(s)"));
     btn_pause = new QPushButton(tr("pause"));
     btn_play = new QPushButton(tr("Play"));
 
     //add buttons to layout, further add layout to buttonGroup
     buttonsLayout->addWidget(btn_play);
     buttonsLayout->addWidget(btn_pause);
-   //buttonGroup->setLayout(buttonsLayout);
+    buttonsLayout->addWidget(btn_deleteFrame);
+   //animButtonGroup->setLayout(buttonsLayout);
 
-    //add buttonGroup and timelineView to mainLayout
-    mainLayout->addWidget(buttonGroup);
+    //add animButtonGroup and timelineView to mainLayout
+    mainLayout->addWidget(animButtonGroup);
     mainLayout->addWidget(timelineView);
 
     setFeatures(DockWidgetMovable);
@@ -44,6 +46,11 @@ TimelineDockWidget::~TimelineDockWidget()
     //order of deletion matters (parent-child relationship)
 
     qDebug()<<"(~TimelineDockWidget.cpp) Destructor";
+    qDebug()<<"(~TimelineDockWidget.cpp) btn_deleteFrame"<<(btn_deleteFrame!=nullptr);
+    if(btn_deleteFrame!=nullptr){
+        delete btn_deleteFrame;
+        btn_deleteFrame=nullptr;
+    }
     qDebug()<<"(~TimelineDockWidget.cpp) btn_play"<<(btn_play!=nullptr);
     if(btn_play!=nullptr){
         delete btn_play;
@@ -60,10 +67,10 @@ TimelineDockWidget::~TimelineDockWidget()
         delete buttonsLayout;
         buttonsLayout = nullptr;
     }
-    qDebug()<<"(~TimelineDockWidget.cpp) : buttonGroup"<<(buttonGroup != nullptr);
-    if(buttonGroup != nullptr){
-        delete buttonGroup;
-        buttonGroup = nullptr;
+    qDebug()<<"(~TimelineDockWidget.cpp) : buttonGroup"<<(animButtonGroup != nullptr);
+    if(animButtonGroup != nullptr){
+        delete animButtonGroup;
+        animButtonGroup = nullptr;
     }
     qDebug()<<"(~TimelineDockWidget.cpp) timelineView "<<(timelineView != nullptr);
     if(timelineView != nullptr){
