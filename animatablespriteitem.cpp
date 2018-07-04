@@ -12,6 +12,7 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
     this->setY(0);
     this->spriteData.setSpritePosition(QPointF(0,0));
     setFlag(GraphicsItemFlag::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemIsSelectable);
 }
 
 AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsItem *parent):
@@ -28,9 +29,8 @@ AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsI
     this->setPos(src->pos());
     this->setScale(src->scale());
     this->setRotation(src->rotation());
-    this->spriteData.setSpritePosition(QPointF(this->x(), this->y()));
     setFlag(GraphicsItemFlag::ItemIsMovable);
-
+    setFlag(GraphicsItemFlag::ItemIsSelectable);
     //pre-defined properties
     this->setName(src->getName());
     this->setSpritePixmap(*spritePixmap);
@@ -100,12 +100,4 @@ void AnimatableSpriteItem::setName(const QString &name)
 void AnimatableSpriteItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug()<<"(AnimatableSpriteItem.cpp) Mouse Moving";
-    //if(this->followMouse)
-        //setPos(event->buttonDownScenePos(Qt::MouseButton::LeftButton));
 }
-
-void AnimatableSpriteItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
-{
-    qDebug()<<"animatableSpriteItem.cpp : Double Clicked on Sprite Item";
-}
-

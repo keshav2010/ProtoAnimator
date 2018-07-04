@@ -28,7 +28,6 @@ public:
 
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
     QPainter *spritePainter;
