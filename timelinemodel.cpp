@@ -49,7 +49,6 @@ void TimelineModel::updateDataSource(QMap<int, Frame *> *src)
     beginResetModel();
     if(src != nullptr && ref_dataSource != src){
         ref_dataSource = src;
-        qDebug()<<"updated";
     }
     endResetModel();
 }
