@@ -116,3 +116,19 @@ bool FrameManager::addFrameObject() //slot function
     emit frameBankChanged(&frameBank);
     return true;
 }
+
+void FrameManager::deleteFrames(QVector<int> &frameKeys)
+{
+    qDebug()<<"size before : "<<frameBank.size();
+    QVector<int>::iterator itrBegin = frameKeys.begin();
+    QVector<int>::iterator itrEnd = frameKeys.end();
+    for(itrBegin; itrBegin != itrEnd; itrBegin++){
+        int frameKey = (*itrBegin);
+        if(!frameBank.contains(frameKey))
+            continue;
+        delete frameBank.value(frameKey);
+        frameBank.remove(frameKey);
+    }
+    qDebug()<<"frameBank size : "<<frameBank.size();
+    emit frameBankChanged(&frameBank);
+}

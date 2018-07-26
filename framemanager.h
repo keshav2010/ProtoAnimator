@@ -39,7 +39,13 @@ signals:
     void frameBankChanged(QMap<int, Frame*> *ref=nullptr);
 
 public slots:
+    //adds a single frame object
     bool addFrameObject();
+
+    /*
+     * deletes a single frame object
+     */
+    void deleteFrames(QVector<int> &frameKeys);
 
 private:
     static FrameManager *frameManager;

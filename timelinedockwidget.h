@@ -15,6 +15,10 @@ public:
     TimelineDockWidget(QWidget *parent = nullptr);
     virtual ~TimelineDockWidget();
     TimelineView *getTimelineView() const;
+
+public slots:
+    void removeSelectedFrames();
+
 private:
     QWidget *mainWidget;
 

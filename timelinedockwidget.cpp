@@ -32,13 +32,13 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
 
     //set mainLayout for mainWidget
     mainWidget->setLayout(mainLayout);
-
     //set dockwidget as parent
     setWidget(mainWidget);
 
     QObject::connect(FrameManager::getInstance(), &FrameManager::frameBankChanged,
                      timelineView->getModel(), &TimelineModel::updateDataSource);
-
+    QObject::connect(btn_deleteFrame, &QPushButton::clicked,
+                     this, &TimelineDockWidget::removeSelectedFrames);
 }
 
 TimelineDockWidget::~TimelineDockWidget()
@@ -92,4 +92,20 @@ TimelineDockWidget::~TimelineDockWidget()
 TimelineView *TimelineDockWidget::getTimelineView() const
 {
     return timelineView;
+}
+
+//iterator getting invalidated, ERROR HERE
+void TimelineDockWidget::removeSelectedFrames()
+{
+    QModelIndexList indexList = this->timelineView->selectionModel()->selectedIndexes();
+    QVector<int> frameKeyVector;
+    qDebug()<<"so farso good";
+    for(int i=0; i < indexList.size(); i++){
+        QModelIndex index = indexList.at(i);
+        if(index.column()==0)
+            continue;
+        qDebug()<<" > index : "<<index;
+        frameKeyVector.push_back(this->timelineView->getModel()->modelIndexToFrameID(index));
+    }
+    FrameManager::getInstance()->deleteFrames(frameKeyVector);
 }
