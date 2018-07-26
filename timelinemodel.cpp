@@ -47,8 +47,10 @@ int TimelineModel::modelIndexToFrameID(QModelIndex ind)
 void TimelineModel::updateDataSource(QMap<int, Frame *> *src)
 {
     beginResetModel();
-    if(src != nullptr)
+    if(src != nullptr && ref_dataSource != src){
         ref_dataSource = src;
+        qDebug()<<"updated";
+    }
     endResetModel();
 }
 
