@@ -61,6 +61,7 @@ void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
 {
 
     AnimatableSpriteItem *item = new AnimatableSpriteItem();
+    item->setFlag(QGraphicsItem::ItemIsMovable, true);
     qDebug()<<"(Frame.cpp > addFrameItem()) : adding item "<<itemName<<" to frame";
     itemName = itemName.trimmed();
     if(itemName.size()==0){
@@ -92,14 +93,11 @@ void Frame::clearFrameItems()//slot fxn
     qDeleteAll(frameData.begin(), frameData.end());
     frameData.clear();
 }
+
 void Frame::drawBackground(QPainter *painter, const QRectF &rect){
-    //qDebug()<<"(Frames.cpp) > drawing background";
+    qDebug()<<"(Frames.cpp) > drawing background";
     painter->setBrush(QBrush(QColor(50, 250, 50)));
     painter->drawRect(FrameManager::frameSceneRect);
-
-}
-void Frame::drawForeground(QPainter *painter, const QRectF &rect)
-{
 
 }
 

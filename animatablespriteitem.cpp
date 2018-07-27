@@ -11,7 +11,7 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
     this->setX(0);
     this->setY(0);
     this->spriteData.setSpritePosition(QPointF(0,0));
-    setFlag(GraphicsItemFlag::ItemIsMovable);
+    setFlag(GraphicsItemFlag::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable);
 }
 
@@ -29,8 +29,8 @@ AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsI
     this->setPos(src->pos());
     this->setScale(src->scale());
     this->setRotation(src->rotation());
-    setFlag(GraphicsItemFlag::ItemIsMovable);
-    setFlag(GraphicsItemFlag::ItemIsSelectable);
+    setFlag(GraphicsItemFlag::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsSelectable);
     //pre-defined properties
     this->setName(src->getName());
     this->setSpritePixmap(*spritePixmap);
@@ -57,9 +57,7 @@ QRectF AnimatableSpriteItem::boundingRect() const
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     this->spritePainter = painter;
-    qDebug()<<"(AnimatableSpriteItem.cpp) > paint() :: drawing picture ";
-    //painter->drawImage(spriteData.getSpritePosition(), spritePixmap->toImage());
-    painter->drawImage(this->x(), this->y(), this->pixmap().toImage());
+    painter->drawImage(this->pos(), this->pixmap().toImage());
 }
 
 void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)

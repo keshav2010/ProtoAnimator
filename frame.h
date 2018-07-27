@@ -26,7 +26,6 @@ public slots:
     void addFrameItem(QString itemName="", QPixmap *spritePixmap=0);
     void clearFrameItems();
 protected:
-    void drawForeground(QPainter *painter, const QRectF &rect) override;
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 private:
 
