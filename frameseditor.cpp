@@ -41,15 +41,3 @@ void FramesEditor::renderFrame(Frame *activeFrame)
     qDebug()<<" >>>> framesEditor.cpp (renderFrame SLOT) setting updated scene to framesEditor view";
     setScene(activeFrame);
 }
-
-void FramesEditor::mousePressEvent(QMouseEvent *event)
-{
-    qDebug()<<" QGraphicsView > mousePressEvent";
-    const QPoint clickPosition = event->pos();
-    QGraphicsItem *selectedItem = (itemAt(clickPosition));
-    if(selectedItem)
-    {
-        qDebug()<<" item selected : "<<selectedItem;
-    }
-    else qDebug()<<"(FramesEditor.cpp) :"<<clickPosition.x()<<", "<<clickPosition.y();
-}

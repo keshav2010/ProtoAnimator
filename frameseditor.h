@@ -33,7 +33,7 @@ private:
 
     static bool isAlreadyExist;
     static FramesEditor* frameEditor;
-    void mousePressEvent(QMouseEvent *event);
+    //void mousePressEvent(QMouseEvent *event);
 };
 
 #endif // FRAMESEDITOR_H

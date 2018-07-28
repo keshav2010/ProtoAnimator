@@ -95,6 +95,18 @@ void Frame::clearFrameItems()//slot fxn
     frameData.clear();
 }
 
+void Frame::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    qDebug()<<" QGraphicsScene > mousePressEvent";
+    const QPointF clickPosition = mouseEvent->buttonDownScenePos(Qt::LeftButton);
+    QGraphicsItem *selectedItem = (itemAt(clickPosition, QTransform()));
+    if(selectedItem)
+    {
+        qDebug()<<" item selected : "<<selectedItem;
+    }
+    qDebug()<<"(Frame.cpp) :"<<clickPosition.x()<<", "<<clickPosition.y();
+}
+
 /*
  * overloaded implementation used to visualize the
  * scene bounding rectangle.
