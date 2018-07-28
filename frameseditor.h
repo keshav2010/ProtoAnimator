@@ -33,8 +33,6 @@ private:
 
     static bool isAlreadyExist;
     static FramesEditor* frameEditor;
-
-    void drawBackground(QPainter *painter, const QRectF &rect);
     void mousePressEvent(QMouseEvent *event);
 };
 

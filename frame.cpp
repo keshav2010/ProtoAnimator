@@ -11,6 +11,7 @@ Frame::Frame(QObject* parent):
 {
     qDebug()<<"(Frame.cpp) constructor";
     setBackgroundBrush(QBrush(QColor(120,50,100)));
+    setSceneRect(0, 0, frameWidth, frameHeight);
 }
 
 Frame::~Frame(){
@@ -94,10 +95,13 @@ void Frame::clearFrameItems()//slot fxn
     frameData.clear();
 }
 
-void Frame::drawBackground(QPainter *painter, const QRectF &rect){
-    qDebug()<<"(Frames.cpp) > drawing background";
-    painter->setBrush(QBrush(QColor(50, 250, 50)));
-    painter->drawRect(FrameManager::frameSceneRect);
-
+/*
+ * overloaded implementation used to visualize the
+ * scene bounding rectangle.
+ */
+void Frame::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    qDebug()<<"(Frame.cpp) > Drawing background";
+    painter->setBrush(QBrush(QColor(220,250,220)));
+    painter->drawRect(this->sceneRect());
 }
-

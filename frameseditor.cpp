@@ -40,15 +40,6 @@ void FramesEditor::renderFrame(Frame *activeFrame)
 {
     qDebug()<<" >>>> framesEditor.cpp (renderFrame SLOT) setting updated scene to framesEditor view";
     setScene(activeFrame);
-    setSceneRect(FrameManager::frameSceneRect);
-}
-
-//Visualising bounding Rectangle that represents a frame
-void FramesEditor::drawBackground(QPainter *painter, const QRectF &rect)
-{
-    qDebug()<<"(FramesEditor.cpp) : Drawing background";
-    painter->setBrush(QBrush(QColor(220,250,220)));
-    painter->drawRect(sceneRect());
 }
 
 void FramesEditor::mousePressEvent(QMouseEvent *event)

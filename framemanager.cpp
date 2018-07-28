@@ -4,7 +4,7 @@ FrameManager* FrameManager::frameManager=0;
 bool FrameManager::isAlreadyExist = false;
 
 QObject* FrameManager::objectParent=0;
-QRectF FrameManager::frameSceneRect = QRectF(0, 0, 800, 450);
+QRectF FrameManager::frameSceneRect = QRectF(0, 0, 800, 400);
 //-------------------------------------------------------------
 
 /* responsible for handling frames

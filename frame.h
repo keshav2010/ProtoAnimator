@@ -25,12 +25,13 @@ public slots:
     QMap<QString, AnimatableSpriteItem *> *getFrameData();
     void addFrameItem(QString itemName="", QPixmap *spritePixmap=0);
     void clearFrameItems();
-protected:
-    void drawBackground(QPainter *painter, const QRectF &rect) override;
+
 private:
+    void drawBackground(QPainter *painter, const QRectF &rect);
 
     //required to create clones
     QMap<QString, AnimatableSpriteItem*> frameData;
+
     const int frameWidth, frameHeight;
 };
 
