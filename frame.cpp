@@ -105,6 +105,7 @@ void Frame::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         qDebug()<<" item selected : "<<selectedItem;
     }
     qDebug()<<"(Frame.cpp) :"<<clickPosition.x()<<", "<<clickPosition.y();
+    QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
 /*

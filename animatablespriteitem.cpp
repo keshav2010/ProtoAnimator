@@ -56,8 +56,9 @@ QRectF AnimatableSpriteItem::boundingRect() const
 //override
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    this->spritePainter = painter;
     painter->drawImage(this->pos(), this->pixmap().toImage());
+    painter->setPen(QColor(200,100,50));
+    painter->drawRect(this->pos().x(), this->pos().y(), this->pixmap().rect().width(), this->pixmap().rect().height());
 }
 
 void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)
@@ -68,11 +69,6 @@ void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)
     //update Sprite Data
     spriteData.setSpriteScale(QPointF(pixmap().rect().width(), pixmap().rect().height()));
     spriteData.setSpritePosition(QPointF(this->x(), this->y()));
-}
-
-QPainter *AnimatableSpriteItem::getSpritePainter()
-{
-    return this->spritePainter;
 }
 
 SpriteData AnimatableSpriteItem::getSpriteData()
@@ -95,7 +91,7 @@ void AnimatableSpriteItem::setName(const QString &name)
     mName = name;
 }
 
-void AnimatableSpriteItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void AnimatableSpriteItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug()<<"(AnimatableSpriteItem.cpp) Mouse Moving";
+    qDebug()<<" Item clicked : "<<this->mName;
 }

@@ -18,7 +18,6 @@ public:
     QRectF boundingRect() const; //returns estimate of area painted by this item
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void setSpritePixmap(const QPixmap &sprite);
-    QPainter *getSpritePainter();
 
     SpriteData getSpriteData();
     void setSpriteData(SpriteData &data);
@@ -27,10 +26,9 @@ public:
     QPixmap *spritePixmap;
 
 protected:
-    void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    QPainter *spritePainter;
     bool followMouse;
     SpriteData spriteData;
     QString mName;
