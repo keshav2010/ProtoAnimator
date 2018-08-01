@@ -29,7 +29,6 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    bool followMouse;
     SpriteData spriteData;
     QString mName;
 };

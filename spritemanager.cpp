@@ -73,7 +73,7 @@ void SpriteManager::addToBank(QPixmap *spritePixmap, QString spriteName)
         spriteEditorDialog=nullptr;
         return;
     }
-    qDebug()<<"(SpriteManager.cpp) : supplying data to frame ";
+    qDebug()<<"(SpriteManager.cpp) : passing data to frame ";
     //get current active frame and pass on the information
     FrameManager::getInstance()->getCurrentActiveFrame()->addFrameItem(spriteName, spritePixmap);
     delete spriteEditorDialog;

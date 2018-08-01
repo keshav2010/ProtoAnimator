@@ -27,7 +27,6 @@ public slots:
     void clearFrameItems();
 
 private:
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void drawBackground(QPainter *painter, const QRectF &rect);
 
     //required to create clones

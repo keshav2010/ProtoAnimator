@@ -4,8 +4,7 @@
 #include"frameseditor.h"
 
 AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
-    QGraphicsPixmapItem(parent),
-    followMouse(false)
+    QGraphicsPixmapItem(parent)
 {
     qDebug()<<"(AnimatableSpriteItem.cpp) : constructor called";
     this->setX(0);
@@ -22,7 +21,6 @@ AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsI
 
     //user defined properties (in order as they appear in declaration)
     this->spritePixmap = new QPixmap(*(src->spritePixmap));
-    this->followMouse = src->followMouse;
     this->spriteData = src->spriteData;
     this->mName = QString(src->mName);
     this->setTransform(src->transform());
@@ -49,16 +47,14 @@ AnimatableSpriteItem::~AnimatableSpriteItem()
 //override method
 QRectF AnimatableSpriteItem::boundingRect() const
 {
-    //qDebug()<<"(AnimatableSpriteItem.cpp) : "<<spritePixmap->rect().width()<<" ** and ** "<<spritePixmap->rect().height();
-    return this->spritePixmap->rect();
+    return this->pixmap().rect();
 }
 
 //override
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->drawImage(this->pos(), this->pixmap().toImage());
     painter->setPen(QColor(200,100,50));
-    painter->drawRect(this->pos().x(), this->pos().y(), this->pixmap().rect().width(), this->pixmap().rect().height());
+    painter->drawPixmap(boundingRect().x(), boundingRect().y(), boundingRect().width(), boundingRect().height(), this->pixmap());
 }
 
 void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)
@@ -94,4 +90,5 @@ void AnimatableSpriteItem::setName(const QString &name)
 void AnimatableSpriteItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug()<<" Item clicked : "<<this->mName;
+    QGraphicsPixmapItem::mousePressEvent(event);
 }
