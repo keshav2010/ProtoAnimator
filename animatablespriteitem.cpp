@@ -55,6 +55,7 @@ void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
 {
     painter->setPen(QColor(200,100,50));
     painter->drawPixmap(boundingRect().x(), boundingRect().y(), boundingRect().width(), boundingRect().height(), this->pixmap());
+    QGraphicsPixmapItem::paint(painter, option, widget);
 }
 
 void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)
