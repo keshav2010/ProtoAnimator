@@ -5,11 +5,14 @@
 #include<QVBoxLayout>
 #include<QFrame>
 #include<QListView>
+#include "framemanager.h"
 class SceneItemsDockWidget:public QDockWidget
 {
 protected:
-    QVBoxLayout viewLayout;
     QFrame *frameWidget;
+
+    QVBoxLayout viewLayout;
+
     QListView sceneItemListView;
 public:
     SceneItemsDockWidget(QWidget *parent);
