@@ -5,7 +5,7 @@
 #include<QDebug>
 #include<QToolBar>
 #include <QFileDialog>
-
+#include"sceneitemsdockwidget.h"
 #include "timelineview.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -29,18 +29,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // DockWidgets init.
     serviceWidget = new ServiceDockWidget(this);
-    sampleRight = new QDockWidget(this);
     timelineWidget = new TimelineDockWidget(this);
+    sceneItemWidget = new SceneItemsDockWidget(this);
 
     //main toolBar
     setupToolBar();
 
-    sampleRight->setFeatures(QDockWidget::DockWidgetMovable);
-
     //add components to main-Window in their respective field
     addDockWidget(Qt::LeftDockWidgetArea, serviceWidget);
-    addDockWidget(Qt::RightDockWidgetArea, sampleRight);
     addDockWidget(Qt::BottomDockWidgetArea, timelineWidget);
+    addDockWidget(Qt::RightDockWidgetArea,  sceneItemWidget);
 
     setCentralWidget(FramesEditor::getInstance());
 

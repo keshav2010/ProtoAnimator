@@ -8,7 +8,7 @@ ServiceDockWidget::ServiceDockWidget(QWidget *parent):
     ref_timelineModel=nullptr;
     frameWidget = new QFrame(this);
     buttonsLayout = new QVBoxLayout(frameWidget);
-    setWindowTitle("Animator Tools");
+    setWindowTitle(tr("Animator Tools"));
     btn_addFrame = new QPushButton("Add Frame");
     btn_applyLerp = new QPushButton("Autofill Frames");
 
@@ -52,12 +52,13 @@ ServiceDockWidget::~ServiceDockWidget()
         delete timelineModel;
         timelineModel = nullptr;
     }
-    */
+
     qDebug()<<"(~ServiceDockWidget.cpp) : frameWidget "<<(frameWidget!=nullptr);
     if(frameWidget != nullptr){
         delete frameWidget;
         frameWidget = nullptr;
     }
+    */
     qDebug()<<"(~ServiceDockWidget.cpp) destructor call complete !";
 }
 

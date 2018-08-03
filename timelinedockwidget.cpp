@@ -5,6 +5,7 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     :QDockWidget(parent)
 {
     qDebug()<<"(TimelineDockWidget.cpp) constructor";
+    setWindowTitle(tr("Animation Tool"));
     animButtonGroup = new QGroupBox(tr("Animation Control"), this);
     mainWidget = new QWidget(this);
     buttonsLayout = new QVBoxLayout(animButtonGroup);//implicit call to animButtonGroup->setLayout(buttonsLayout);
@@ -83,11 +84,13 @@ TimelineDockWidget::~TimelineDockWidget()
         delete mainLayout;
         mainLayout = nullptr;
     }
+    /*
     qDebug()<<"(~TimelineDockWidget.cpp) mainWidget "<<(mainWidget != nullptr);
     if(mainWidget != nullptr){
         delete mainWidget;
         mainWidget = nullptr;
     }
+    */
 }
 TimelineView *TimelineDockWidget::getTimelineView() const
 {

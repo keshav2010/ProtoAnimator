@@ -11,6 +11,7 @@
 #include<QDockWidget>
 #include<QVBoxLayout>
 #include "timelinedockwidget.h"
+#include "sceneitemsdockwidget.h"
 #include "servicedockwidget.h"
 namespace Ui {
 class MainWindow;
@@ -41,11 +42,11 @@ private:
 
     //Contains tool to alter content of Scene
     ServiceDockWidget *serviceWidget;
+
     //Contains tools for handling animation and multiple frames
     TimelineDockWidget *timelineWidget;
 
-    // testing only
-    QDockWidget *sampleRight;
+    SceneItemsDockWidget *sceneItemWidget;
 
     void setupToolBar();//helper
 };

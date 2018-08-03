@@ -39,7 +39,8 @@ SOURCES += \
     timelineview.cpp \
     timelinemodel.cpp \
     timelinedelegate.cpp \
-    timelinedockwidget.cpp
+    timelinedockwidget.cpp \
+    sceneitemsdockwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -56,7 +57,8 @@ HEADERS += \
     timelineview.h \
     timelinemodel.h \
     timelinedelegate.h \
-    timelinedockwidget.h
+    timelinedockwidget.h \
+    sceneitemsdockwidget.h
 
 FORMS += \
         mainwindow.ui \
