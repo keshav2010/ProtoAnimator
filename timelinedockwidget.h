@@ -13,7 +13,7 @@ class TimelineDockWidget : public QDockWidget
 {
 public:
     TimelineDockWidget(QWidget *parent = nullptr);
-    virtual ~TimelineDockWidget();
+    ~TimelineDockWidget();
     TimelineView *getTimelineView() const;
 
 public slots:

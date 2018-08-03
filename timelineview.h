@@ -11,7 +11,7 @@ class TimelineView : public QTableView
     Q_OBJECT
 public:
     TimelineView( QWidget * parent = nullptr);
-    virtual ~TimelineView();
+    ~TimelineView();
     TimelineModel* getModel() const;
 
 public slots:

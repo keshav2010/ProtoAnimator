@@ -17,7 +17,7 @@ class SpritePropertyEditorDialog : public QDialog
 
 public:
     explicit SpritePropertyEditorDialog(const QString &imagePath);
-    virtual ~SpritePropertyEditorDialog();
+    ~SpritePropertyEditorDialog();
     AnimatableSpriteItem *animObject;
     QPixmap *originalSpritePixmap;
     QPixmap tempSpritePixmap;

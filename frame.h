@@ -13,7 +13,7 @@ class Frame : public QGraphicsScene
 
 public:
     Frame(QObject *parent=0);
-    virtual ~Frame();
+    ~Frame();
     QSize getFrameSize();
     int getFrameWidth();
     int getFrameHeight();

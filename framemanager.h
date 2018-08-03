@@ -26,7 +26,7 @@ public:
 
     static QRectF frameSceneRect;
 
-    virtual ~FrameManager();
+    ~FrameManager();
     static void setObjectParent(QObject *parent);
 
     Frame* getDefaultFrame();

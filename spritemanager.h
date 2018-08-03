@@ -20,7 +20,7 @@ public:
     static QObject *objectParent;
     static SpriteManager* getInstance();
 
-    virtual ~SpriteManager();
+    ~SpriteManager();
 
 signals:
     void addSprite(const QString &imagePath);

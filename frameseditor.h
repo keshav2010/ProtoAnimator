@@ -20,7 +20,7 @@ class FramesEditor : public QGraphicsView
 {
 public:
 
-    virtual ~FramesEditor();
+    ~FramesEditor();
     static FramesEditor* getInstance();
     static void setParent(QWidget *parent=0);
     static QWidget *objectParent;
