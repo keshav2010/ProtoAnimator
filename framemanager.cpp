@@ -60,6 +60,8 @@ void FrameManager::setCurrentActiveFrame(int frameKey)
     if(this->frameBank.contains(frameKey))
         currentActiveFrame = frameKey;
     FramesEditor::getInstance()->renderFrame(frameBank.value(currentActiveFrame));
+
+    emit this->broadcastFrameItems(this->getCurrentActiveFrame()->getFrameData());
 }
 int FrameManager::getCurrentActiveFrameByID(){
     return currentActiveFrame;
@@ -99,6 +101,7 @@ bool FrameManager::addFrameObject() //slot function
         qDebug()<<"(FrameManager.cpp) > addFrameObject() : setting newFrame in FrameEditor view with no data to carry forward";
         FramesEditor::getInstance()->renderFrame(newFrame);
         emit frameBankChanged(&frameBank);
+        emit broadcastFrameItems(this->getCurrentActiveFrame()->getFrameData());
         return true;
     }
 
@@ -114,6 +117,7 @@ bool FrameManager::addFrameObject() //slot function
      * that re-assigns reference
     */
     emit frameBankChanged(&frameBank);
+    emit broadcastFrameItems(getCurrentActiveFrame()->getFrameData());
     return true;
 }
 

@@ -1,6 +1,10 @@
 #include "sceneitemsdockwidget.h"
 #include<QDebug>
 #include<QItemDelegate>
+ItemListModel* SceneItemsDockWidget::getModel(){
+    return (&listModel);
+}
+
 SceneItemsDockWidget::SceneItemsDockWidget(QWidget *parent)
 {
 
@@ -15,31 +19,55 @@ SceneItemsDockWidget::SceneItemsDockWidget(QWidget *parent)
 
     frameWidget->setLayout(&viewLayout);
     setWidget(frameWidget);
+    QObject::connect(FrameManager::getInstance(), &FrameManager::broadcastFrameItems,
+                     this->getModel(), &ItemListModel::updateDataSource);
+
 }
 
 SceneItemsDockWidget::~SceneItemsDockWidget()
 {
 }
 
+//------------------------------------------------
+
 ItemListModel::ItemListModel(QObject *parent):
     QAbstractListModel(parent)
 {
-
-}
-
-int ItemListModel::rowCount(const QModelIndex &parent) const
-{
-    return 2;
-}
-
-QVariant ItemListModel::data(const QModelIndex &index, int role) const
-{
-    if(role==Qt::DisplayRole)
-        return QString("sample");
-    return QVariant();
+    ref_frameData=nullptr;
 }
 
 ItemListModel::~ItemListModel()
 {
 
 }
+
+int ItemListModel::rowCount(const QModelIndex &parent) const
+{
+    if(ref_frameData == nullptr)
+        return 0;
+    return ref_frameData->size();
+}
+
+QVariant ItemListModel::data(const QModelIndex &index, int role) const
+{
+    if( !index.isValid() || role != Qt::DisplayRole)
+        return QVariant();
+    return (ref_frameData->begin()+index.row()).key();
+}
+
+void ItemListModel::updateDataSource(QMap<QString, AnimatableSpriteItem* > *src)
+{
+    qDebug()<<"updating data source for itemListModel";
+    beginResetModel();
+    if(src != nullptr && ref_frameData != src){
+        qDebug()<<"updated";
+        ref_frameData = src;
+    }
+    endResetModel();
+}
+
+QMap<QString, AnimatableSpriteItem *> *ItemListModel::getDataSource()
+{
+    return this->ref_frameData;
+}
+

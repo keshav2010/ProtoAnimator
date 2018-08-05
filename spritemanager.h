@@ -49,12 +49,6 @@ private:
     explicit SpriteManager(QObject *parent = 0);
 
     QPixmap *spritePixmap;
-    /*
-     No need for centralized sprite bank
-     QGraphicsView's scene container will hold each item
-     items carried forward from one scene to next forward scene
-    */
-    //QMap<QString, AnimatableSpriteItem*> objectGraph;
 
     SpritePropertyEditorDialog *spriteEditorDialog;
 };

@@ -10,11 +10,18 @@
 
 class ItemListModel : public QAbstractListModel
 {
+private:
+    QMap<QString, AnimatableSpriteItem*> *ref_frameData;
 public:
     ItemListModel(QObject *parent=nullptr);
+    ~ItemListModel();
+
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
-    ~ItemListModel();
+    QMap<QString, AnimatableSpriteItem*> *getDataSource();
+public slots:
+    void updateDataSource(QMap<QString, AnimatableSpriteItem*> *src=nullptr);
+
 };
 
 class SceneItemsDockWidget:public QDockWidget
@@ -25,6 +32,7 @@ protected:
     QListView sceneItemListView;
     ItemListModel listModel;
 public:
+    ItemListModel* getModel();
     SceneItemsDockWidget(QWidget *parent);
     ~SceneItemsDockWidget();
 };

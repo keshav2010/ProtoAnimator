@@ -36,7 +36,11 @@ public:
     QMap<int, Frame*> *getPointerToFrameBank();
 
 signals:
+    //signal that carries information related to number of frames
     void frameBankChanged(QMap<int, Frame*> *ref=nullptr);
+
+    //signal that carries information for single active frame
+    void broadcastFrameItems(QMap<QString, AnimatableSpriteItem*> *ref=nullptr);
 
 public slots:
     //adds a single frame object

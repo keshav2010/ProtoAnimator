@@ -15,8 +15,11 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int modelIndexToFrameID(QModelIndex ind);
-    void updateDataSource(QMap<int, Frame*> *src = nullptr);
     QMap<int, Frame*> *getDataSource();
+
+public slots:
+    void updateDataSource(QMap<int, Frame*> *src = nullptr);
+
 private:
     QMap<int, Frame*> *ref_dataSource;
 };

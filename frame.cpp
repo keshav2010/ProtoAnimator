@@ -50,9 +50,9 @@ void Frame::copyData(Frame *other)
     qDebug()<<" (Frame.cpp) : Cloning complete, items moved : "<<this->items().size()<<", items in previous frame : "<<other->items().size();
 }
 
-QMap<QString, AnimatableSpriteItem *> *Frame::getFrameData()
+QMap<QString, AnimatableSpriteItem *>* Frame::getFrameData()
 {
-    return (&frameData);
+    return &frameData;
 }
 
 /*
@@ -79,7 +79,7 @@ void Frame::addFrameItem(QString itemName, QPixmap *spritePixmap) //slot fxn
     //frameData required to create clones
     frameData.insert(itemName, item);
     addItem(item);
-
+    emit FrameManager::getInstance()->broadcastFrameItems(&frameData);
     qDebug()<<"(Frame.cpp > addFrameItem()) : item added !!! ";
 }
 
