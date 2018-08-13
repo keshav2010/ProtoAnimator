@@ -14,8 +14,8 @@ SceneItemsDockWidget::SceneItemsDockWidget(QWidget *parent)
     this->frameWidget = new QFrame(this);
     this->frameWidget->setMinimumWidth(150);
 
-    sceneItemListView.setModel(&listModel);
-    viewLayout.addWidget(&sceneItemListView);
+    sceneItemTreeView.setModel(&listModel);
+    viewLayout.addWidget(&sceneItemTreeView);
 
     frameWidget->setLayout(&viewLayout);
     setWidget(frameWidget);

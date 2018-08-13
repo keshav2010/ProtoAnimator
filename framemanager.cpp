@@ -67,9 +67,6 @@ int FrameManager::getCurrentActiveFrameByID(){
     return currentActiveFrame;
 }
 
-//DEBUG : should be reconsidered,
-//this is returning frameBank address
-//where frameBank exists on stack
 QMap<int, Frame *>* FrameManager::getPointerToFrameBank()
 {
     return (&frameBank);
@@ -86,37 +83,36 @@ bool FrameManager::addFrameObject() //slot function
 {
     qDebug()<<"(FrameManager.cpp) > addFrameObject() : adding new Frame ";
     int oldFrameKey=-1;
-
-    if(!frameBank.empty())
+    if(!frameBank.empty()){
         oldFrameKey = frameBank.lastKey();
-
+    }
     int newFrameKey = oldFrameKey+1;
     Frame *newFrame = new Frame(this);
     frameBank.insert(newFrameKey, newFrame);
     currentActiveFrame = newFrameKey;
-
-
-    if(oldFrameKey >=0 && frameBank.value(oldFrameKey)->items().size() == 0)
-    {
-        qDebug()<<"(FrameManager.cpp) > addFrameObject() : setting newFrame in FrameEditor view with no data to carry forward";
-        FramesEditor::getInstance()->renderFrame(newFrame);
-        emit frameBankChanged(&frameBank);
-        emit broadcastFrameItems(this->getCurrentActiveFrame()->getFrameData());
-        return true;
-    }
-
-    Frame *prevFrame = frameBank.value(oldFrameKey);
-
-    //copy content of previous frame (deep copy)
-    newFrame->copyData(prevFrame);
-
-    FramesEditor::getInstance()->renderFrame(newFrame);
-
     /*
-     * triggers slot TimelineModel::updateDataSource()
-     * that re-assigns reference
-    */
+     * if the newly created frame is not the first frame,
+     * check if immediate previous frame contains any data, if yes ignore this
+     * conditional check
+     *
+     * otherwise execute this check and simply emit signals and stop.
+     * NOTE : Using nested if because i don't wish to take any risk
+     * regarding short-circuit evaluation of the condition which may cause
+     * segmentation fault.
+     */
+    if(frameBank.contains(oldFrameKey)){
+        if(frameBank.value(oldFrameKey)->items().size() != 0){
+            Frame *prevFrame = frameBank.value(oldFrameKey);
+            //copy content of previous frame (deep copy)
+            newFrame->copyData(prevFrame);
+        }
+    }
+    FramesEditor::getInstance()->renderFrame(newFrame);
+    //signal that carry the updated frameBank information
+    //this information is what used by Timeline to show frameCount.
     emit frameBankChanged(&frameBank);
+    //signal Broadcasting content of newly created frame,this information is
+    //used by FrameItemTree dockwidget to display content in a frame.
     emit broadcastFrameItems(getCurrentActiveFrame()->getFrameData());
     return true;
 }

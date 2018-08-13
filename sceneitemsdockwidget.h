@@ -4,7 +4,7 @@
 #include<QPushButton>
 #include<QVBoxLayout>
 #include<QFrame>
-#include<QListView>
+#include<QTreeView>
 #include<QMap>
 #include "framemanager.h"
 
@@ -29,7 +29,7 @@ class SceneItemsDockWidget:public QDockWidget
 protected:
     QFrame *frameWidget;
     QVBoxLayout viewLayout;
-    QListView sceneItemListView;
+    QTreeView sceneItemTreeView;
     ItemListModel listModel;
 public:
     ItemListModel* getModel();

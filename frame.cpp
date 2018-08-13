@@ -16,6 +16,8 @@ Frame::Frame(QObject* parent):
 
 Frame::~Frame(){
     qDebug()<<"(~Frame.cpp ): deleting frame";
+    if(frameData.size() < 1)
+        return;
     qDeleteAll(frameData.begin(), frameData.end());
     frameData.clear();
 }

@@ -10,8 +10,15 @@ TimelineModel::TimelineModel(QObject *parent) :
 TimelineModel::~TimelineModel()
 {
     qDebug()<<"(~TimelineModel.cpp) : destructor";
-    if(ref_dataSource == nullptr)
+    if(ref_dataSource == nullptr){
         return;
+    }
+
+    /*
+     * Deletes all the items in the range [begin, end)
+     * using the C++ delete operator.
+     * The item type must be a pointer type
+     */
     qDeleteAll(ref_dataSource->begin(), ref_dataSource->end());
     ref_dataSource->clear();
     ref_dataSource = nullptr;
