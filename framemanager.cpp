@@ -33,8 +33,7 @@ FrameManager::~FrameManager()
 
 FrameManager* FrameManager::getInstance()
 {
-    if(!isAlreadyExist)
-    {
+    if(!isAlreadyExist){
         isAlreadyExist=true;
         frameManager = new FrameManager(objectParent);
     }
