@@ -2,5 +2,6 @@
     <qresource prefix="/icons">
         <file alias="icon_loadSprite">Images/load_sprite.png</file>
         <file alias="icon_exit">Images/exit.png</file>
+        <file alias="icon_exportVideo">Images/exportAsVideo.png</file>
     </qresource>
 </RCC>

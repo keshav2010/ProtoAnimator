@@ -25,7 +25,11 @@ MainWindow::MainWindow(QWidget *parent) :
     setStatusBar(mStatusBar);
 
     //initialise all Actions here
-    actionLoadSprite = new QAction(QIcon(":/icons/icon_loadSprite"),"Load Sprite",this);
+    actionLoadSprite.setIcon(QIcon(":/icons/icon_loadSprite"));
+    actionLoadSprite.setText(tr("Load Sprite"));
+
+    actionExportVideo.setIcon(QIcon(":/icons/icon_exportVideo"));
+    actionExportVideo.setText(tr("Export As Video"));
 
     // DockWidgets init.
     serviceWidget = new ServiceDockWidget(this);
@@ -45,10 +49,13 @@ MainWindow::MainWindow(QWidget *parent) :
     serviceWidget->setTimelineModel( timelineWidget->getTimelineView()->getModel());
 
     //connections for slot-signal
+    QObject::connect(&actionExportVideo, &QAction::triggered,
+                     this, &MainWindow::showSpriteSelector);
+
     QObject::connect(this, &MainWindow::addSprite,
                      SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
 
-    QObject::connect(actionLoadSprite, &QAction::triggered,
+    QObject::connect(&actionLoadSprite, &QAction::triggered,
                      this, &MainWindow::showSpriteSelector);
 
     QObject::connect(ui->actionExit, &QAction::triggered,
@@ -67,13 +74,15 @@ MainWindow::~MainWindow()
 //helper functions
 void MainWindow::setupToolBar()
 {
-    mainToolBar->addAction(actionLoadSprite);
+    mainToolBar->addAction(&actionExportVideo);
+    mainToolBar->addAction(&actionLoadSprite);
     mainToolBar->addAction(ui->actionExit);
     addToolBar(mainToolBar);
 }
 
 
-//slots implemented below
+//------LOT FUNCTIONS-----
+
 void MainWindow::showSpriteSelector()
 {
     const QString fileFilter = "Image Files (*.png *.jpg *jpeg *bmp)";
@@ -89,4 +98,9 @@ void MainWindow::showSpriteSelector()
         qDebug()<<fileName;
         emit addSprite(fileName); //add selected file in sprite-bank
     }
+}
+
+void MainWindow::showVideoExporterDialog()
+{
+    //initializes the exporter dialog
 }

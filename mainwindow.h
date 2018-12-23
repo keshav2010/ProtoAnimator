@@ -10,6 +10,7 @@
 #include<QHBoxLayout>
 #include<QDockWidget>
 #include<QVBoxLayout>
+#include<QAction>
 #include "timelinedockwidget.h"
 #include "sceneitemsdockwidget.h"
 #include "servicedockwidget.h"
@@ -29,13 +30,15 @@ signals:
     void addSprite(const QString &spritePath);
 public slots:
     void showSpriteSelector();
+    void showVideoExporterDialog();
 
 private:
     Ui::MainWindow *ui;
     QStatusBar *mStatusBar;
 
     //Actions
-    QAction *actionLoadSprite;
+    QAction actionLoadSprite;
+    QAction actionExportVideo;
 
     //essential Widgets and Objects
     QToolBar *mainToolBar;
@@ -48,7 +51,7 @@ private:
 
     SceneItemsDockWidget *sceneItemWidget;
 
-    void setupToolBar();//helper
+    void setupToolBar();
 };
 
 #endif // MAINWINDOW_H

@@ -14,7 +14,6 @@ class SpritePropertyEditorDialog;
 class SpritePropertyEditorDialog : public QDialog
 {
     Q_OBJECT
-
 public:
     explicit SpritePropertyEditorDialog(const QString &imagePath);
     ~SpritePropertyEditorDialog();

@@ -24,8 +24,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
+    main.cpp \
+    mainwindow.cpp \
     animatable.cpp \
     frame.cpp \
     frameseditor.cpp \
@@ -40,7 +40,8 @@ SOURCES += \
     timelinemodel.cpp \
     timelinedelegate.cpp \
     timelinedockwidget.cpp \
-    sceneitemsdockwidget.cpp
+    sceneitemsdockwidget.cpp \
+    movieexportdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -58,11 +59,13 @@ HEADERS += \
     timelinemodel.h \
     timelinedelegate.h \
     timelinedockwidget.h \
-    sceneitemsdockwidget.h
+    sceneitemsdockwidget.h \
+    movieexportdialog.h
 
 FORMS += \
         mainwindow.ui \
-    spritepropertyeditordialog.ui
+    spritepropertyeditordialog.ui \
+    movieexportdialog.ui
 
 RESOURCES += \
     appresource.qrc
