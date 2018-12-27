@@ -12,3 +12,21 @@ MovieExportDialog::~MovieExportDialog()
 {
     delete ui;
 }
+
+bool MovieExportDialog::generateMovie(QString ffmpegPath, QString strOutputFile, std::function<void (float)> progress)
+{
+
+}
+bool MovieExportDialog::generateGif(QString ffmpeg, QString strOut, std::function<void (float)> progress)
+{
+
+}
+
+bool MovieExportDialog::executeFFMpeg(QString strCmd, std::function<void (float)> progress)
+{
+
+}
+bool MovieExportDialog::checkInputParameters(const ExportMovieDesc &movieDesc)
+{
+
+}

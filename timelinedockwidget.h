@@ -9,6 +9,8 @@
 #include<QFrame>
 #include<QGroupBox>
 #include<QWidget>
+#include<QSpinBox>
+#include<QLabel>
 class TimelineDockWidget : public QDockWidget
 {
 public:
@@ -21,14 +23,19 @@ public slots:
 
 private:
     QWidget *mainWidget;
+        QHBoxLayout *mainLayout;
+            QGroupBox mainGroup;
+                QVBoxLayout groupLayout;
+                    QGroupBox animButtonGroup;
+                        QVBoxLayout buttonsLayout;
+                            QPushButton btn_play, btn_pause, btn_deleteFrame;
 
-    TimelineView *timelineView;
+                    QGroupBox controlGroup;
+                        QHBoxLayout playrateLayout;
+                            QSpinBox sb_fps;
+                            QLabel label_fps;
 
-    QPushButton *btn_play, *btn_pause;
-    QGroupBox *animButtonGroup;
-    QPushButton *btn_deleteFrame;
-    QVBoxLayout *buttonsLayout;
-    QHBoxLayout *mainLayout;
+            TimelineView *timelineView;
 
 };
 

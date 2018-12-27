@@ -7,6 +7,8 @@
 #include <QFileDialog>
 #include"sceneitemsdockwidget.h"
 #include "timelineview.h"
+#include "movieexportdialog.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -50,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //connections for slot-signal
     QObject::connect(&actionExportVideo, &QAction::triggered,
-                     this, &MainWindow::showSpriteSelector);
+                     this, &MainWindow::showMovieExportDialog);
 
     QObject::connect(this, &MainWindow::addSprite,
                      SpriteManager::getInstance(), &SpriteManager::addSpriteObject);
@@ -92,15 +94,17 @@ void MainWindow::showSpriteSelector()
     spriteSelector.setFileMode(QFileDialog::FileMode::ExistingFile);
     spriteSelector.setNameFilter(fileFilter);
 
-    if(spriteSelector.exec()){
-        qDebug()<<" Opened Image Browser";
+    if(spriteSelector.exec()) //exec() will hold execution unless some value is returned (upon exiting the file browser)
+    {
         QString fileName = spriteSelector.selectedFiles().at(0);
-        qDebug()<<fileName;
+        qDebug()<<" Opened Image Browser "<<fileName;
         emit addSprite(fileName); //add selected file in sprite-bank
     }
 }
 
-void MainWindow::showVideoExporterDialog()
+void MainWindow::showMovieExportDialog()
 {
-    //initializes the exporter dialog
+    MovieExportDialog d;
+    d.show();
+    d.exec();
 }

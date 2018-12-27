@@ -30,7 +30,7 @@ signals:
     void addSprite(const QString &spritePath);
 public slots:
     void showSpriteSelector();
-    void showVideoExporterDialog();
+    void showMovieExportDialog();
 
 private:
     Ui::MainWindow *ui;
