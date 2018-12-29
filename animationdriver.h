@@ -10,15 +10,22 @@
  *
  * Value of N is specified by user
  */
-class AnimationDriver
+class AnimationDriver : public QObject
 {
+    Q_OBJECT
+
 public:
     AnimationDriver();
+    ~AnimationDriver();
+
 public slots:
     void setFPS(int fps);
+    void playAnim();
+    void stopAnim();
 
 private:
     int mFps;
+    bool mLoop;
 };
 
 #endif // ANIMATIONDRIVER_H

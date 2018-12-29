@@ -7,6 +7,7 @@
 #include "framemanager.h"
 #include "spritemanager.h"
 #include <QRectF>
+#include "animationdriver.h"
 /*
  * FrameEditor class inherits QGraphicsView, which is used to render QGraphicsScene
  * overall, FrameEditor will be used to view animation-frame (class in : frame.h) , interact with frame
@@ -16,14 +17,19 @@
  * further frames can then later be added by user
  */
 //only single instance of frameEditor will be used
+
+// TODO : Remove singleton design and rather establish composition (has-a) relationship with frameManager
 class FramesEditor : public QGraphicsView
 {
-public:
+    Q_OBJECT
 
+public:
     ~FramesEditor();
     static FramesEditor* getInstance();
     static void setParent(QWidget *parent=0);
     static QWidget *objectParent;
+
+    AnimationDriver* getAnimationDriver() const;
 
 public slots:
     void renderFrame(Frame* activeFrame);
@@ -33,7 +39,8 @@ private:
 
     static bool isAlreadyExist;
     static FramesEditor* frameEditor;
-    //void mousePressEvent(QMouseEvent *event);
+
+    AnimationDriver *animationDriver;
 };
 
 #endif // FRAMESEDITOR_H

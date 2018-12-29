@@ -11,6 +11,8 @@
 class Frame : public QGraphicsScene
 {
 
+    Q_OBJECT
+
 public:
     Frame(QObject *parent=0);
     ~Frame();

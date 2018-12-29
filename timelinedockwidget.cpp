@@ -1,5 +1,7 @@
 #include "timelinedockwidget.h"
 #include "framemanager.h"
+#include "frameseditor.h"
+#include "animationdriver.h"
 #include<QDebug>
 TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     :QDockWidget(parent)
@@ -53,6 +55,11 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
                      timelineView->getModel(), &TimelineModel::updateDataSource);
     QObject::connect(&btn_deleteFrame, &QPushButton::clicked,
                      this, &TimelineDockWidget::removeSelectedFrames);
+
+    //refer to this link : https://stackoverflow.com/questions/16794695/connecting-overloaded-signals-and-slots-in-qt-5
+    //as to why old-style QObject::connect(..) syntax is used below
+    QObject::connect(&sb_fps, SIGNAL(valueChanged(int)),
+                     FramesEditor::getInstance()->getAnimationDriver(), SLOT(setFPS(int)));
 }
 
 TimelineDockWidget::~TimelineDockWidget()
@@ -77,7 +84,6 @@ void TimelineDockWidget::removeSelectedFrames()
 {
     QModelIndexList indexList = this->timelineView->selectionModel()->selectedIndexes();
     QVector<int> frameKeyVector;
-    qDebug()<<"so farso good";
     for(int i=0; i < indexList.size(); i++){
         QModelIndex index = indexList.at(i);
         if(index.column()==0)

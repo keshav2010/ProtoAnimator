@@ -16,6 +16,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int modelIndexToFrameID(QModelIndex ind);
     QMap<int, Frame*> *getDataSource();
+    int getFramesCount() const;
 
 public slots:
     void updateDataSource(QMap<int, Frame*> *src = nullptr);

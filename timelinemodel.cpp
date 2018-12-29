@@ -64,3 +64,8 @@ QMap<int, Frame *> *TimelineModel::getDataSource()
 {
     return this->ref_dataSource;
 }
+
+int TimelineModel::getFramesCount() const
+{
+    return ref_dataSource->size();
+}

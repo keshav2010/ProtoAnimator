@@ -13,6 +13,8 @@
 #include<QLabel>
 class TimelineDockWidget : public QDockWidget
 {
+    Q_OBJECT
+
 public:
     TimelineDockWidget(QWidget *parent = nullptr);
     ~TimelineDockWidget();
@@ -24,8 +26,11 @@ public slots:
 private:
     QWidget *mainWidget;
         QHBoxLayout *mainLayout;
+
             QGroupBox mainGroup;
+
                 QVBoxLayout groupLayout;
+
                     QGroupBox animButtonGroup;
                         QVBoxLayout buttonsLayout;
                             QPushButton btn_play, btn_pause, btn_deleteFrame;

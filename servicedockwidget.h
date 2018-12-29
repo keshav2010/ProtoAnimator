@@ -12,6 +12,8 @@
 */
 class ServiceDockWidget : public QDockWidget
 {
+    Q_OBJECT
+
 protected:
     QPushButton *btn_addFrame;
     QPushButton *btn_applyLerp;

@@ -14,11 +14,13 @@ FramesEditor::FramesEditor(QWidget* parent):
 {
     qDebug()<<"(FrameEditor.cpp) constructor";
     setMouseTracking(true);
+    animationDriver = new AnimationDriver();
 }
 FramesEditor::~FramesEditor()
 {
     qDebug()<<"(~FrameEditor.cpp) : deleting frameEditor";
     isAlreadyExist=false;
+    delete animationDriver;
 }
 
 FramesEditor *FramesEditor::getInstance()
@@ -33,6 +35,11 @@ FramesEditor *FramesEditor::getInstance()
 void FramesEditor::setParent(QWidget *parent)
 {
     objectParent = parent;
+}
+
+AnimationDriver *FramesEditor::getAnimationDriver() const
+{
+    return animationDriver;
 }
 
 //SLOT FXN
