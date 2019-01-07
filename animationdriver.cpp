@@ -28,6 +28,11 @@ void AnimationDriver::setFPS(int fps)
     this->mFps = fps;
 }
 
+void AnimationDriver::setLoop(bool b)
+{
+    this->mLoop = b;
+}
+
 void AnimationDriver::playAnim()
 {
     mIsPlaying = mTimer.isActive();

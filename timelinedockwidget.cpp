@@ -22,10 +22,15 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     btn_pause.setText(tr("Pause"));
     btn_play.setText(tr("Play"));
 
-    label_fps.setText(tr("Animation Speed"));
+    label_fps.setText(tr("FPS "));
     sb_fps.setRange(1, 60);
     playrateLayout.addWidget(&label_fps);
     playrateLayout.addWidget(&sb_fps);
+
+    label_loop.setText(tr("Loop "));
+    playrateLayout.addWidget(&label_loop);
+    playrateLayout.addWidget(&cb_loop);
+
     controlGroup.setTitle(tr("Playrate Setting"));
     controlGroup.setLayout(&playrateLayout);
 
@@ -64,6 +69,8 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
     //as to why old-style QObject::connect(..) syntax is used below
     QObject::connect(&sb_fps, SIGNAL(valueChanged(int)),
                      FramesEditor::getInstance()->getAnimationDriver(), SLOT(setFPS(int)));
+    QObject::connect(&cb_loop, SIGNAL(clicked(bool)),
+                     FramesEditor::getInstance()->getAnimationDriver(), SLOT(setLoop(bool)));
 }
 
 TimelineDockWidget::~TimelineDockWidget()

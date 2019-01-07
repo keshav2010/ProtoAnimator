@@ -11,6 +11,7 @@
 #include<QWidget>
 #include<QSpinBox>
 #include<QLabel>
+#include<QCheckBox>
 class TimelineDockWidget : public QDockWidget
 {
     Q_OBJECT
@@ -39,6 +40,8 @@ private:
                         QHBoxLayout playrateLayout;
                             QSpinBox sb_fps;
                             QLabel label_fps;
+                            QCheckBox cb_loop;
+                            QLabel label_loop;
 
             TimelineView *timelineView;
 

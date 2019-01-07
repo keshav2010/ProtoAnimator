@@ -22,6 +22,8 @@ public:
 
 public slots:
     void setFPS(int fps);
+    void setLoop(bool b);
+
     void playAnim(); //handles AnimationDriver's state
     void stopAnim();
 
