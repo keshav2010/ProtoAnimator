@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include<QTimer>
+class Frame;
 /*
  *
  * This class is responsible for driving the

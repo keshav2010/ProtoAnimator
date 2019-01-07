@@ -15,12 +15,10 @@ FrameManager::FrameManager(QObject *parent):
 {
     qDebug()<<"(frameManager.cpp) constructor";
 
-    addFrameObject();//frameBank.insert(0, new Frame(this));
+    addFrameObject();
     startFrame = frameBank.value(0);
-    //currentActiveFrame=0;
 
     FramesEditor::getInstance()->renderFrame(startFrame);
-    qDebug()<<"frameManager.cpp : setting up current Frame "<<startFrameIndex;
 }
 
 FrameManager::~FrameManager()
@@ -58,6 +56,7 @@ void FrameManager::setCurrentActiveFrame(int frameKey)
 {
     if(this->frameBank.contains(frameKey))
         currentActiveFrame = frameKey;
+    else return;
     FramesEditor::getInstance()->renderFrame(frameBank.value(currentActiveFrame));
 
     emit this->broadcastFrameItems(this->getCurrentActiveFrame()->getFrameData());

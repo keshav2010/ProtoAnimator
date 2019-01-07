@@ -26,7 +26,6 @@ AnimationDriver::~AnimationDriver()
 void AnimationDriver::setFPS(int fps)
 {
     this->mFps = fps;
-    qDebug()<<"fps is : "<<mFps;
 }
 
 void AnimationDriver::playAnim()
@@ -50,10 +49,13 @@ void AnimationDriver::stopAnim()
 
 void AnimationDriver::traverseFrames()
 {
-    qDebug()<<"traverse called : "<<mCurrentFrame;
     const QMap<int, Frame*> *fb = FrameManager::getInstance()->getPointerToFrameBank();
-    FramesEditor::getInstance()->renderFrame((fb->begin() + mCurrentFrame).value());
+    //FramesEditor::getInstance()->renderFrame((fb->begin() + mCurrentFrame).value());
+    FrameManager::getInstance()->setCurrentActiveFrame(mCurrentFrame);
     mCurrentFrame++;
-    if(mCurrentFrame == fb->size())
+    if(mCurrentFrame >= fb->size()){
         mCurrentFrame=0;
+        if(!mLoop)
+            stopAnim();
+    }
 }

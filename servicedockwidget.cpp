@@ -12,7 +12,6 @@ ServiceDockWidget::ServiceDockWidget(QWidget *parent):
     btn_addFrame = new QPushButton("Add Frame");
     btn_applyLerp = new QPushButton("Autofill Frames");
 
-
     setFeatures(DockWidgetMovable);
 
     btn_addFrame->setToolTip(QString("Inserts a new frame which is clone of last frame"));
@@ -33,32 +32,16 @@ ServiceDockWidget::ServiceDockWidget(QWidget *parent):
 ServiceDockWidget::~ServiceDockWidget()
 {
     qDebug()<<"(~ServiceDockWidget.cpp) : destructor";
-    qDebug()<<"(~ServiceDockWidget.cpp) : btn_addFrame "<<(btn_addFrame!=nullptr);
     if(btn_addFrame != nullptr){
         delete btn_addFrame;
         btn_addFrame=nullptr;
     }
-    qDebug()<<"(~ServiceDockWidget.cpp) : btn_applyLerp "<<(btn_applyLerp!=nullptr);
     if(btn_applyLerp != nullptr){
         delete btn_applyLerp;
         btn_applyLerp=nullptr;
     }
-    qDebug()<<"(~ServiceDockWidget.cpp) : buttonsLayout "<<(buttonsLayout!=nullptr);
     if(buttonsLayout != nullptr)
         delete buttonsLayout;
-    //qDebug()<<"(~ServiceDockWidget.cpp) : timelineModel "<<(timelineModel!=nullptr);
-    /*
-    if(timelineModel != nullptr){
-        delete timelineModel;
-        timelineModel = nullptr;
-    }
-
-    qDebug()<<"(~ServiceDockWidget.cpp) : frameWidget "<<(frameWidget!=nullptr);
-    if(frameWidget != nullptr){
-        delete frameWidget;
-        frameWidget = nullptr;
-    }
-    */
     qDebug()<<"(~ServiceDockWidget.cpp) destructor call complete !";
 }
 

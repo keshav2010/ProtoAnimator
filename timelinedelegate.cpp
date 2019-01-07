@@ -21,10 +21,8 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 {
     //if item selected, fill the background of entire bounding rect
     if(option.state & QStyle::State_Selected)
-    {
         painter->fillRect(option.rect, option.palette.highlight());
-    }
-    //int rectPosition = 10*index.row();
+
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -35,7 +33,7 @@ void TimelineDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     else
         painter->setBrush(QBrush(GREENCOLOR));
 
-    //color immutable frame with red
+    //color first frame with red (immutable)
     if(index.column() == 0)
         painter->setBrush(QBrush(REDCOLOR));
     painter->drawRect(option.rect.x() + 10, option.rect.y(), 18, 20);
