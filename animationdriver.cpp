@@ -1,13 +1,21 @@
 #include "animationdriver.h"
-#include<ctime>
 #include<QDebug>
-#define SEC2MILLISEC 1000
-
+#include "framemanager.h"
+#include "frameseditor.h"
+/*
+ *  AnimationDriver is responsible for traversing over each frame
+ *  for a time period (mFps, frame per second)
+ *
+ *  It uses QTimer instead of a creating a seperate thread for sake of
+ *  complexity of program.
+ */
 AnimationDriver::AnimationDriver():
     mLoop(true),
-    mFps(30)
+    mFps(1),
+    mCurrentFrame(0),
+    mIsPlaying(false)
 {
-
+    QObject::connect(&mTimer, SIGNAL(timeout()), this, SLOT(traverseFrames()));
 }
 
 AnimationDriver::~AnimationDriver()
@@ -23,20 +31,29 @@ void AnimationDriver::setFPS(int fps)
 
 void AnimationDriver::playAnim()
 {
-    int temp = 3;
-    float timePerFrame = (1.0/mFps * SEC2MILLISEC); //time slot that is completely reserved to each frame
-    clock_t timeTracker;
-    /*
-     * for each frame
-     *      timeTracker = clock();
-     *      set it as activeFrame
-     *      timeTracker = clock() - timeTracker; (convert to ms)
-     *      if(timeTracker < 1000)
-     *          wait for remaining period
-     *  repeat
-     */
+    mIsPlaying = mTimer.isActive();
+    if(mIsPlaying){
+        return;
+    }
+    mTimer.start(1000/mFps);
+    if(mTimer.isActive())
+        mIsPlaying = true;
 }
 void AnimationDriver::stopAnim()
 {
+    mIsPlaying = mTimer.isActive();
+    if(!mIsPlaying)
+        return;
+    mTimer.stop();
+    mIsPlaying=false;
+}
 
+void AnimationDriver::traverseFrames()
+{
+    qDebug()<<"traverse called : "<<mCurrentFrame;
+    const QMap<int, Frame*> *fb = FrameManager::getInstance()->getPointerToFrameBank();
+    FramesEditor::getInstance()->renderFrame((fb->begin() + mCurrentFrame).value());
+    mCurrentFrame++;
+    if(mCurrentFrame == fb->size())
+        mCurrentFrame=0;
 }

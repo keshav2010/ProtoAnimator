@@ -55,6 +55,10 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
                      timelineView->getModel(), &TimelineModel::updateDataSource);
     QObject::connect(&btn_deleteFrame, &QPushButton::clicked,
                      this, &TimelineDockWidget::removeSelectedFrames);
+    QObject::connect(&btn_play, &QPushButton::clicked,
+                     FramesEditor::getInstance()->getAnimationDriver(), &AnimationDriver::playAnim);
+    QObject::connect(&btn_pause, &QPushButton::clicked,
+                     FramesEditor::getInstance()->getAnimationDriver(), &AnimationDriver::stopAnim);
 
     //refer to this link : https://stackoverflow.com/questions/16794695/connecting-overloaded-signals-and-slots-in-qt-5
     //as to why old-style QObject::connect(..) syntax is used below

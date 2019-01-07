@@ -2,6 +2,7 @@
 #define ANIMATIONDRIVER_H
 
 #include <QObject>
+#include<QTimer>
 /*
  *
  * This class is responsible for driving the
@@ -20,12 +21,18 @@ public:
 
 public slots:
     void setFPS(int fps);
-    void playAnim();
+    void playAnim(); //handles AnimationDriver's state
     void stopAnim();
+
+private slots:
+    void traverseFrames(); //responsible for switching frame, called by timer's tick
 
 private:
     int mFps;
+    int mCurrentFrame;
     bool mLoop;
+    bool mIsPlaying; //current state
+    QTimer mTimer; //this signals when to switch to next frame based on fps value
 };
 
 #endif // ANIMATIONDRIVER_H

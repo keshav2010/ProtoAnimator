@@ -23,16 +23,16 @@ public:
     static QObject *objectParent;
     //explicit FrameManager(QObject *parent = nullptr);
     static FrameManager* getInstance();
-
     static QRectF frameSceneRect;
-
-    ~FrameManager();
     static void setObjectParent(QObject *parent);
+    ~FrameManager();
 
     Frame* getDefaultFrame();
     Frame* getCurrentActiveFrame();
-    void setCurrentActiveFrame(int frameKey);
     int getCurrentActiveFrameByID();
+
+    void setCurrentActiveFrame(int frameKey);
+
     QMap<int, Frame*> *getPointerToFrameBank();
 
 signals:

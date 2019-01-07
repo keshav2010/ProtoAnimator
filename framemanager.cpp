@@ -110,6 +110,7 @@ bool FrameManager::addFrameObject() //slot function
     //signal that carry the updated frameBank information
     //this information is what used by Timeline to show frameCount.
     emit frameBankChanged(&frameBank);
+
     //signal Broadcasting content of newly created frame,this information is
     //used by FrameItemTree dockwidget to display content in a frame.
     emit broadcastFrameItems(getCurrentActiveFrame()->getFrameData());

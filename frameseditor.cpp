@@ -18,7 +18,6 @@ FramesEditor::FramesEditor(QWidget* parent):
 }
 FramesEditor::~FramesEditor()
 {
-    qDebug()<<"(~FrameEditor.cpp) : deleting frameEditor";
     isAlreadyExist=false;
     delete animationDriver;
 }
