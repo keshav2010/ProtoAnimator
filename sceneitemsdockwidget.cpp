@@ -85,7 +85,6 @@ QModelIndex ItemModel::index(int row, int column, const QModelIndex &parent) con
 }
 QVariant ItemModel::data(const QModelIndex &index, int role) const
 {
-    qDebug()<<"data called";
     if( !index.isValid() || role != Qt::DisplayRole)
         return QVariant();
     return static_cast<AnimatableSpriteItem*>(index.internalPointer())->getName();
