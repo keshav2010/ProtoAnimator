@@ -15,7 +15,7 @@ TimelineDockWidget::TimelineDockWidget(QWidget *parent)
 
     mainLayout = new QHBoxLayout();
 
-    qDebug()<<"(TimelineDockWidget.cpp) calling TimelineView constructor";
+    //qDebug()<<"(TimelineDockWidget.cpp) calling TimelineView constructor";
     timelineView = new TimelineView();
 
     btn_deleteFrame.setText(tr("delete Frame(s)"));
@@ -99,7 +99,7 @@ void TimelineDockWidget::removeSelectedFrames()
         QModelIndex index = indexList.at(i);
         if(index.column()==0)
             continue;
-        qDebug()<<" > index : "<<index;
+        //qDebug()<<" > index : "<<index;
         frameKeyVector.push_back(this->timelineView->getModel()->modelIndexToFrameID(index));
     }
     FrameManager::getInstance()->deleteFrames(frameKeyVector);

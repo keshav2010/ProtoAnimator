@@ -7,6 +7,7 @@
 #include<QRectF>
 #include<QPixmap>
 #include<QImage>
+#include<QVector>
 #include "spritedata.h"
 
 #define TOP_LEFT 0
@@ -25,8 +26,6 @@ public:
     QRectF boundingRect() const override; //returns estimate of area painted by this item
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
     void setSpritePixmap(const QPixmap &sprite);
 
@@ -37,19 +36,18 @@ public:
     QPixmap *spritePixmap;
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
     void setSizeMarkerPosition();
-    SizeChangeMarker *sizeMarkers[4];
-
+    QVector<SizeChangeMarker*> sizeMarkers;
     SpriteData spriteData;
     QString mName;
 };
 
 
 //Represent points at corner of the "Sprite" to rescale it
-class SizeChangeMarker : public QGraphicsRectItem
+class SizeChangeMarker : public QGraphicsItem
 {
 
 public:
@@ -61,6 +59,7 @@ public:
     enum{kMouseReleased=0, kMouseDown, kMouseMoving};
 
     int getMarkerType();
+    void setMarkerType(int);
     void setMouseState(int);
     int getMouseState();
 
@@ -68,6 +67,16 @@ public:
     QRectF boundingRect() const override;
 
 private:
+
+    virtual void hoverEnterEvent ( QGraphicsSceneHoverEvent * event );
+    virtual void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
+
+    virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+    virtual void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
+    virtual void mousePressEvent (QGraphicsSceneMouseEvent * event );
+    virtual void mousePressEvent(QGraphicsSceneDragDropEvent *event);
+    virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent * event );
+
     int mMarkerType; //which corner is this, either topLeft, topRight, etc
     int mMouseButtonState;
 };

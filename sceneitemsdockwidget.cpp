@@ -40,7 +40,7 @@ ItemModel::~ItemModel()
 
 QModelIndex ItemModel::parent(const QModelIndex &child) const
 {
-    qDebug()<<"parent : parent index calculation requested";
+    //qDebug()<<"parent : parent index calculation requested";
     if(!child.isValid()){
         return QModelIndex();
     }
@@ -66,15 +66,15 @@ QModelIndex ItemModel::parent(const QModelIndex &child) const
 //rendered at "row" relative to its parent's row
 QModelIndex ItemModel::index(int row, int column, const QModelIndex &parent) const
 {
-    qDebug()<<"index : "<<row<<" "<<column<<" for "<<parent;
+    //qDebug()<<"index : "<<row<<" "<<column<<" for "<<parent;
     if(ref_frameData == nullptr){
-        qDebug()<<" frameData is null";
+        //qDebug()<<" frameData is null";
         return QModelIndex();
     }
     AnimatableSpriteItem *parentObject = nodeFromIndex(parent);
     //top level item (root item)
     if(parentObject==nullptr){
-        qDebug()<<"no parent => root item";
+        //qDebug()<<"no parent => root item";
         parentObject = (ref_frameData->begin() + row).value();
         return createIndex(row, column, parentObject);
     }
@@ -101,7 +101,7 @@ int ItemModel::rowCount(const QModelIndex &parent) const
         return ref_frameData->size();
     }
     int parentChildrenCount = static_cast<AnimatableSpriteItem*>(parent.internalPointer())->childItems().size();
-    qDebug()<<parentChildrenCount<<" << ";
+    //qDebug()<<parentChildrenCount<<" << ";
     return parentChildrenCount;
 
 }
@@ -124,10 +124,10 @@ AnimatableSpriteItem *ItemModel::nodeFromIndex(const QModelIndex &index) const
 
 void ItemModel::updateDataSource(QMap<QString, AnimatableSpriteItem* > *src)
 {
-    qDebug()<<"calld";
+    //qDebug()<<"calld";
     beginResetModel();
     if(src != nullptr && ref_frameData != src){
-        qDebug()<<"set";
+        //qDebug()<<"set";
         ref_frameData = src;
         //TODO : count items with no parent in optimal manner without performing sequential
         //scan for entire frameData every time.
