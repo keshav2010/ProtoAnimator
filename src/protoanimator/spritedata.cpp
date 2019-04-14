@@ -7,12 +7,12 @@ SpriteData::SpriteData()
     spriteW=spriteH=0;
 }
 
-QPointF SpriteData::getSpritePosition()
+QPointF SpriteData::getSpritePosition() const
 {
     return QPointF(this->spriteX, this->spriteY);
 }
 
-QPointF SpriteData::getSpriteScale()
+QPointF SpriteData::getSpriteScale() const
 {
     return QPointF(this->spriteW, this->spriteH);
 }

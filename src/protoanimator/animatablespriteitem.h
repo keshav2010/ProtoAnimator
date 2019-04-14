@@ -1,6 +1,6 @@
 #ifndef ANIMATABLEIMAGEITEM_H
 #define ANIMATABLEIMAGEITEM_H
-
+#include<QPainterPath>
 #include<QGraphicsItem>
 #include<QGraphicsPixmapItem>
 #include<QGraphicsRectItem>
@@ -24,6 +24,7 @@ public:
     ~AnimatableSpriteItem();
 
     QRectF boundingRect() const override; //returns estimate of area painted by this item
+    QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
 

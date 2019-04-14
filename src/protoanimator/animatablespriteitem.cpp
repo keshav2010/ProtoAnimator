@@ -65,14 +65,37 @@ AnimatableSpriteItem::~AnimatableSpriteItem()
 //override method
 QRectF AnimatableSpriteItem::boundingRect() const
 {
-    return this->pixmap().rect();
+    //bounding rect is calculated based on values of "spriteData"
+    qreal tempWidth = spriteData.getSpriteScale().x();
+    qreal tempHeight = spriteData.getSpriteScale().y();
+    return QRectF(0, 0, tempWidth, tempHeight);
+
+    //return this->pixmap().rect();
 }
+
+/*
+ * shape() method makes it possible for user to click on enlarged painted region and drag it around
+ * also it does not adhere to the strict shape of image (such as ignoring transparency and only considering actual visible
+ * image shape) but rather construct a rectangular area using spriteData object
+ */
+QPainterPath AnimatableSpriteItem::shape() const
+{
+    QPainterPath path;
+    path.addRect(0, 0, this->spriteData.getSpriteScale().x(), this->spriteData.getSpriteScale().y());
+    return path;
+}
+
 
 //override
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->drawPixmap(boundingRect().x(), boundingRect().y(), boundingRect().width(), boundingRect().height(), this->pixmap());
-    QGraphicsPixmapItem::paint(painter, option, widget);
+    QPixmap temp = (*spritePixmap).scaled(spriteData.getSpriteScale().x(), spriteData.getSpriteScale().y());
+    painter->drawPixmap(boundingRect().x(), boundingRect().y(),
+                        temp.width(), temp.height(), temp);
+    painter->setBrush(QBrush(QColor(Qt::black)));
+    painter->drawRect(this->spritePixmap->rect());
+    //painter->drawPixmap(boundingRect().x(), boundingRect().y(), boundingRect().width(), boundingRect().height(), this->pixmap());
+   //QGraphicsPixmapItem::paint(painter, option, widget); //call base class paint method
 }
 
 bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
@@ -141,7 +164,8 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
             break;
             case BOTTOM_RIGHT:
             {
-                XaxisSign=-1;YaxisSign=-1;
+                XaxisSign=-1;
+                YaxisSign=-1;
             }
             break;
             case BOTTOM_LEFT:
@@ -159,10 +183,17 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
         int yMoved = sizeBox->mouseDownY - y;
         int deltaWidth = XaxisSign*xMoved;
         int deltaHeight = YaxisSign*yMoved;
-        //adjustSize
-        QPixmap currentPixmap = this->pixmap();
-        QPixmap newPixmap = currentPixmap.scaled(currentPixmap.width()+deltaWidth, currentPixmap.height()+deltaHeight);
-        this->setSpritePixmap(newPixmap);
+
+        //adjustSize by changing spriteData values, these values will be used by paint method to simply
+        //scale the original pixmap according to these values, this way we retain the original pixmap too
+        qreal currentWidth = this->spriteData.getSpriteScale().x();
+        qreal currentHeight = this->spriteData.getSpriteScale().y();
+        this->spriteData.setSpriteScale(QPointF(currentWidth+deltaWidth, currentHeight+deltaHeight));
+
+        //TODO : if new scaling technique doesn't back, remove comments from below code
+        //QPixmap currentPixmap = this->pixmap();
+        //QPixmap newPixmap = currentPixmap.scaled(currentPixmap.width()+deltaWidth, currentPixmap.height()+deltaHeight);
+        //this->setSpritePixmap(newPixmap);
 
         deltaWidth *= (-1);
         deltaHeight *= (-1);
@@ -171,17 +202,20 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
         {
             int newXpos = this->pos().x() + deltaWidth;
             int newYpos = this->pos().y() + deltaHeight;
-            this->setPos(newXpos, newYpos);
+             spriteData.setSpritePosition(QPointF(newXpos, newYpos));
+             this->setPos(newXpos, newYpos);
         }
         else if(sizeBox->getMarkerType() == TOP_RIGHT)
         {
             int newYpos = this->pos().y() + deltaHeight;
-            this->setPos(this->pos().x(), newYpos);
+             spriteData.setSpritePosition(QPointF(this->pos().x(), newYpos));
+             this->setPos(this->pos().x(), newYpos);
         }
         else if(sizeBox->getMarkerType() == BOTTOM_LEFT)
         {
             int newXpos = this->pos().x() + deltaWidth;
-            this->setPos(newXpos, this->pos().y());
+             spriteData.setSpritePosition(QPointF(newXpos, this->pos().y()));
+             this->setPos(newXpos, this->pos().y());
         }
         setSizeMarkerPosition();
         this->update();
@@ -191,17 +225,19 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
 
 void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)
 {
-    if(spritePixmap != nullptr)
-    {
+    qDebug()<<"AnimatableSpriteItem :: setSpritePixmap called \n Width,Height = ("<<sprite.width()<<","<<sprite.height()<<")";
+    //if existing spritePixmap exists, clear it from memory
+    if(spritePixmap != nullptr){
         delete spritePixmap;
         spritePixmap=nullptr;
     }
     spritePixmap = new QPixmap(sprite);
-    this->setPixmap(*spritePixmap);
 
     //update Sprite Data
-    spriteData.setSpriteScale(QPointF(pixmap().rect().width(), pixmap().rect().height()));
+    spriteData.setSpriteScale(QPointF(sprite.width(), sprite.height()));
     spriteData.setSpritePosition(QPointF(this->x(), this->y()));
+
+    this->setPixmap(*spritePixmap);
 }
 
 SpriteData AnimatableSpriteItem::getSpriteData()

@@ -6,8 +6,8 @@ class SpriteData
 {
 public:
     SpriteData();
-    QPointF getSpritePosition();
-    QPointF getSpriteScale();
+    QPointF getSpritePosition() const;
+    QPointF getSpriteScale() const;
 
     void setSpritePosition(const QPointF &point);
     void setSpriteScale(const QPointF &point);
