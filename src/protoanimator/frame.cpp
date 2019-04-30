@@ -32,6 +32,10 @@ int Frame::getFrameHeight(){
     return frameHeight;
 }
 
+/*
+ * This method can be used to copy content of given
+ * Frame object.
+ */
 void Frame::copyData(Frame *other)
 {
     qDebug()<<"(Frame.cpp) > copyData() : Copying data of prev. frame";
@@ -40,6 +44,8 @@ void Frame::copyData(Frame *other)
         return;
     }
     AnimatableSpriteItem *newItem;
+
+    //traverse frameData of previous frame for each sprite item in that frame
     QMap<QString, AnimatableSpriteItem*>::iterator sourceITR = other->getFrameData()->begin();
     QMap<QString, AnimatableSpriteItem*>::Iterator endITR = other->getFrameData()->end();
     for(sourceITR; sourceITR != endITR; sourceITR++)

@@ -20,29 +20,37 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
 }
 
 AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsItem *parent):
-    QGraphicsPixmapItem(parent)
+    QGraphicsPixmapItem(parent),
+    spritePixmap(nullptr)
 {
     qDebug()<<"(AnimatableSpriteItem.cpp) : copy constructor called";
 
-    //user defined properties (in order as they appear in declaration)
-    this->spritePixmap = new QPixmap(*(src->spritePixmap));
+    setFlag(GraphicsItemFlag::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsSelectable);
 
-    this->mName = QString(src->mName);
+    this->setName(src->getName());
 
+    /*
+     * Note that call to setSpritePixmap
+     * must be made first, because this method internally
+     * assigns some default value to spriteData, so in
+     * case we need to have custom spriteData values, we must
+     * assign them after call to this method so as to overwrite old values
+     */
+    this->setSpritePixmap(*(src->spritePixmap));
     this->spriteData = src->spriteData;
+
+    //this->spritePixmap = new QPixmap(*(src->spritePixmap));
+
 
     this->setTransform(src->transform());
     this->setPos(src->pos());
     this->setScale(src->scale());
     this->setRotation(src->rotation());
 
-    setFlag(GraphicsItemFlag::ItemIsMovable, true);
-    setFlag(QGraphicsItem::ItemIsSelectable);
     this->setAcceptHoverEvents(true);
 
     //pre-defined properties
-    this->setName(src->getName());
-    this->setSpritePixmap(*spritePixmap);
     sizeMarkers.resize(4);
 }
 
@@ -230,7 +238,8 @@ void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)
 {
     qDebug()<<"AnimatableSpriteItem :: setSpritePixmap called \n Width,Height = ("<<sprite.width()<<","<<sprite.height()<<")";
     //if existing spritePixmap exists, clear it from memory
-    if(spritePixmap != nullptr){
+    qDebug()<<"spritePixmap is : "<<this->spritePixmap;
+    if(this->spritePixmap != nullptr){
         delete spritePixmap;
         spritePixmap=nullptr;
     }

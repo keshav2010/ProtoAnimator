@@ -80,17 +80,17 @@ QMap<int, Frame *>* FrameManager::getPointerToFrameBank()
 bool FrameManager::addFrameObject() //slot function
 {
     qDebug()<<"(FrameManager.cpp) > addFrameObject() : adding new Frame ";
-    int oldFrameKey=-1;
-    if(!frameBank.empty()){
-        oldFrameKey = frameBank.lastKey();
-    }
+
+    int oldFrameKey = (frameBank.empty())? -1 : frameBank.lastKey();
     int newFrameKey = oldFrameKey+1;
+
     Frame *newFrame = new Frame(this);
     frameBank.insert(newFrameKey, newFrame);
     currentActiveFrame = newFrameKey;
+
     /*
      * if the newly created frame is not the first frame,
-     * check if immediate previous frame contains any data, if yes ignore this
+     * check if immediate previous frame contains any data, if no ignore this
      * conditional check
      *
      * otherwise execute this check and simply emit signals and stop.
@@ -101,11 +101,11 @@ bool FrameManager::addFrameObject() //slot function
     if(frameBank.contains(oldFrameKey)){
         if(frameBank.value(oldFrameKey)->items().size() != 0){
             Frame *prevFrame = frameBank.value(oldFrameKey);
-            //copy content of previous frame (deep copy)
-            newFrame->copyData(prevFrame);
+            newFrame->copyData(prevFrame);//copy content of previous frame (deep copy)
         }
     }
     FramesEditor::getInstance()->renderFrame(newFrame);
+
     //signal that carry the updated frameBank information
     //this information is what used by Timeline to show frameCount.
     emit frameBankChanged(&frameBank);
