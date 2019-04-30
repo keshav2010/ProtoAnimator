@@ -26,8 +26,11 @@ AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsI
 
     //user defined properties (in order as they appear in declaration)
     this->spritePixmap = new QPixmap(*(src->spritePixmap));
-    this->spriteData = src->spriteData;
+
     this->mName = QString(src->mName);
+
+    this->spriteData = src->spriteData;
+
     this->setTransform(src->transform());
     this->setPos(src->pos());
     this->setScale(src->scale());
@@ -92,8 +95,8 @@ void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
     QPixmap temp = (*spritePixmap).scaled(spriteData.getSpriteScale().x(), spriteData.getSpriteScale().y());
     painter->drawPixmap(boundingRect().x(), boundingRect().y(),
                         temp.width(), temp.height(), temp);
-    painter->setBrush(QBrush(QColor(Qt::black)));
-    painter->drawRect(this->spritePixmap->rect());
+    //painter->setBrush(QBrush(QColor(Qt::black)));
+    //painter->drawRect(this->spritePixmap->rect());
     //painter->drawPixmap(boundingRect().x(), boundingRect().y(), boundingRect().width(), boundingRect().height(), this->pixmap());
    //QGraphicsPixmapItem::paint(painter, option, widget); //call base class paint method
 }

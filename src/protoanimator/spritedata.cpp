@@ -7,6 +7,12 @@ SpriteData::SpriteData()
     spriteW=spriteH=0;
 }
 
+SpriteData::SpriteData(const SpriteData &data)
+{
+    this->setSpritePosition(data.getSpritePosition());
+    this->setSpriteScale(data.getSpriteScale());
+}
+
 QPointF SpriteData::getSpritePosition() const
 {
     return QPointF(this->spriteX, this->spriteY);
@@ -17,12 +23,20 @@ QPointF SpriteData::getSpriteScale() const
     return QPointF(this->spriteW, this->spriteH);
 }
 
-void SpriteData::setSpritePosition(const QPointF &point)
+SpriteData& SpriteData::setSpritePosition(const QPointF &point)
 {
-    spriteX = point.x();
-    spriteY = point.y();
+    this->spriteX = point.x();
+    this->spriteY = point.y();
+    return *this;
 }
-void SpriteData::setSpriteScale(const QPointF &point){
-    spriteW = point.x();
-    spriteH = point.y();
+SpriteData& SpriteData::setSpriteScale(const QPointF &point){
+    this->spriteW = point.x();
+    this->spriteH = point.y();
+    return *this;
+}
+SpriteData &SpriteData::operator=(const SpriteData &t)
+{
+    this->setSpritePosition(t.getSpritePosition());
+    this->setSpriteScale(t.getSpriteScale());
+    return *this;
 }
