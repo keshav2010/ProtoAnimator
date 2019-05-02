@@ -5,7 +5,8 @@
 #include"frameseditor.h"
 
 AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
-    QGraphicsPixmapItem(parent)
+    QGraphicsPixmapItem(parent),
+    rotationMarker(nullptr)
 {
     qDebug()<<"(AnimatableSpriteItem.cpp) : constructor called";
     this->setX(0);
@@ -15,13 +16,16 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
 
     setFlag(GraphicsItemFlag::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable);
+
     sizeMarkers.resize(4);
+
     this->setAcceptHoverEvents(true);
 }
 
 AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsItem *parent):
     QGraphicsPixmapItem(parent),
-    spritePixmap(nullptr)
+    spritePixmap(nullptr),
+    rotationMarker(nullptr)
 {
     qDebug()<<"(AnimatableSpriteItem.cpp) : copy constructor called";
 
@@ -50,7 +54,6 @@ AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsI
 
     this->setAcceptHoverEvents(true);
 
-    //pre-defined properties
     sizeMarkers.resize(4);
 }
 
@@ -70,6 +73,10 @@ AnimatableSpriteItem::~AnimatableSpriteItem()
     if(spritePixmap != nullptr){
         delete spritePixmap;
         spritePixmap = nullptr;
+    }
+    if(rotationMarker != nullptr){
+        delete rotationMarker;
+        rotationMarker = nullptr;
     }
 }
 
@@ -100,138 +107,179 @@ QPainterPath AnimatableSpriteItem::shape() const
 //override
 void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    //obtain scaled pixmap from base original pixmap and draw it
     QPixmap temp = (*spritePixmap).scaled(spriteData.getSpriteScale().x(), spriteData.getSpriteScale().y());
     painter->drawPixmap(boundingRect().x(), boundingRect().y(),
                         temp.width(), temp.height(), temp);
-    //painter->setBrush(QBrush(QColor(Qt::black)));
-    //painter->drawRect(this->spritePixmap->rect());
-    //painter->drawPixmap(boundingRect().x(), boundingRect().y(), boundingRect().width(), boundingRect().height(), this->pixmap());
-   //QGraphicsPixmapItem::paint(painter, option, widget); //call base class paint method
 }
 
+
 bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
-{ //RETURN FALSE => PROPAGATE EVENT TO watched , TRUE => DO NOT PROPAGATE
+{
+    //RETURN FALSE => PROPAGATE EVENT further (to watched)
+    //TRUE => DO NOT PROPAGATE further
     qDebug()<<"QEvent == "<<QString::number(event->type());
-    //when user clicks on any sizeMarker, this function will be called
-    // the sizeMarker that is pressed is being pointed by *watched
-    SizeChangeMarker *sizeBox = dynamic_cast<SizeChangeMarker*>(watched);
-    if(sizeBox==nullptr) // not expected to execute this code
-        return false;
-    qDebug()<<"sizeBox is : "<<sizeBox->getMarkerType();
-    qDebug()<<"EventFilter : checking event type";
-    //cast to mouseEvent will be null for non-mouse events
+
     QGraphicsSceneMouseEvent *mevent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
-    qDebug()<<" isEVENT of mouse ? "<<(mevent!=nullptr);
     if(mevent==nullptr)
         return false;
 
-    switch(mevent->type()){
-       case QEvent::GraphicsSceneMousePress:
-        {
-            sizeBox->setMouseState(SizeChangeMarker::kMouseDown);
-            //Record position when clicked first, this won't update even if mouse is moved around
-            sizeBox->mouseDownX = mevent->pos().x();
-            sizeBox->mouseDownY = mevent->pos().y();
+    // 1 dynamic cast must be != nullptr
+    SizeChangeMarker *sizeBox = dynamic_cast<SizeChangeMarker*>(watched);
+    RotationMarker *rotBox = dynamic_cast<RotationMarker*>(watched);
 
-            qDebug()<<sizeBox->mouseDownX<<" "<<sizeBox->mouseDownY;
-        }
-        break;
-
-    case QEvent::GraphicsSceneMouseRelease:
-        {
-            sizeBox->setMouseState(SizeChangeMarker::kMouseReleased);
-        }
-        break;
-
-    case QEvent::GraphicsSceneMouseMove:
-        {
-            sizeBox->setMouseState(SizeChangeMarker::kMouseMoving);
-        }
-        break;
-
-    default:
+    //below if-condition is not expected to execute
+    if(rotBox == nullptr && sizeBox == nullptr)
         return false;
-        break;
-    }
-    if(sizeBox->getMouseState() == SizeChangeMarker::kMouseMoving)
+
+    if(rotBox != nullptr)
     {
-        qreal x = mevent->pos().x();
-        qreal y = mevent->pos().y();
-        int XaxisSign = 0;
-        int YaxisSign = 0;
-        switch(sizeBox->getMarkerType())
-        {
-            case TOP_LEFT:
+        switch(mevent->type()){
+            case QEvent::GraphicsSceneMousePress:{
+                rotBox->setMouseState(RotationMarker::kMouseDown);
+                //first clicked pos, won't change even if moved
+                rotBox->mouseDownX = mevent->pos().x();
+                rotBox->mouseDownY = mevent->pos().y();
+            }break;
+
+            case QEvent::GraphicsSceneMouseRelease:{
+                rotBox->setMouseState(RotationMarker::kMouseReleased);
+            }break;
+
+            case QEvent::GraphicsSceneMouseMove:
             {
-                XaxisSign=1;
-                YaxisSign=1;
-            }
-            break;
-            case TOP_RIGHT:
-            {
-                XaxisSign=-1;
-                YaxisSign=1;
-            }
-            break;
-            case BOTTOM_RIGHT:
-            {
-                XaxisSign=-1;
-                YaxisSign=-1;
-            }
-            break;
-            case BOTTOM_LEFT:
-            {
-                XaxisSign=1;
-                YaxisSign=-1;
-            }
-            break;
+                rotBox->setMouseState(RotationMarker::kMouseMoving);
+            }break;
+            default:
+                return false; break; //propagate further to the marker itself
+        }//end of switch
 
-        }
-
-        //if mouse is being dragged, calculate new size + reposition sprite
-        //to give appearance of dragging corner in/out
-        int xMoved = sizeBox->mouseDownX - x;
-        int yMoved = sizeBox->mouseDownY - y;
-        int deltaWidth = XaxisSign*xMoved;
-        int deltaHeight = YaxisSign*yMoved;
-
-        //adjustSize by changing spriteData values, these values will be used by paint method to simply
-        //scale the original pixmap according to these values, this way we retain the original pixmap too
-        qreal currentWidth = this->spriteData.getSpriteScale().x();
-        qreal currentHeight = this->spriteData.getSpriteScale().y();
-        this->spriteData.setSpriteScale(QPointF(currentWidth+deltaWidth, currentHeight+deltaHeight));
-
-        //TODO : if new scaling technique doesn't back, remove comments from below code
-        //QPixmap currentPixmap = this->pixmap();
-        //QPixmap newPixmap = currentPixmap.scaled(currentPixmap.width()+deltaWidth, currentPixmap.height()+deltaHeight);
-        //this->setSpritePixmap(newPixmap);
-
-        deltaWidth *= (-1);
-        deltaHeight *= (-1);
-
-        if(sizeBox->getMarkerType() == TOP_LEFT)
+        if(rotBox->getMouseState() == RotationMarker::kMouseMoving)
         {
-            int newXpos = this->pos().x() + deltaWidth;
-            int newYpos = this->pos().y() + deltaHeight;
-             spriteData.setSpritePosition(QPointF(newXpos, newYpos));
-             this->setPos(newXpos, newYpos);
+            //obtaining updated position of mouse
+            qreal x = mevent->pos().x();
+            qreal y = mevent->pos().y();
+
+            //TODO: if mouse dragged => calculate angle
+            //at each step, apply this angle to sprite for visible rotation effect
+
+            //setRotationMarkerPosition();
+
+            this->update();
         }
-        else if(sizeBox->getMarkerType() == TOP_RIGHT)
-        {
-            int newYpos = this->pos().y() + deltaHeight;
-             spriteData.setSpritePosition(QPointF(this->pos().x(), newYpos));
-             this->setPos(this->pos().x(), newYpos);
-        }
-        else if(sizeBox->getMarkerType() == BOTTOM_LEFT)
-        {
-            int newXpos = this->pos().x() + deltaWidth;
-             spriteData.setSpritePosition(QPointF(newXpos, this->pos().y()));
-             this->setPos(newXpos, this->pos().y());
-        }
-        setSizeMarkerPosition();
-        this->update();
+        return true; //no need to propagate event any further to marker, every action is processed !
     }
-    return true;
+
+
+    if(sizeBox!=nullptr) //sizeBoxes clicked
+    {
+        switch(mevent->type()){
+           case QEvent::GraphicsSceneMousePress:
+            {
+                sizeBox->setMouseState(SizeChangeMarker::kMouseDown);
+                //Record position when clicked first, this won't update even if mouse is moved around
+                sizeBox->mouseDownX = mevent->pos().x();
+                sizeBox->mouseDownY = mevent->pos().y();
+            }
+            break;
+
+        case QEvent::GraphicsSceneMouseRelease:
+            {
+                sizeBox->setMouseState(SizeChangeMarker::kMouseReleased);
+            }
+            break;
+
+        case QEvent::GraphicsSceneMouseMove:
+            {
+                sizeBox->setMouseState(SizeChangeMarker::kMouseMoving);
+            }
+            break;
+
+        default:
+            return false;
+            break;
+        }//end of switch
+        if(sizeBox->getMouseState() == SizeChangeMarker::kMouseMoving)
+        {
+            qreal x = mevent->pos().x();
+            qreal y = mevent->pos().y();
+            int XaxisSign = 0;
+            int YaxisSign = 0;
+            switch(sizeBox->getMarkerType())
+            {
+                case TOP_LEFT:
+                {
+                    XaxisSign=1;
+                    YaxisSign=1;
+                }
+                break;
+                case TOP_RIGHT:
+                {
+                    XaxisSign=-1;
+                    YaxisSign=1;
+                }
+                break;
+                case BOTTOM_RIGHT:
+                {
+                    XaxisSign=-1;
+                    YaxisSign=-1;
+                }
+                break;
+                case BOTTOM_LEFT:
+                {
+                    XaxisSign=1;
+                    YaxisSign=-1;
+                }
+                break;
+
+            }
+
+            //if mouse is being dragged, calculate new size + reposition sprite
+            //to give appearance of dragging corner in/out
+            int xMoved = sizeBox->mouseDownX - x;
+            int yMoved = sizeBox->mouseDownY - y;
+            int deltaWidth = XaxisSign*xMoved;
+            int deltaHeight = YaxisSign*yMoved;
+
+            //adjustSize by changing spriteData values, these values will be used by paint method to simply
+            //scale the original pixmap according to these values, this way we retain the original pixmap too
+            qreal currentWidth = this->spriteData.getSpriteScale().x();
+            qreal currentHeight = this->spriteData.getSpriteScale().y();
+            this->spriteData.setSpriteScale(QPointF(currentWidth+deltaWidth, currentHeight+deltaHeight));
+
+            //TODO : if new scaling technique doesn't back, remove comments from below code
+            //QPixmap currentPixmap = this->pixmap();
+            //QPixmap newPixmap = currentPixmap.scaled(currentPixmap.width()+deltaWidth, currentPixmap.height()+deltaHeight);
+            //this->setSpritePixmap(newPixmap);
+
+            deltaWidth *= (-1);
+            deltaHeight *= (-1);
+
+            if(sizeBox->getMarkerType() == TOP_LEFT)
+            {
+                int newXpos = this->pos().x() + deltaWidth;
+                int newYpos = this->pos().y() + deltaHeight;
+                 spriteData.setSpritePosition(QPointF(newXpos, newYpos));
+                 this->setPos(newXpos, newYpos);
+            }
+            else if(sizeBox->getMarkerType() == TOP_RIGHT)
+            {
+                int newYpos = this->pos().y() + deltaHeight;
+                 spriteData.setSpritePosition(QPointF(this->pos().x(), newYpos));
+                 this->setPos(this->pos().x(), newYpos);
+            }
+            else if(sizeBox->getMarkerType() == BOTTOM_LEFT)
+            {
+                int newXpos = this->pos().x() + deltaWidth;
+                 spriteData.setSpritePosition(QPointF(newXpos, this->pos().y()));
+                 this->setPos(newXpos, this->pos().y());
+            }
+            setSizeMarkerPosition();
+            this->update();
+        }
+        return true;
+    }
+
 }
 
 void AnimatableSpriteItem::setSpritePixmap(const QPixmap &sprite)
@@ -275,6 +323,8 @@ void AnimatableSpriteItem::setName(const QString &name)
 void AnimatableSpriteItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsPixmapItem::mousePressEvent(event);
+
+    //init. points on corners
     for(int i=0; i<4; i++){
 
         if(sizeMarkers[i] != nullptr)
@@ -284,6 +334,14 @@ void AnimatableSpriteItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
         sizeMarkers[i]->setMarkerType(i);
     }
     this->setSizeMarkerPosition();
+
+    //init rotation Marker
+    if(rotationMarker == nullptr){
+        rotationMarker = new RotationMarker(this);
+        rotationMarker->installSceneEventFilter(this);
+    }
+    rotationMarker->setPos(boundingRect().center().x(), boundingRect().topLeft().y());
+
     event->setAccepted(true);
 }
 
@@ -385,3 +443,75 @@ void SizeChangeMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     event->setAccepted(true);
 }
+
+//--------------------------------------------------------
+
+//--------------------Rotation Marker -----------------
+RotationMarker::RotationMarker(QGraphicsItem *parent):
+    QGraphicsItem(parent),
+    mouseDownX(0),
+    mouseDownY(0)
+{
+    setFlag(GraphicsItemFlag::ItemIsMovable, true);
+    setAcceptHoverEvents(true);
+}
+RotationMarker::~RotationMarker(){
+
+}
+
+int RotationMarker::getMouseState(){
+    return mMouseButtonState;
+}
+void RotationMarker::setMouseState(int s){
+    mMouseButtonState = s;
+}
+//The marker itself
+void RotationMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+
+    QPointF topLeft(0,0);
+    QPointF bottomRight(10, 10);
+    QRectF rect(topLeft, bottomRight);
+    QBrush brush(Qt::SolidPattern);
+    brush.setColor(QColor(0,0,200));
+    painter->fillRect(rect, brush);
+}
+QRectF RotationMarker::boundingRect() const
+{
+    return QRectF(0,0, 10, 10);
+}
+void RotationMarker::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    this->update(0, 0, 10, 10);
+}
+
+void RotationMarker::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    this->update(0, 0, 10, 10);
+}
+
+void RotationMarker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    event->setAccepted(false);
+}
+
+void RotationMarker::mouseMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
+    event->setAccepted(false);
+}
+
+void RotationMarker::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    event->setAccepted(false);
+}
+
+void RotationMarker::mousePressEvent(QGraphicsSceneDragDropEvent *event)
+{
+    event->setAccepted(false);
+}
+
+void RotationMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    event->setAccepted(true);
+}
+

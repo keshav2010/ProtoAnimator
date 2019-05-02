@@ -14,7 +14,10 @@
 #define TOP_RIGHT 1
 #define BOTTOM_LEFT 2
 #define BOTTOM_RIGHT 3
+
 class SizeChangeMarker;
+class RotationMarker;
+
 class AnimatableSpriteItem : public QGraphicsPixmapItem
 {
 
@@ -42,6 +45,8 @@ protected:
 private:
     void setSizeMarkerPosition();
     QVector<SizeChangeMarker*> sizeMarkers;
+    RotationMarker *rotationMarker;
+
     SpriteData spriteData;
     QString mName;
 };
@@ -82,4 +87,34 @@ private:
     int mMouseButtonState;
 };
 
+//rotation marker that can be used to rotate sprite around its pivot point
+class RotationMarker : public QGraphicsItem
+{
+public:
+    RotationMarker(QGraphicsItem *parent=0);
+    ~RotationMarker();
+
+    qreal mouseDownX, mouseDownY;
+    enum{kMouseReleased=0, kMouseDown, kMouseMoving};
+
+    int getMouseState();
+    void setMouseState(int);
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QRectF boundingRect() const override;
+
+private:
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseMoveEvent(QGraphicsSceneDragDropEvent *event);
+
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent  *event);
+    virtual void mousePressEvent(QGraphicsSceneDragDropEvent *event);
+
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+    int mMouseButtonState;
+};
 #endif // ANIMATABLEIMAGEITEM_H
