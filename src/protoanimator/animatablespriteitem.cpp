@@ -22,6 +22,7 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
 
     sizeMarkers.resize(4);
     this->setAcceptHoverEvents(true);
+
 }
 
 AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsItem *parent):
@@ -117,6 +118,12 @@ void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
     //DEBUG ONLY
     painter->fillRect(QRect(this->boundingRect().center().x(), this->boundingRect().center().y(), 10, 10),QColor(200,0,0));
+    painter->setBrush(QBrush(QColor(250,250,250)));
+    painter->drawText(boundingRect().center() + QPointF(0, 5), "boundingRectCenter");
+
+    painter->fillRect(QRect(this->transformOriginPoint().x(), transformOriginPoint().y(), 20, 20), QColor(0, 200, 200));
+    painter->setBrush(QBrush(QColor(250,250,250)));
+    painter->drawText(transformOriginPoint() + QPointF(0, 5), "TransformOriginPoint");
 }
 
 
@@ -124,6 +131,7 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
 {
     //RETURN FALSE => PROPAGATE EVENT further (to watched)
     //TRUE => DO NOT PROPAGATE further
+
     QGraphicsSceneMouseEvent *mevent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
     if(mevent==nullptr)
         return false;
@@ -146,9 +154,6 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
                 //first clicked pos, won't change even if moved
                 rotBox->mouseDownX = mevent->pos().x();
                 rotBox->mouseDownY = mevent->pos().y();
-                qDebug()<<"transform before : "<<transformOriginPoint();
-                this->setTransformOriginPoint(boundingRect().center());
-                qDebug()<<"transform after : "<<transformOriginPoint();
             }break;
 
             case QEvent::GraphicsSceneMouseRelease:{
@@ -185,7 +190,6 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
                 newAngle = newAngle - 360;
 
             this->setRotation(newAngle);
-            qDebug()<<"Angle = "<<newAngle<<"\n";
             this->update();
         }
         return true; //no need to propagate event any further to marker, every action is processed !
@@ -201,20 +205,22 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
             {
                 sizeBox->setMouseState(SizeChangeMarker::kMouseDown);
                 //Record position when clicked first, this won't update even if mouse is moved around
-                sizeBox->mouseDownX = mevent->pos().x();
-                sizeBox->mouseDownY = mevent->pos().y();
+                sizeBox->mouseDownX = sizeBox->boundingRect().center().x();
+                sizeBox->mouseDownY = sizeBox->boundingRect().center().y();
             }
             break;
 
         case QEvent::GraphicsSceneMouseRelease:
             {
                 sizeBox->setMouseState(SizeChangeMarker::kMouseReleased);
+                this->setTransformOriginPoint(boundingRect().center());
             }
             break;
 
         case QEvent::GraphicsSceneMouseMove:
             {
                 sizeBox->setMouseState(SizeChangeMarker::kMouseMoving);
+
             }
             break;
 
@@ -234,28 +240,33 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
                 {
                     XaxisSign=1;
                     YaxisSign=1;
+                    this->setTransformOriginPoint(boundingRect().bottomRight());
                 }
                 break;
                 case TOP_RIGHT:
                 {
                     XaxisSign=-1;
                     YaxisSign=1;
+                    this->setTransformOriginPoint(boundingRect().bottomLeft());
                 }
                 break;
                 case BOTTOM_RIGHT:
                 {
                     XaxisSign=-1;
                     YaxisSign=-1;
+                    this->setTransformOriginPoint(boundingRect().topLeft());
                 }
                 break;
                 case BOTTOM_LEFT:
                 {
                     XaxisSign=1;
                     YaxisSign=-1;
+                    this->setTransformOriginPoint(boundingRect().topRight());
                 }
                 break;
 
             }
+
 
             //if mouse is being dragged, calculate new size + reposition sprite
             //to give appearance of dragging corner in/out
@@ -280,6 +291,7 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
 
             this->spriteData.setSpriteScale(QPointF(newWidth, newHeight));
 
+
             deltaWidth *= (-1);
             deltaHeight *= (-1);
 
@@ -302,6 +314,7 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
                 spriteData.setSpritePosition(QPointF(newXpos, this->pos().y()));
                 this->setPos(newXpos, this->pos().y());
             }
+
             setSizeMarkerPosition();
             this->update();
         }
@@ -383,6 +396,9 @@ void AnimatableSpriteItem::setSizeMarkerPosition()
     sizeMarkers[TOP_RIGHT]->setPos(boundingRect().topRight() + QPointF(-markerWidth, 0));
     sizeMarkers[BOTTOM_LEFT]->setPos(boundingRect().bottomLeft() + QPointF(0,-markerWidth));
     sizeMarkers[BOTTOM_RIGHT]->setPos(boundingRect().bottomRight() + QPointF(-markerWidth, -markerWidth));
+
+    if(this->rotationMarker)
+        rotationMarker->setPos(boundingRect().center().x(), boundingRect().topLeft().y());
 }
 //----------------------------------------------------------------------------------------------
 
