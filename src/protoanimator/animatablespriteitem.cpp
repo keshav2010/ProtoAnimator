@@ -139,12 +139,16 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
     //ROTBOX BEGINS
     if(rotBox != nullptr)
     {
+
         switch(mevent->type()){
             case QEvent::GraphicsSceneMousePress:{
                 rotBox->setMouseState(RotationMarker::kMouseDown);
                 //first clicked pos, won't change even if moved
                 rotBox->mouseDownX = mevent->pos().x();
                 rotBox->mouseDownY = mevent->pos().y();
+                qDebug()<<"transform before : "<<transformOriginPoint();
+                this->setTransformOriginPoint(boundingRect().center());
+                qDebug()<<"transform after : "<<transformOriginPoint();
             }break;
 
             case QEvent::GraphicsSceneMouseRelease:{
@@ -174,13 +178,15 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
             float _angle = atan2(_det, _dot)*RAD2DEG;
 
             //before rotation, reset transform origin to be at center
+            float newAngle = (this->rotation() + _angle);
+            if(newAngle < 0)
+                newAngle = 360 + newAngle;
+            if(newAngle >= 360)
+                newAngle = newAngle - 360;
 
-            this->setTransformOriginPoint(this->boundingRect().center());
-            float newAngle = this->rotation() + _angle;
             this->setRotation(newAngle);
-            qDebug()<<"Angle = "<<_angle<<"\n";
+            qDebug()<<"Angle = "<<newAngle<<"\n";
             this->update();
-            this->setTransformOriginPoint(0,0);
         }
         return true; //no need to propagate event any further to marker, every action is processed !
     }
@@ -539,4 +545,3 @@ void RotationMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     event->setAccepted(true);
 }
-
