@@ -276,38 +276,35 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
             qreal currentMouseX = mevent->scenePos().x();//mevent->pos().x();
             qreal currentMouseY = mevent->scenePos().y();//mevent->pos().y();
 
-            QVector2D baseRefVector(QPointF(sizeBox->mouseDownX, sizeBox->mouseDownY) - sizeBox->refCenterPoint);
+            //QVector2D baseRefVector(QPointF(sizeBox->mouseDownX, sizeBox->mouseDownY) - sizeBox->refCenterPoint);
             QVector2D newRefVector(QPointF(currentMouseX, currentMouseY) - sizeBox->refCenterPoint);
 
 
             //Project each Vector on respective X-Axis and Y-Axis and calculate length
-            float baseVecSizeX  = VectorMaths::projectVector(baseRefVector, QVector2D(1, 0)).length();
-            float baseVecSizeY = VectorMaths::projectVector(baseRefVector, QVector2D(0, 1)).length();
+            //float baseVecSizeX  = VectorMaths::projectVector(baseRefVector, QVector2D(1, 0)).length();
+            //float baseVecSizeY = VectorMaths::projectVector(baseRefVector, QVector2D(0, -1)).length();
 
-            QVector2D baseVecSize(baseVecSizeX, baseVecSizeY);
+            //QVector2D baseVecSize(baseVecSizeX, baseVecSizeY);
 
             float newVecSizeX = VectorMaths::projectVector(newRefVector, QVector2D(1, 0)).length();
-            float newVecSizeY = VectorMaths::projectVector(newRefVector, QVector2D(0,1)).length();
+            float newVecSizeY = VectorMaths::projectVector(newRefVector, QVector2D(0,-1)).length();
             QVector2D newVecSize(newVecSizeX, newVecSizeY);
 
-            QVector2D changeInSize = newVecSize - baseVecSize;
+            //QVector2D changeInSize = newVecSize - baseVecSize;
 
-            qDebug()<<"change in size = " <<(int)changeInSize.x()<<(int)changeInSize.y()<<"\n";
+            //qreal currentWidth = this->spriteData.getSpriteScale().x();
+            //qreal currentHeight = this->spriteData.getSpriteScale().y();
 
-            qreal currentWidth = this->spriteData.getSpriteScale().x();
-            qreal currentHeight = this->spriteData.getSpriteScale().y();
+            //qreal newWidth = currentWidth + changeInSize.x();
+            //qreal newHeight = currentHeight + changeInSize.y();
 
-            qreal newWidth = currentWidth + changeInSize.x();
-            qreal newHeight = currentHeight + changeInSize.y();
-
-            this->getSpriteData().setSpriteScale(QPointF(newWidth, newHeight));
-
+            //this->getSpriteData().setSpriteScale(QPointF(newWidth, newHeight));
+            this->spriteData.setSpriteScale(QPointF(newVecSize.x()*2.0f, newVecSize.y()*2.0f));//this->spriteData.setSpriteScale(QPointF(newWidth, newHeight));
             setSizeMarkerPosition();
-
             //this->setTransformOriginPoint(boundingRect().center());
-
-            //this->setPos(sizeBox->refCenterPoint);
+            this->setPos(sizeBox->refCenterPoint - this->transformOriginPoint());
             this->update();
+            this->prepareGeometryChange();
         }
         return true;
     }
