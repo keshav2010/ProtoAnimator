@@ -62,6 +62,8 @@ public:
     ~SizeChangeMarker();
 
     qreal mouseDownX, mouseDownY; //position of mouse when user pressed the lmb
+    QPointF refCenterPoint; //reference center point
+
     enum{kMouseReleased=0, kMouseDown, kMouseMoving};
 
     int getMarkerType();

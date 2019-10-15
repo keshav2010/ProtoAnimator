@@ -37,6 +37,7 @@ SOURCES += \
     timelinedockwidget.cpp \
     sceneitemsdockwidget.cpp \
     movieexportdialog.cpp \
+    vectormaths.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -57,6 +58,7 @@ HEADERS += \
     timelinedockwidget.h \
     sceneitemsdockwidget.h \
     movieexportdialog.h \
+    vectormaths.h
 
 FORMS += \
         mainwindow.ui \

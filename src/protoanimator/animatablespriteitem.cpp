@@ -4,6 +4,7 @@
 #include<QStyleOptionGraphicsItem>
 #include<QVector2D>
 #include"frameseditor.h"
+#include"vectormaths.h"
 
 #define RAD2DEG 57.2958
 
@@ -15,6 +16,7 @@ AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
     this->setX(0);
     this->setY(0);
     spritePixmap =  nullptr;
+
     this->spriteData.setSpritePosition(QPointF(0,0));
 
     setFlag(GraphicsItemFlag::ItemIsMovable, true);
@@ -54,6 +56,7 @@ AnimatableSpriteItem::AnimatableSpriteItem(AnimatableSpriteItem *src, QGraphicsI
     this->setPos(src->pos());
     this->setScale(src->scale());
     this->setRotation(src->rotation());
+    this->setTransformOriginPoint(src->transformOriginPoint());
 
     this->setAcceptHoverEvents(true);
 
@@ -90,8 +93,6 @@ QRectF AnimatableSpriteItem::boundingRect() const
     qreal tempWidth = spriteData.getSpriteScale().x();
     qreal tempHeight = spriteData.getSpriteScale().y();
     return QRectF(0, 0, tempWidth, tempHeight);
-
-    //return this->pixmap().rect();
 }
 
 /*
@@ -112,18 +113,26 @@ void AnimatableSpriteItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
 {
     //obtain scaled pixmap from base original pixmap and draw it
     QPixmap temp = (*spritePixmap).scaled(spriteData.getSpriteScale().x(), spriteData.getSpriteScale().y());
+
+    /*
+     * note that boundingRect is local to the item's coordinate system,
+     * translation of its center x,y is done into scene space by painter's transformation system.
+    */
     const QRectF boundingBox = this->boundingRect();
+
+
     painter->drawPixmap(boundingBox.x(), boundingBox.y(),
                         boundingBox.width(), boundingBox.height(), temp);
 
     //DEBUG ONLY
-    painter->fillRect(QRect(this->boundingRect().center().x(), this->boundingRect().center().y(), 10, 10),QColor(200,0,0));
+    painter->fillRect(QRect(boundingBox.center().x(), boundingBox.center().y(), 20, 20),QColor(200,0,0));
     painter->setBrush(QBrush(QColor(250,250,250)));
-    painter->drawText(boundingRect().center() + QPointF(0, 5), "boundingRectCenter");
+    painter->drawText(boundingRect().center() + QPointF(-5, 5), "boundingRectCenter");
 
-    painter->fillRect(QRect(this->transformOriginPoint().x(), transformOriginPoint().y(), 20, 20), QColor(0, 200, 200));
+    painter->fillRect(QRect(this->transformOriginPoint().x(), transformOriginPoint().y(), 10, 10), QColor(0, 200, 200));
     painter->setBrush(QBrush(QColor(250,250,250)));
-    painter->drawText(transformOriginPoint() + QPointF(0, 5), "TransformOriginPoint");
+    painter->drawText(transformOriginPoint() + QPointF(-5, 5), "TransformOriginPoint");
+
 }
 
 
@@ -147,49 +156,71 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
     //ROTBOX BEGINS
     if(rotBox != nullptr)
     {
-
+        this->setTransformOriginPoint(boundingRect().center());
         switch(mevent->type()){
-            case QEvent::GraphicsSceneMousePress:{
-                rotBox->setMouseState(RotationMarker::kMouseDown);
-                //first clicked pos, won't change even if moved
-                rotBox->mouseDownX = mevent->pos().x();
-                rotBox->mouseDownY = mevent->pos().y();
-            }break;
+            case QEvent::GraphicsSceneMousePress:
+                {
+                    rotBox->setMouseState(RotationMarker::kMouseDown);
+                    //first clicked pos, won't change even if moved
+                    rotBox->mouseDownX = mevent->scenePos().x();//mevent->pos().x();
+                    rotBox->mouseDownY = mevent->scenePos().y();//mevent->pos().y();
+                }break;
 
-            case QEvent::GraphicsSceneMouseRelease:{
-                rotBox->setMouseState(RotationMarker::kMouseReleased);
-            }break;
+            case QEvent::GraphicsSceneMouseRelease:
+                {
+                    rotBox->setMouseState(RotationMarker::kMouseReleased);
+                }break;
 
             case QEvent::GraphicsSceneMouseMove:
-            {
-                rotBox->setMouseState(RotationMarker::kMouseMoving);
-            }break;
+                {
+                    rotBox->setMouseState(RotationMarker::kMouseMoving);
+                }break;
+
             default:
                 return false; break; //propagate further to the marker itself
         }//end of switch
 
         if(rotBox->getMouseState() == RotationMarker::kMouseMoving)
         {
-            QPointF sprCenterPos(this->boundingRect().center());
-            QPointF refHeadPos(rotBox->mouseDownX, rotBox->mouseDownY);
-            QPointF mousePos(mevent->pos());
 
-            QVector2D referenceVector(refHeadPos - sprCenterPos); //Reference doesn't change during mouse movement
+            /*
+             * all points are in same coordinate space as mousePos
+             * pos() method returns the coordinates in parent (if no parent, => coordinate in Scene/Frame Space)
+             *
+             * Might want to consider ScenePos() in case "this" represents an item which is child of another graphics item
+             * or
+             * see docs to look up how to transform to scene space
+            */
+            QPointF sprCenterPos(this->pos() + this->transformOriginPoint());
+            QPointF refHeadPos(rotBox->mouseDownX, rotBox->mouseDownY);
+            QPointF mousePos(mevent->scenePos());
+
+            qDebug()<<"rotbox > sprCenterPos : "<<(int)sprCenterPos.x()<<(int)sprCenterPos.y();
+
+            //vector from center of sprite to the point where mouse was clicked first before being dragged
+            QVector2D referenceVector(0, -1);//(refHeadPos - sprCenterPos); //Reference doesn't change during mouse movement
+
+            //vector from center to current mouse position;
             QVector2D mouseVector(mousePos - sprCenterPos);
+
             referenceVector.normalize();
             mouseVector.normalize();
+
             float _dot = referenceVector.x()*mouseVector.x() + referenceVector.y()*mouseVector.y();
             float _det = referenceVector.x()*mouseVector.y() - referenceVector.y()*mouseVector.x();
             float _angle = atan2(_det, _dot)*RAD2DEG;
 
+            qDebug()<<"angle = "<<_angle;
+
             //before rotation, reset transform origin to be at center
-            float newAngle = (this->rotation() + _angle);
+            float newAngle = _angle;//(this->rotation() + _angle);
             if(newAngle < 0)
                 newAngle = 360 + newAngle;
             if(newAngle >= 360)
                 newAngle = newAngle - 360;
 
             this->setRotation(newAngle);
+
             this->update();
         }
         return true; //no need to propagate event any further to marker, every action is processed !
@@ -200,13 +231,23 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
     //SIZEBOX BEGINS
     if(sizeBox!=nullptr) //sizeBoxes clicked
     {
-        switch(mevent->type()){
+        switch(mevent->type())
+        {
            case QEvent::GraphicsSceneMousePress:
             {
+                qDebug()<<"sizebox changed  : "<<sizeBox;
+                this->setTransformOriginPoint(boundingRect().center());
                 sizeBox->setMouseState(SizeChangeMarker::kMouseDown);
+
                 //Record position when clicked first, this won't update even if mouse is moved around
-                sizeBox->mouseDownX = sizeBox->boundingRect().center().x();
-                sizeBox->mouseDownY = sizeBox->boundingRect().center().y();
+                sizeBox->mouseDownX = sizeBox->scenePos().x();//sizeBox->boundingRect().center().x();
+                sizeBox->mouseDownY = sizeBox->scenePos().y();//sizeBox->boundingRect().center().y();
+
+                //record current center point of image on click
+                sizeBox->refCenterPoint = this->pos() + this->transformOriginPoint();//this->scenePos();//this->boundingRect().center();
+
+                qDebug()<<" sizeBox RefCenterPoint = "<<sizeBox->refCenterPoint<<" and, image center "<<boundingRect().center();
+
             }
             break;
 
@@ -220,102 +261,52 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
         case QEvent::GraphicsSceneMouseMove:
             {
                 sizeBox->setMouseState(SizeChangeMarker::kMouseMoving);
-
+                this->setTransformOriginPoint(boundingRect().center());
             }
             break;
 
         default:
             return false;
             break;
-        }//end of switch
+        }
+        //end of switch
+
         if(sizeBox->getMouseState() == SizeChangeMarker::kMouseMoving)
         {
-            qreal x = mevent->pos().x();
-            qreal y = mevent->pos().y();
-            int XaxisSign = 0;
-            int YaxisSign = 0;
-            switch(sizeBox->getMarkerType())
-            {
-                case TOP_LEFT:
-                {
-                    XaxisSign=1;
-                    YaxisSign=1;
-                    this->setTransformOriginPoint(boundingRect().bottomRight());
-                }
-                break;
-                case TOP_RIGHT:
-                {
-                    XaxisSign=-1;
-                    YaxisSign=1;
-                    this->setTransformOriginPoint(boundingRect().bottomLeft());
-                }
-                break;
-                case BOTTOM_RIGHT:
-                {
-                    XaxisSign=-1;
-                    YaxisSign=-1;
-                    this->setTransformOriginPoint(boundingRect().topLeft());
-                }
-                break;
-                case BOTTOM_LEFT:
-                {
-                    XaxisSign=1;
-                    YaxisSign=-1;
-                    this->setTransformOriginPoint(boundingRect().topRight());
-                }
-                break;
+            qreal currentMouseX = mevent->scenePos().x();//mevent->pos().x();
+            qreal currentMouseY = mevent->scenePos().y();//mevent->pos().y();
 
-            }
+            QVector2D baseRefVector(QPointF(sizeBox->mouseDownX, sizeBox->mouseDownY) - sizeBox->refCenterPoint);
+            QVector2D newRefVector(QPointF(currentMouseX, currentMouseY) - sizeBox->refCenterPoint);
 
 
-            //if mouse is being dragged, calculate new size + reposition sprite
-            //to give appearance of dragging corner in/out
+            //Project each Vector on respective X-Axis and Y-Axis and calculate length
+            float baseVecSizeX  = VectorMaths::projectVector(baseRefVector, QVector2D(1, 0)).length();
+            float baseVecSizeY = VectorMaths::projectVector(baseRefVector, QVector2D(0, 1)).length();
 
+            QVector2D baseVecSize(baseVecSizeX, baseVecSizeY);
 
-            int xMoved = sizeBox->mouseDownX - x;
-            int yMoved = sizeBox->mouseDownY - y;
-            int deltaWidth = XaxisSign*xMoved;
-            int deltaHeight = YaxisSign*yMoved;
+            float newVecSizeX = VectorMaths::projectVector(newRefVector, QVector2D(1, 0)).length();
+            float newVecSizeY = VectorMaths::projectVector(newRefVector, QVector2D(0,1)).length();
+            QVector2D newVecSize(newVecSizeX, newVecSizeY);
 
-            //adjustSize by changing spriteData values, these values will be used by paint method to simply
-            //scale the original pixmap according to these values, this way we retain the original pixmap too
+            QVector2D changeInSize = newVecSize - baseVecSize;
+
+            qDebug()<<"change in size = " <<(int)changeInSize.x()<<(int)changeInSize.y()<<"\n";
+
             qreal currentWidth = this->spriteData.getSpriteScale().x();
             qreal currentHeight = this->spriteData.getSpriteScale().y();
 
-            qreal newWidth = currentWidth+deltaWidth;
-            qreal newHeight = currentHeight+deltaHeight;
+            qreal newWidth = currentWidth + changeInSize.x();
+            qreal newHeight = currentHeight + changeInSize.y();
 
-            //QTransform t = this->transform();
-            //t.scale(newWidth/currentWidth, newHeight/currentHeight);
-            //this->setTransform(t,false);
-
-            this->spriteData.setSpriteScale(QPointF(newWidth, newHeight));
-
-
-            deltaWidth *= (-1);
-            deltaHeight *= (-1);
-
-            if(sizeBox->getMarkerType() == TOP_LEFT)
-            {
-                int newXpos = this->pos().x() + deltaWidth;
-                int newYpos = this->pos().y() + deltaHeight;
-                spriteData.setSpritePosition(QPointF(newXpos, newYpos));
-                this->setPos(newXpos, newYpos);
-            }
-            else if(sizeBox->getMarkerType() == TOP_RIGHT)
-            {
-                int newYpos = this->pos().y() + deltaHeight;
-                spriteData.setSpritePosition(QPointF(this->pos().x(), newYpos));
-                this->setPos(this->pos().x(), newYpos);
-            }
-            else if(sizeBox->getMarkerType() == BOTTOM_LEFT)
-            {
-                int newXpos = this->pos().x() + deltaWidth;
-                spriteData.setSpritePosition(QPointF(newXpos, this->pos().y()));
-                this->setPos(newXpos, this->pos().y());
-            }
+            this->getSpriteData().setSpriteScale(QPointF(newWidth, newHeight));
 
             setSizeMarkerPosition();
+
+            //this->setTransformOriginPoint(boundingRect().center());
+
+            //this->setPos(sizeBox->refCenterPoint);
             this->update();
         }
         return true;

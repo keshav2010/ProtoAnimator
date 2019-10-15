@@ -15,6 +15,8 @@ FramesEditor::FramesEditor(QWidget* parent):
     qDebug()<<"(FrameEditor.cpp) constructor";
     setMouseTracking(true);
     animationDriver = new AnimationDriver();
+    setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    this->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 }
 FramesEditor::~FramesEditor()
 {
