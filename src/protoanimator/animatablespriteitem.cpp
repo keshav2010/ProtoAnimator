@@ -235,7 +235,6 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
         {
            case QEvent::GraphicsSceneMousePress:
             {
-                qDebug()<<"sizebox changed  : "<<sizeBox;
                 this->setTransformOriginPoint(boundingRect().center());
                 sizeBox->setMouseState(SizeChangeMarker::kMouseDown);
 
@@ -243,11 +242,8 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
                 sizeBox->mouseDownX = sizeBox->scenePos().x();//sizeBox->boundingRect().center().x();
                 sizeBox->mouseDownY = sizeBox->scenePos().y();//sizeBox->boundingRect().center().y();
 
-                //record current center point of image on click
+                //record current center point of image on click in scene/frame space
                 sizeBox->refCenterPoint = this->pos() + this->transformOriginPoint();//this->scenePos();//this->boundingRect().center();
-
-                qDebug()<<" sizeBox RefCenterPoint = "<<sizeBox->refCenterPoint<<" and, image center "<<boundingRect().center();
-
             }
             break;
 
@@ -261,7 +257,6 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
         case QEvent::GraphicsSceneMouseMove:
             {
                 sizeBox->setMouseState(SizeChangeMarker::kMouseMoving);
-                this->setTransformOriginPoint(boundingRect().center());
             }
             break;
 
@@ -273,38 +268,26 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
 
         if(sizeBox->getMouseState() == SizeChangeMarker::kMouseMoving)
         {
-            qreal currentMouseX = mevent->scenePos().x();//mevent->pos().x();
-            qreal currentMouseY = mevent->scenePos().y();//mevent->pos().y();
+            qreal currentMouseX = mevent->scenePos().x();
+            qreal currentMouseY = mevent->scenePos().y();
 
-            //QVector2D baseRefVector(QPointF(sizeBox->mouseDownX, sizeBox->mouseDownY) - sizeBox->refCenterPoint);
+            //vector from center of sprite to current Mouse Position
             QVector2D newRefVector(QPointF(currentMouseX, currentMouseY) - sizeBox->refCenterPoint);
 
-
-            //Project each Vector on respective X-Axis and Y-Axis and calculate length
-            //float baseVecSizeX  = VectorMaths::projectVector(baseRefVector, QVector2D(1, 0)).length();
-            //float baseVecSizeY = VectorMaths::projectVector(baseRefVector, QVector2D(0, -1)).length();
-
-            //QVector2D baseVecSize(baseVecSizeX, baseVecSizeY);
-
             float newVecSizeX = VectorMaths::projectVector(newRefVector, QVector2D(1, 0)).length();
-            float newVecSizeY = VectorMaths::projectVector(newRefVector, QVector2D(0,-1)).length();
+            float newVecSizeY = VectorMaths::projectVector(newRefVector, QVector2D(0,1)).length();
             QVector2D newVecSize(newVecSizeX, newVecSizeY);
 
-            //QVector2D changeInSize = newVecSize - baseVecSize;
+            this->spriteData.setSpriteScale(QPointF(newVecSize.x()*2.0f, newVecSize.y()*2.0f));
 
-            //qreal currentWidth = this->spriteData.getSpriteScale().x();
-            //qreal currentHeight = this->spriteData.getSpriteScale().y();
-
-            //qreal newWidth = currentWidth + changeInSize.x();
-            //qreal newHeight = currentHeight + changeInSize.y();
-
-            //this->getSpriteData().setSpriteScale(QPointF(newWidth, newHeight));
-            this->spriteData.setSpriteScale(QPointF(newVecSize.x()*2.0f, newVecSize.y()*2.0f));//this->spriteData.setSpriteScale(QPointF(newWidth, newHeight));
+            //updates markers position around the sprite
             setSizeMarkerPosition();
-            //this->setTransformOriginPoint(boundingRect().center());
+
+            //making sure image stays at same point
             this->setPos(sizeBox->refCenterPoint - this->transformOriginPoint());
+
+            this->setTransformOriginPoint(boundingRect().center());
             this->update();
-            this->prepareGeometryChange();
         }
         return true;
     }
