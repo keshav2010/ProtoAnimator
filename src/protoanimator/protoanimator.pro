@@ -1,6 +1,8 @@
-QT       += core gui
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+
 
 TARGET = protoanimator
 TEMPLATE = app
@@ -67,3 +69,5 @@ FORMS += \
 
 RESOURCES += \
 appresource.qrc
+
+include(../thirdParty/qtgifimage/src/gifimage/qtgifimage.pri)

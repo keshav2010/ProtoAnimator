@@ -5,7 +5,6 @@
 #include<QVector2D>
 #include"frameseditor.h"
 #include"vectormaths.h"
-
 #define RAD2DEG 57.2958
 
 AnimatableSpriteItem::AnimatableSpriteItem(QGraphicsItem *parent):
@@ -236,6 +235,7 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
            case QEvent::GraphicsSceneMousePress:
             {
                 this->setTransformOriginPoint(boundingRect().center());
+
                 sizeBox->setMouseState(SizeChangeMarker::kMouseDown);
 
                 //Record position when clicked first, this won't update even if mouse is moved around
@@ -243,7 +243,7 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
                 sizeBox->mouseDownY = sizeBox->scenePos().y();//sizeBox->boundingRect().center().y();
 
                 //record current center point of image on click in scene/frame space
-                sizeBox->refCenterPoint = this->pos() + this->transformOriginPoint();//this->scenePos();//this->boundingRect().center();
+                sizeBox->refCenterPoint = this->pos() + this->transformOriginPoint();
             }
             break;
 
@@ -276,6 +276,7 @@ bool AnimatableSpriteItem::sceneEventFilter(QGraphicsItem *watched, QEvent *even
 
             float newVecSizeX = VectorMaths::projectVector(newRefVector, QVector2D(1, 0)).length();
             float newVecSizeY = VectorMaths::projectVector(newRefVector, QVector2D(0,1)).length();
+
             QVector2D newVecSize(newVecSizeX, newVecSizeY);
 
             this->spriteData.setSpriteScale(QPointF(newVecSize.x()*2.0f, newVecSize.y()*2.0f));
