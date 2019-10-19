@@ -1,7 +1,6 @@
 # README #
 ProtoAnimator is a tool for making 2D Animations using sprites/images. The project is still in its very early stage and only core facility is being implemented at the moment.
 
-
 ### Track Progress ###
 Go to "Projects" tab to track project status.
 
