@@ -30,6 +30,8 @@ public:
     Frame* getDefaultFrame();
     Frame* getCurrentActiveFrame();
     int getCurrentActiveFrameByID();
+    int getTotalFrames();
+    QPixmap getFramePixmap(int);
 
     void setCurrentActiveFrame(int frameKey);
 

@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     actionLoadSprite.setText(tr("Load Sprite"));
 
     actionExportVideo.setIcon(QIcon(":/icons/icon_exportVideo"));
-    actionExportVideo.setText(tr("Export As Video"));
+    actionExportVideo.setText(tr("Export Animation"));
 
     // DockWidgets init.
     serviceWidget = new ServiceDockWidget(this);

@@ -52,6 +52,27 @@ Frame *FrameManager::getCurrentActiveFrame()
     return frameBank.value(currentActiveFrame);
 }
 
+//returns image representation of a frame in form of pixmap.
+QPixmap FrameManager::getFramePixmap(int frame_index)
+{
+    if(frame_index >= this->getTotalFrames())
+        return QPixmap();
+
+    //store current id for resetting view later on
+    int currentFrameId = this->getCurrentActiveFrameByID();
+
+    QMap<int, Frame*>::iterator itr = frameBank.begin();
+    int temp=0;
+    while(temp != frame_index){
+        temp++;
+        itr++;
+    }
+    this->setCurrentActiveFrame(itr.key());
+    QPixmap pixmap = FramesEditor::getInstance()->grab(FramesEditor::getInstance()->sceneRect().toRect());
+    this->setCurrentActiveFrame(currentFrameId);
+    return pixmap;
+}
+
 void FrameManager::setCurrentActiveFrame(int frameKey)
 {
     if(this->frameBank.contains(frameKey))
@@ -63,6 +84,11 @@ void FrameManager::setCurrentActiveFrame(int frameKey)
 }
 int FrameManager::getCurrentActiveFrameByID(){
     return currentActiveFrame;
+}
+
+int FrameManager::getTotalFrames()
+{
+    return frameBank.size();
 }
 
 QMap<int, Frame *>* FrameManager::getPointerToFrameBank()

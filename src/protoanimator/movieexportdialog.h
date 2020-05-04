@@ -29,13 +29,16 @@ public:
     explicit MovieExportDialog(QWidget *parent = 0);
     ~MovieExportDialog();
 
+private slots:
+    void showMovieFilePath();
+
 private:
     Ui::MovieExportDialog *ui;
 
     ExportMovieDesc mDesc;
 
     bool generateMovie(QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);
-    bool generateGif(QString ffmpeg, QString strOut, std::function<void(float)> progress);
+    void generateGif(QString);
 
     bool executeFFMpeg(QString strCmd, std::function<void(float)> progress);
     bool executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<bool(QProcess&, int)> writeFrame);

@@ -30,6 +30,7 @@ FramesEditor *FramesEditor::getInstance()
         isAlreadyExist=true;
         frameEditor = new FramesEditor(objectParent);
     }
+
     return frameEditor;
 }
 

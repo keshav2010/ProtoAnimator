@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>305</width>
-    <height>337</height>
+    <height>111</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QProgressBar" name="progressBar">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>270</y>
-     <width>261</width>
-     <height>51</height>
+     <x>10</x>
+     <y>70</y>
+     <width>281</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="value">
@@ -32,115 +32,17 @@
     <string>%p%</string>
    </property>
   </widget>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>230</y>
-     <width>171</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="sb_startFrame">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>50</y>
-     <width>71</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="sb_endFrame">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>90</y>
-     <width>71</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_startFrame">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>50</y>
-     <width>61</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Start Frame</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_endFrame">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>90</y>
-     <width>61</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>End Frame</string>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="sb_fps">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>230</y>
-     <width>51</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="minimum">
-    <number>12</number>
-   </property>
-   <property name="maximum">
-    <number>60</number>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_fps">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>230</y>
-     <width>31</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>FPS </string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="input_filename">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>160</y>
-     <width>121</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_fileName">
+  <widget class="QPushButton" name="btn_exportGIF">
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>160</y>
-     <width>71</width>
-     <height>21</height>
+     <y>10</y>
+     <width>111</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>File Name</string>
+    <string>Export As GIF</string>
    </property>
   </widget>
  </widget>

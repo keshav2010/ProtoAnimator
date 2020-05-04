@@ -19,7 +19,6 @@ public:
     QSize getFrameSize();
     int getFrameWidth();
     int getFrameHeight();
-
     //method to create deep copy
     void copyData(Frame* other=0);
 
