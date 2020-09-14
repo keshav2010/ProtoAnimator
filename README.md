@@ -1,5 +1,7 @@
 # README #
-ProtoAnimator is a tool for making 2D Animations using sprites/images. Right now, you can import images and apply basic transformation to them, i.e rotation, scale and position change, once animation is ready, you can export it as GIF. This project is just for learning purposes, feel free to fork it or submit a PR :).
+ProtoAnimator is a tool for making 2D Animations using sprites/images. Right now, you can import images and apply basic transformation to them, i.e rotation, scale and position change, once animation is ready, you can export it as GIF. This project is just for learning purposes.
+
+![Capture](https://user-images.githubusercontent.com/15817196/93143510-bdd56f00-f705-11ea-99b7-2e97a0010e03.PNG)
 
 ### Track Progress ###
 Go to "Projects" tab to track project status.
